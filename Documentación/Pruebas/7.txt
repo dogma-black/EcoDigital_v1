@@ -1,0 +1,33 @@
+Recursos para las Pruebas: Ecosistema Digital Inteligente para Cirugía Especial (Fase 1: El Núcleo Administrativo)
+La Fase 1 se enfoca en la construcción del "Núcleo Administrativo (Dashboard de Escritorio)", que es la columna vertebral y base de datos central del ecosistema. Las pruebas de esta fase son cruciales para validar las funcionalidades clave antes de la entrega.
+1. Personal de Pruebas
+El "equipo de desarrollo" o "Su Nombre/Nombre de su Empresa" es el encargado de diseñar, construir e implementar el ecosistema. Este mismo equipo es responsable de "Realizar pruebas exhaustivas de todas las funcionalidades, asegurando la seguridad y el rendimiento". No se especifica la existencia de un equipo de pruebas independiente; por lo tanto, las actividades de prueba recaen en el equipo de desarrollo. El Dr. Joel Sánchez García y su equipo son los usuarios clave y beneficiarios finales del ecosistema.
+2. Entorno de Pruebas (Configuración)
+El entorno de pruebas será una réplica de la infraestructura de producción, basada en Google Cloud Platform (GCP). Los componentes clave de este entorno en la nube incluyen:
+• Virtual Private Cloud (VPC): Una sección lógicamente aislada dentro de la nube pública de GCP donde se despliegan todos los recursos del sistema, creando un entorno de red privado y seguro.
+• API Gateway / Load Balancer: Actúan como los puntos de entrada seguros para todas las solicitudes provenientes de las aplicaciones cliente, distribuyendo el tráfico de manera eficiente y garantizando la disponibilidad y seguridad del sistema.
+• Servidor de Aplicación (Backend): Donde reside la lógica de negocio central y las APIs, construido con Python (Flask/Django) o Node.js (Express), y desplegado utilizando servicios de GCP como Compute Engine o Cloud Run. La integración del modelo de IA Gemma 3 también reside aquí.
+• Base de Datos Relacional (Cloud SQL): Almacena toda la información estructurada y crítica, como perfiles de pacientes, historiales clínicos, citas, usuarios y roles, utilizando MySQL o PostgreSQL. Los datos sensibles estarán cifrados en reposo.
+• Almacenamiento de Archivos (Cloud Storage): Utilizado para el almacenamiento centralizado y seguro de archivos digitales asociados a los expedientes de los pacientes (PDFs, imágenes, videos cortos). Estos archivos también estarán cifrados en reposo.
+• Servicio de Logs de Auditoría (Cloud Logging / Audit Logs): Vital para el monitoreo de la seguridad y el seguimiento de operaciones, registrando cronológicamente todas las actividades y cambios realizados; estos logs son inmutables (Write Once, Read Many - WORM).
+• Conectividad: La comunicación entre la aplicación de escritorio y la infraestructura en la nube se realizará a través de HTTPS (TLS 1.3), cifrando los datos en tránsito. Se recomienda una conexión a internet estable de al menos 250 Mbps para un rendimiento óptimo del ecosistema.
+• Aplicación de Escritorio: El frontend de la aplicación de escritorio se desarrollará con React, Vue.js o similar, y se empaquetará con Electron.js para compatibilidad con Windows/macOS.
+3. Herramientas de Prueba
+La documentación no especifica herramientas de prueba automatizadas (ej., para pruebas unitarias, de integración o funcionales). Sin embargo, las herramientas de desarrollo y configuración mencionadas, que facilitan un desarrollo "controlado y de alta calidad", pueden contribuir indirectamente a la capacidad de prueba:
+• Herramientas de Diseño (UI/UX): Figma y Adobe Suite (XD, Photoshop, Illustrator) se utilizan para definir flujos de usuario, wireframes y prototipos. Aunque no son herramientas de prueba directa, una UI/UX bien definida y prototipada facilita las pruebas de usabilidad y funcionalidad desde etapas tempranas.
+• Herramientas de Modelado de Datos: MySQL o PostgreSQL como sistemas de gestión de bases de datos, y herramientas de modelado ERD como Lucidchart, dbdiagram.io o Google Drawings. Un modelo de datos bien estructurado y documentado es esencial para el diseño de pruebas de integración y base de datos.
+• Herramientas de Desarrollo Backend: Python (Flask/Django) o Node.js (Express) para el backend.
+• Herramientas de Infraestructura como Código (IaC): Terraform o Cloud Deployment Manager se mencionan para automatizar la creación y configuración de recursos en GCP. Esto permite la provisión de entornos de prueba consistentes y replicables.
+• Herramientas de Desarrollo Frontend: React, Vue.js o similar, y Electron.js para la aplicación de escritorio.
+• Herramientas de Colaboración: Google Workspace (Docs/Sheets) para la creación de manuales de usuario colaborativos. La IA (Gemma 3) puede ayudar a generar preguntas frecuentes (FAQs) para el manual de usuario, lo que podría asistir en la creación de casos de prueba o guías de capacitación.
+4. Datos de Prueba
+La disponibilidad de datos de prueba es un criterio de entrada clave para iniciar las pruebas de la Fase 1.
+• Datos de Prueba Representativos: Se deben haber cargado datos de prueba representativos para cada módulo funcional de la Fase 1. Esto incluye, por ejemplo:
+    ◦ Perfiles de pacientes.
+    ◦ Historiales clínicos.
+    ◦ Documentos.
+    ◦ Citas programadas.
+    ◦ Usuarios con diferentes roles.
+• Esquema de la Base de Datos: El esquema de la base de datos para USUARIOS, PACIENTES, HISTORIAL_CLINICO, CITAS, DOCUMENTOS, ROLES, y LOGS_AUDITORIA debe estar completamente definido e implementado.
+• Datos Sensibles: Los datos sensibles, como contraseñas, deben estar cifrados en reposo en la base de datos (mediante hashing) y en Cloud Storage. El campo hash_password en la tabla USUARIOS indica el uso de funciones de hash para almacenar contraseñas de forma segura.
+• Migración de Datos: La "migración inicial de archivos digitales existentes del consultorio al nuevo sistema" se realiza en la Fase 1. Esto sugiere que datos reales o muy realistas serán utilizados, lo cual es crucial para pruebas de volumen y rendimiento.

@@ -1,0 +1,99 @@
+2.4. Flujos de Usuario Clave (Continuación)
+H. Eliminar Suave un Solo Paciente
+Este flujo permite archivar individualmente un registro de paciente, realizando un borrado lógico o "suave" para mantener la integridad de los datos históricos.
+1. Acceso a la Acción: Desde la "Tabla de Datos" del módulo "Base de Datos", el usuario hace clic en el "Menú de Acciones" (icono de tres puntos) ubicado en la fila del paciente que desea archivar.
+2. Selección de Acción: Del menú desplegable que aparece, el usuario selecciona la opción "Archivar". Es importante notar que la opción "Eliminar (Suave)" también está disponible y realiza la misma función de borrado lógico.
+3. Confirmación (Implícito): Aunque no se especifica explícitamente para el archivado individual, por buena práctica de diseño de UI/UX y para prevenir acciones accidentales, se esperaría un modal de confirmación similar al de archivado múltiple, preguntando si desea proceder con el archivado del registro.
+4. Ejecución del Borrado Suave: El sistema marca el registro del paciente internamente como inactivo o archivado (ej., is_deleted = true) en la "Base de Datos Relacional (Cloud SQL)". Esto significa que los datos no se eliminan permanentemente.
+5. Resultado Esperado: La fila correspondiente al paciente desaparecerá de la vista activa de la tabla, o su estado visual en la columna "Estado" cambiará a "Inactive" (una píldora de color rojo/gris), dependiendo de los filtros aplicados.
+I. Filtrar Tabla de Datos
+Este flujo permite al usuario refinar la información visible en la "Tabla de Datos" para encontrar rápidamente registros específicos.
+1. Acceso a la Función: El usuario localiza el "Icono de filtro" en la "Barra de Acciones" del módulo "Base de Datos" y hace clic sobre él.
+2. Opciones de Filtro: Al hacer clic, se despliega un panel o modal que presenta "opciones avanzadas" para filtrar la tabla.
+3. Aplicación de Filtros: El usuario puede aplicar uno o más filtros basándose en diversas categorías, como "por fecha", "por estado" (ej., Activo, Inactivo), o "por tipo de consulta".
+4. Resultado Esperado: La "Tabla de Datos" se actualiza dinámicamente, mostrando solo los registros que cumplen con los criterios de filtro seleccionados, lo que permite una visualización más enfocada y eficiente.
+J. Exportar Datos de la Tabla
+Este flujo proporciona la capacidad de extraer los datos de la "Tabla de Datos" para su uso externo o para fines de análisis.
+1. Acceso a la Función: El usuario localiza el botón "Exportar" en la "Barra de Acciones" del módulo "Base de Datos" y hace clic sobre él.
+2. Selección de Datos: El sistema permite al usuario exportar los "datos seleccionados" (si se han marcado filas específicas con los "Checkbox de Selección") o "todos los datos filtrados" (si se ha aplicado algún filtro).
+3. Selección de Formato: El usuario puede elegir el formato de exportación deseado, como "CSV" o "Excel".
+4. Resultado Esperado: Se inicia la descarga de un archivo que contiene los datos de la tabla en el formato seleccionado, facilitando su manipulación y análisis fuera del sistema.
+K. Interactuar con Asistente Virtual para Tareas Específicas
+Este flujo resalta la capacidad de la IA (Gemma 3) para automatizar tareas y proporcionar asistencia contextualizada, mejorando la eficiencia operativa.
+1. Acceso a la Interacción: El usuario se dirige al módulo "Asistente virtual" en el Área de Contenido Principal del Dashboard. Esto se logra a través de un "icono o sección dedicada al chat".
+2. Ejemplos de Interacciones y Resultados Esperados:
+    ◦ Búsqueda Inteligente: El usuario puede preguntar por archivos o información específica usando lenguaje natural (ej., "Hola, estoy buscando un archivo me urge", "Recuerdas el nombre del paciente?", "Si!! es Laura Vargas"). El asistente responde localizando el recurso ("Lo encontré") y ofreciendo acciones contextuales (ej., "¿te lo envío a tu correo o prefieres descargarlo?").
+    ◦ Redacción de Contenido: El usuario puede solicitar la redacción automatizada de "correos electrónicos", la "generación de hojas membretadas" o la creación de "recordatorios". La IA puede también generar "resúmenes de texto" o facilitar la "redacción de informes" a través del chat interno.
+    ◦ Asistencia para Desarrollo/Capacitación: La IA puede generar "texto de ejemplo" (lorem ipsum más inteligente) para prototipos de UI, sugerir "copys" para botones y etiquetas si se entrena con el tono deseado, o generar "scripts SQL básicos" a partir de descripciones en lenguaje natural. Adicionalmente, puede colaborar en la generación de "preguntas frecuentes (FAQs)" a partir de la documentación técnica para el manual de usuario, e incluso crear un "chatbot de ayuda inicial" para la capacitación del personal.
+3. Limitación: Es crucial señalar que este chat funciona "únicamente con texto" y "no tiene la capacidad de generar archivos de ningún formato".
+L. Tomar y Guardar Notas en el Widget "Notas"
+Este flujo permite al personal registrar información personal y recordatorios rápidos directamente en el Dashboard.
+1. Acceso al Widget: El usuario localiza el widget titulado "Notas" en el Área de Contenido Principal del Dashboard.
+2. Ingreso de Notas: El usuario interactúa con el área de texto del widget para escribir sus notas o recordatorios.
+3. Guardado: Aunque no se especifica un botón explícito de "Guardar" para este widget, se esperaría que las notas se guarden automáticamente o al perder el foco del campo de texto, manteniendo la simplicidad de un "widget simple".
+4. Resultado Esperado: Las notas ingresadas se almacenan y son visibles para el usuario en futuras sesiones. Esta información es, por lo general, "privada para el usuario y no está directamente ligada a un paciente", a menos que se implemente una función específica para adjuntar una nota a un paciente.
+M. Navegar y Filtrar Archivos en el "Visor de Archivos Visuales"
+Este flujo proporciona una forma eficiente de visualizar y organizar los documentos multimedia asociados a los pacientes.
+1. Acceso al Visor: El usuario se dirige al módulo "Visor de archivos visuales" en el Área de Contenido Principal del Dashboard.
+2. Navegación por Carrusel: Se presenta un "Carrusel de Vistas Previas" que muestra miniaturas de los archivos. El usuario puede navegar a través de la galería utilizando las "flechas a izquierda y derecha".
+3. Filtros de Contenido: El usuario puede aplicar filtros para organizar los archivos según su origen o tipo:
+    ◦ Cloud Drives: Muestra solo archivos provenientes de almacenamientos en la nube conectados (ej., Google Drive, OneDrive).
+    ◦ Photos: Muestra únicamente imágenes (ej., JPG, PNG, DICOM).
+    ◦ Videos: Muestra únicamente archivos de video (ej., grabaciones de cirugías, endoscopias).
+4. Actualización Contextual: El contenido del visor se actualiza contextualmente según el paciente seleccionado en la tabla principal "Base de Datos" o la búsqueda realizada, asegurando que se muestren los archivos relevantes para el caso en cuestión.
+5. Resultado Esperado: El usuario puede visualizar de forma organizada y eficiente todas las imágenes y videos relacionados con los expedientes de los pacientes.
+N. Log In de Usuario
+Este flujo es el punto de entrada fundamental al "Ecosistema Digital Inteligente para Cirugía Especial", específicamente al "Núcleo Administrativo Central" o Dashboard de Escritorio. Su propósito principal es autenticar al usuario y aplicar el control de acceso basado en roles.
+1. Acceso a la Aplicación: El usuario inicia la aplicación de escritorio del "Núcleo Administrativo Central".
+2. Pantalla de Login: Se presenta la "Pantalla: Login de Usuario", mostrando campos para "Nombre de Usuario" y "Contraseña".
+3. Ingreso de Credenciales: El usuario ingresa su "Nombre de Usuario" y "Contraseña" en los campos designados.
+4. Intento de Inicio de Sesión: El usuario hace clic en el botón "Iniciar Sesión".
+5. Comunicación con el Backend: Las credenciales se envían de forma segura al Servidor de Aplicación (Backend) alojado en Google Cloud Platform (GCP). Esta comunicación utiliza HTTPS (TLS 1.3) para cifrar los datos en tránsito, protegiendo las credenciales de usuario de ser interceptadas.
+6. Autenticación y Autorización en Backend:
+    ◦ El backend (construido con Python/Flask/Django o Node.js/Express) recibe las credenciales.
+    ◦ Verifica las credenciales contra la "Base de Datos Relacional (Cloud SQL - MySQL/PostgreSQL)". Los datos sensibles como contraseñas se almacenan cifrados en reposo en la base de datos (con un campo hash_password que sugiere el uso de funciones de hash).
+    ◦ Una vez autenticado, el backend consulta el "Sistema de Roles" (ROLES en el modelo de datos) para determinar los permisos del usuario (ej., "Admin Principal", "Admin Secundario", "Asistente", "Invitado (Solo Lectura)").
+7. Registro de Auditoría: El "Servicio de Logs de Auditoría (Cloud Logging / Audit Logs)" registra cronológicamente el intento de login (exitoso o fallido), la actividad del usuario y los cambios realizados en el sistema. Estos logs son inmutables (Write Once, Read Many - WORM), asegurando su integridad.
+8. Redirección al Dashboard o Manejo de Errores:
+    ◦ Login Exitoso: El usuario es redireccionado sin problemas a la "Pantalla: Dashboard Principal (Vista General)". La cabecera del dashboard mostrará el usuario logueado y su rol, y la barra de navegación lateral presentará las secciones a las que tiene acceso según sus permisos.
+    ◦ Credenciales Incorrectas: La aplicación permanece en la pantalla de Login y mostrará un mensaje de error claro y conciso, por ejemplo: "Usuario o contraseña incorrectos".
+    ◦ Campos Vacíos/Formato Inválido: Se esperaría una validación similar a otros formularios con mensajes de "Campo 'Nombre de Usuario' requerido" o "Campo 'Contraseña' requerido".
+    ◦ Problemas de Conectividad: Un mensaje de error general sobre problemas de conexión o indisponibilidad del servicio. Se recomienda una conexión a internet estable de al menos 250 Mbps para un rendimiento óptimo.
+O. Log Out de Usuario
+Este flujo permite al usuario finalizar su sesión de forma segura en el Dashboard de Escritorio.
+1. Acceso a la Acción: El usuario se dirige a la "Cabecera" (Header Superior) del Dashboard Principal.
+2. Selección de "Cerrar Sesión": En la cabecera, el usuario localiza y hace clic en la opción "Cerrar Sesión".
+3. Proceso de Cierre de Sesión: El sistema procede a finalizar la sesión del usuario. (Implícitamente, esto implicaría la invalidación de cualquier token de sesión en el backend y la limpieza de datos de sesión en el frontend).
+4. Resultado Esperado: El usuario es automáticamente redirigido a la "Pantalla: Login de Usuario".
+P. Acceder a Mi Perfil
+Este flujo permite al usuario acceder a su información de perfil dentro del sistema.
+1. Acceso a la Función: Desde la "Cabecera" del Dashboard Principal, el usuario hace clic en el "Perfil de Usuario (Avatar)".
+2. Selección de Opción: Al hacer clic en el avatar, se despliega un menú contextual con varias opciones. El usuario selecciona la opción "Mi Perfil".
+3. Resultado Esperado: El sistema redirige al usuario a una pantalla o modal donde puede visualizar su información de perfil.
+Q. Acceder a Configuración
+Este flujo permite al usuario acceder a las configuraciones del sistema o personales disponibles.
+1. Acceso a la Función: Desde la "Cabecera" del Dashboard Principal, el usuario hace clic en el "Perfil de Usuario (Avatar)".
+2. Selección de Opción: Del menú desplegable que aparece, el usuario selecciona la opción "Configuración".
+3. Resultado Esperado: El sistema redirige al usuario a una pantalla o modal donde puede acceder y modificar las configuraciones pertinentes.
+
+--------------------------------------------------------------------------------
+3.0. Requisitos No Funcionales
+Los requisitos no funcionales definen las cualidades y características del sistema que no están directamente relacionadas con la funcionalidad específica, sino con el rendimiento, la usabilidad, la seguridad, la fiabilidad y la escalabilidad. Son cruciales para garantizar que el sistema cumpla con las expectativas de calidad y eficiencia operativa del consultorio del Dr. Sánchez García.
+3.1. Rendimiento
+El sistema debe operar de manera fluida y eficiente, incluso bajo cargas de datos significativas.
+• Requisito: El Dashboard y los servicios de backend deben mantener tiempos de respuesta óptimos (inferiores a 2 segundos para la mayoría de las operaciones críticas y menos de 5 segundos para operaciones complejas como búsquedas o exportaciones de grandes volúmenes de datos) con un volumen de datos de hasta 2 Terabytes (TB). Gran parte de este volumen estará compuesta por archivos visuales y documentos (imágenes, videos, PDF) almacenados en Cloud Storage, mientras que los metadatos y la información estructurada se gestionarán en la Base de Datos Relacional (Cloud SQL). Se recomienda una conexión a internet estable de al menos 250 Mbps para un rendimiento óptimo del ecosistema, dada su dependencia de la infraestructura en la nube.
+3.2. Usabilidad
+El sistema debe ser intuitivo y fácil de usar, minimizando la curva de aprendizaje para el personal.
+• Requisito: El Dashboard debe ofrecer una experiencia de usuario "excepcionalmente intuitiva", reflejando la calidad y el prestigio de la práctica médica. Esto implica una coherencia visual integral a través del estilo "Glassmorphism Oscuro", diseñado para ofrecer "comodidad visual y una jerarquía de información clara". La interfaz debe proporcionar retroalimentación clara a las interacciones del usuario (ej., aumento de brillo o ligero hundimiento al pulsar un botón), y el diseño debe asegurar una "legibilidad óptima" con texto e iconos nítidos y brillantes. El diseño busca mitigar la "resistencia o dificultad con la tecnología" por parte del personal.
+3.3. Seguridad
+La protección de la información sensible del paciente y el acceso controlado son requisitos primordiales.
+• Requisito: El sistema debe garantizar la confidencialidad, integridad y disponibilidad de todos los datos sensibles del paciente, abordando directamente las "preocupaciones de seguridad de datos". Esto se logra mediante:
+    ◦ Control de Acceso Basado en Roles (RBAC): Cada usuario, al iniciar sesión, es asociado a un rol específico ("Admin Principal", "Admin Secundario", "Asistente", "Invitado") que define sus permisos sobre la información y las funcionalidades del Dashboard.
+    ◦ Cifrado de Datos: Toda la comunicación entre la aplicación de escritorio y la infraestructura en la nube debe cifrarse mediante HTTPS (TLS 1.3) para proteger los datos en tránsito. Además, todos los datos sensibles del paciente y las contraseñas (como hash) deben almacenarse cifrados en reposo tanto en la "Base de Datos Relacional (Cloud SQL)" como en el "Almacenamiento de Archivos (Cloud Storage)".
+    ◦ Auditoría Integral: Cada acción relevante y cada intento de inicio de sesión (exitoso o fallido) debe registrarse cronológicamente en un "Servicio de Logs de Auditoría (Cloud Logging / Audit Logs)". Estos logs deben ser inmutables (Write Once, Read Many - WORM) para asegurar su integridad y facilitar la detección de anomalías.
+3.4. Fiabilidad
+El sistema debe ser robusto y capaz de funcionar de manera consistente y sin interrupciones.
+• Requisito: El Dashboard y su infraestructura subyacente en la nube deben operar de forma estable y continua, minimizando el tiempo de inactividad. La arquitectura de nube está diseñada para alta disponibilidad. El plan de mantenimiento y soporte mensual, que incluye "mantenimiento proactivo" y "soporte técnico 24/7", garantiza el "óptimo funcionamiento" y la "evolución continua" de la aplicación, reforzando la fiabilidad del ecosistema.
+3.5. Escalabilidad
+El sistema debe ser capaz de crecer y adaptarse a futuras demandas de volumen de datos y usuarios sin comprometer el rendimiento.
+• Requisito: El sistema debe poder manejar un crecimiento futuro en el volumen de pacientes, el número de usuarios y la cantidad de datos almacenados (incluyendo archivos multimedia) sin degradación del rendimiento. La elección de Google Cloud Platform (GCP) como proveedor de nube principal proporciona una "escalabilidad inherente" que permite al sistema expandirse para manejar una mayor demanda. El diseño del backend, potencialmente utilizando arquitecturas de microservicios, y la capacidad de adquirir "almacenamiento adicional" más allá del terabyte inicial, aseguran que la plataforma pueda adaptarse a las necesidades futuras del consultorio.

@@ -1,0 +1,42 @@
+3. Estrategia de Indexación
+La indexación es un componente crítico para optimizar el rendimiento de la base de datos, especialmente en operaciones de búsqueda, filtrado y ordenamiento de datos. Los índices permiten a la base de datos localizar rápidamente las filas de una tabla sin tener que escanear todas las filas, lo que reduce significativamente los tiempos de respuesta de las consultas y mejora la eficiencia operativa general del sistema.
+Basado en los requisitos funcionales del "Ecosistema Digital Inteligente para Cirugía Especial", las siguientes columnas son candidatas clave para la creación de índices, dada su frecuente participación en operaciones de consulta:
+• Tabla USUARIOS:
+    ◦ nombre: Fundamental para la autenticación de usuarios y búsquedas de personal, ya que el usuario ingresa su "Nombre de Usuario" para iniciar sesión.
+    ◦ id_role: Como clave foránea, esta columna será utilizada frecuentemente en uniones (JOINs) con la tabla ROLES para determinar los permisos de acceso del usuario, lo cual es vital para el control de acceso basado en roles.
+    ◦ activo: Para filtrar rápidamente los usuarios activos e inactivos del sistema.
+• Tabla ROLES:
+    ◦ nombre_rol: Si se realizan búsquedas o se necesita filtrar roles por su nombre descriptivo (ej., "Admin Principal", "Asistente").
+• Tabla LOGS_AUDITORIA:
+    ◦ fecha_hora: Esencial para el monitoreo de seguridad y el seguimiento cronológico de eventos, permitiendo consultas rápidas basadas en rangos de tiempo.
+    ◦ tabla_afectada y id_registro_afectado: Combinadas, estas columnas son cruciales para auditar cambios específicos en registros de tablas determinadas. Un índice compuesto o índices individuales en estas columnas facilitarían la recuperación de logs relacionados con una entidad específica.
+    ◦ tipo_operacion: Para filtrar registros de auditoría por tipo de evento (ej., 'login_exitoso', 'crear', 'actualizar', 'eliminar').
+    ◦ id_usuario_autor: Como clave foránea, se usará para identificar rápidamente todas las acciones realizadas por un usuario específico.
+• Candidatos de Indexación en Tablas de Datos del Paciente (Inferido de Requisitos Funcionales): Aunque la especificación detallada de estas tablas no fue solicitada en esta sección, los requisitos funcionales del Dashboard implican la necesidad de indexación en ellas:
+    ◦ Tablas de Pacientes: Las columnas utilizadas para la "Búsqueda Avanzada" de pacientes por "nombre, ID, palabra clave en notas" son candidatas principales para índices, incluyendo nombre, apellido, y posiblemente campos relevantes en HISTORIAL_CLINICO.
+    ◦ Tablas de Citas: fecha_hora es crucial para la visualización de "Citas del Día" y la gestión de la agenda.
+    ◦ Tablas de Documentos: id_registro_afectado (o el FK al paciente/historial) y nombre_archivo para la "Gestión Documental Avanzada".
+La implementación de estos índices se realizará para optimizar las consultas más frecuentes y críticas del sistema, garantizando la velocidad y la reactividad necesarias para una experiencia de usuario fluida.
+4. Plan de Migración de Datos Existentes
+La migración de datos existentes es una etapa crucial en la implementación del "Ecosistema Digital Inteligente para Cirugía Especial", particularmente la carga de los archivos digitales iniciales que el consultorio del Dr. Sánchez García ya posee.
+El proceso general de migración de datos se realizará a un alto nivel de la siguiente manera:
+1. Identificación y Recopilación de Archivos Digitales: Se identificarán y recopilarán todos los archivos digitales relevantes existentes en el consultorio (PDFs, imágenes como RX, videos cortos, etc.) que deben ser integrados en el nuevo sistema.
+2. Extracción de Metadatos: Para cada archivo, se extraerá la información relevante (metadatos) que permitirá vincularlo correctamente en la base de datos relacional. Esto incluirá, pero no se limitará a, el nombre del archivo, tipo de archivo, fecha de subida (o creación original si es posible determinarla), y lo más importante, el identificador del paciente o del registro del historial clínico al que pertenece.
+3. Carga de Archivos a Cloud Storage: Los archivos digitales en sí se subirán de forma segura a Google Cloud Storage (equivalente a S3/Blob). Este servicio asegura el almacenamiento centralizado y seguro, con los datos cifrados en reposo.
+4. Ingesta de Metadatos en Cloud SQL: Los metadatos extraídos de los archivos, junto con cualquier otra información estructurada existente (ej., datos demográficos de pacientes que ya tienen historial digital), se insertarán en la Base de Datos Relacional (Cloud SQL - MySQL/PostgreSQL). En la tabla DOCUMENTOS, se almacenará la url_almacenamiento que apunta a la ubicación del archivo en Cloud Storage, asegurando el vínculo entre el registro de la base de datos y el archivo físico.
+5. Verificación y Validación: Una vez completada la migración, se realizarán procesos de verificación y validación para asegurar la integridad de los datos, la correcta asociación de archivos con los pacientes/historiales, y que todos los archivos sean accesibles desde el sistema.
+La migración se enfocará en asegurar la integridad y seguridad de la información desde el primer día.
+5. Especificaciones de Seguridad de la Base de Datos
+La seguridad de la base de datos es un pilar fundamental del "Ecosistema Digital Inteligente para Cirugía Especial", dada la sensibilidad de la información de los pacientes. Las siguientes especificaciones de seguridad son primordiales para la protección de los datos:
+1. Configuración de Usuarios y Permisos de Acceso (Control de Acceso Basado en Roles - RBAC):
+    ◦ La base de datos, específicamente la tabla USUARIOS, integra un id_role que se vincula a la tabla ROLES, la cual define los permisos de cada tipo de usuario mediante una estructura JSON. Esto implementa un estricto "Control de Acceso Basado en Roles".
+    ◦ Los roles definidos incluyen "Admin Principal" (control total, gestión de usuarios y logs), "Admin Secundario" (todo excepto gestión de usuarios y logs), "Asistente" (gestión de Pacientes, Citas, Documentos, Ver Reportes) e "Invitado (Solo Lectura)" (ver Pacientes, Citas, Reportes).
+    ◦ A nivel de la base de datos (Cloud SQL), se configurarán usuarios con el "principio de privilegio mínimo", de modo que el backend (Servidor de Aplicación) solo tenga los permisos necesarios para realizar las operaciones de lectura, escritura y modificación de datos que requiera la lógica de negocio, sin otorgar acceso directo innecesario a los usuarios finales.
+2. Cifrado en Reposo para Datos Sensibles:
+    ◦ Todos los datos sensibles almacenados en la "Base de Datos Relacional (Cloud SQL)" y en el "Almacenamiento de Archivos (Cloud Storage)" estarán cifrados en reposo.
+    ◦ Para las contraseñas, se utilizarán funciones de hash seguras (indicado por el campo hash_password en la tabla USUARIOS) en lugar de almacenar las contraseñas en texto plano. Esto protege contra la exposición de credenciales en caso de una brecha de datos.
+3. Plan de Copias de Seguridad y Restauración:
+    ◦ Aunque los detalles específicos no se proporcionan, un componente esencial de la seguridad y la continuidad operativa de una base de datos en la nube como Cloud SQL es la implementación de un robusto plan de copias de seguridad (backups) automáticas y la capacidad de restauración (recovery).
+    ◦ Esto asegurará la disponibilidad de los datos en caso de fallos, corrupción de datos o desastres, permitiendo la recuperación rápida a un estado anterior y minimizando el tiempo de inactividad del sistema.
+    ◦ Las copias de seguridad incluirán tanto la base de datos estructurada como los archivos almacenados en Cloud Storage.
+Nota: La información proporcionada en las fuentes no especifica detalles técnicos granulares sobre las configuraciones exactas de indexación (ej., tipos de índices como B-tree, hash), el proceso de migración a nivel de script o herramientas, ni las configuraciones específicas de usuarios y roles dentro de Cloud SQL o la frecuencia y retención del plan de copias de seguridad. Estos detalles se definirán durante la fase de implementación y configuración de la base de datos para alinearse con las mejores prácticas de GCP y los requisitos de rendimiento específicos.

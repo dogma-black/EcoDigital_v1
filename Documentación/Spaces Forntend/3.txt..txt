@@ -1,0 +1,64 @@
+5. Implementación del Sistema de Diseño (Glassmorphism Oscuro)
+El estilo visual "Glassmorphism Oscuro" es fundamental para la experiencia de usuario del ecosistema, especialmente en el Dashboard de Escritorio, y no es solo estético sino funcional, diseñado para ofrecer comodidad visual y una jerarquía de información clara.
+• Estrategia de implementación de estilos: La estrategia de implementación de estilos se centra en el uso de Propiedades Personalizadas de CSS (CSS Variables), declaradas bajo el selector :root. Esta aproximación centraliza los valores de diseño, facilitando la mantenibilidad, los cambios globales y futuras tematizaciones del ecosistema. Aunque no se especifica explícitamente el uso de CSS Modules, SCSS o Styled Components, la adopción de variables CSS sugiere un enfoque modular y escalable para la gestión de estilos.
+• Definición y uso de Variables CSS (Tokens de Diseño): Los "tokens de diseño" se codificarán como variables CSS para mantener la coherencia y facilitar su aplicación a través de todos los componentes.
+    ◦ Paleta de Colores:
+        ▪ --color-background-main: #121212 (Fondo principal, gris carbón suave).
+        ▪ --color-surface-glass-base: 29, 35, 50 (Valores RGB para la base del vidrio, azul/gris oscuro desaturado, utilizado con opacidad).
+        ▪ --color-border-glass-base: 255, 255, 255 (Valores RGB para el blanco, utilizado para bordes sutiles).
+        ▪ --color-text-primary: #F5F5F5 (Texto principal, blanco roto para alta legibilidad).
+        ▪ --color-text-secondary: #A8A8A8 (Texto secundario/ayuda, gris claro).
+        ▪ --color-accent-blue: #4A69FF (Color de acento primario, azul oceánico profundo).
+        ▪ --color-accent-purple: #8C52FF (Color de acento secundario, violeta vibrante).
+        ▪ --color-accent-interactive: #34D1F3 (Color para elementos interactivos, azul brillante).
+        ▪ --color-button-primary-fill: #4A69FF (Color de relleno para botones primarios).
+    ◦ Escala Tipográfica (Fuente: Inter, sans-serif geométrica optimizada para UI):
+        ▪ --font-size-h1: 1.5rem (24px), 700 (Bold).
+        ▪ --font-size-h2: 1.125rem (18px), 600 (Semibold).
+        ▪ --font-size-body: 0.875rem (14px), 700 (Bold) o 400 (Regular).
+        ▪ --font-size-label: 0.75rem (12px), 500 (Medium).
+        ▪ Los colores de texto principales y secundarios se definirán con --color-text-primary y --color-text-secondary respectivamente.
+    ◦ Espaciado y border-radius:
+        ▪ --border-radius-card: 16px (Para paneles flotantes, esquinas suaves).
+        ▪ --border-radius-button: 8px (Para botones).
+        ▪ Aunque no se definen variables específicas para un sistema de espaciado general como --space-unit, el relleno (padding: 24px) se utiliza de manera consistente en los paneles de vidrio.
+• Implementación técnica detallada del efecto Glassmorphism en los componentes de panel/tarjeta: Los paneles y tarjetas del Dashboard, como el contenedor de login o las áreas de información clave, implementarán el efecto Glassmorphism utilizando las siguientes propiedades CSS:
+    ◦ background-color: rgba(var(--color-surface-glass-base), 0.6): Establece un fondo semi-transparente con un 60% de opacidad sobre el color base de la superficie de vidrio.
+    ◦ backdrop-filter: blur(24px): Aplica un desenfoque significativo al contenido que se encuentra detrás del panel, creando el efecto "esmerilado".
+    ◦ -webkit-backdrop-filter: blur(24px): Incluye el prefijo de navegador para asegurar la compatibilidad con Safari.
+    ◦ border-radius: var(--border-radius-card): Redondea suavemente las esquinas de los paneles.
+    ◦ border: 1px solid rgba(var(--color-border-glass-base), 0.18): Delinea los paneles con un borde delicado de 1 píxel, de color blanco semi-transparente (18% de opacidad), que "atrapa" la luz del fondo y define la forma del panel.
+    ◦ padding: 24px: Asegura un espaciado interno consistente dentro de los paneles.
+• Implementación técnica del fondo Aurora UI: La Interfaz Aurora no es un adorno, sino un componente funcional indispensable que proporciona la "materia prima" visual para que el filtro backdrop-filter del Glassmorphism actúe. Los dos estilos son codependientes: la Aurora UI proporciona la "luz" y el Glassmorphism la "lente".
+    ◦ Se creará un fondo dinámico utilizando auras difusas de azul oceánico profundo (#4A69FF) y violeta vibrante (#8C52FF).
+    ◦ Técnicamente, esto se logra con elementos div posicionados absolutamente con un fuerte filter: blur() o con múltiples radial-gradients. Este fondo debe tener suficiente variación tonal y de color para que el efecto de vidrio sea visible y efectivo.
+• Aplicación de estilos a los componentes reutilizables: El sistema de diseño garantiza una apariencia Glassmorphism coherente en todos los componentes interactivos:
+    ◦ Botones (Iniciar Sesión):
+        ▪ background-color: var(--color-button-primary-fill): Para un relleno sólido de alto contraste.
+        ▪ border-radius: var(--border-radius-button): Esquinas suaves.
+        ▪ padding: 12px 24px: Espaciado interno.
+        ▪ color: var(--color-text-primary): Para la etiqueta de texto.
+        ▪ box-shadow: 0 4px 12px rgba(var(--color-accent-blue), 0.3): Un suave efecto de brillo.
+        ▪ La interacción al pulsarlo provocará un sutil aumento de brillo o un ligero hundimiento, ofreciendo una retroalimentación clara.
+    ◦ Campos de Entrada (Nombre de Usuario, Contraseña):
+        ▪ Diseñados con una apariencia limpia y minimalista, posiblemente con un fondo sutilmente contrastante o translúcido que mantenga la estética de vidrio.
+        ▪ El texto de las etiquetas y el que el usuario introduce utilizará --color-text-primary (#F5F5F5) para una legibilidad óptima sobre el fondo oscuro.
+    ◦ Casillas de Verificación (Checkboxes):
+        ▪ Marcado: background-color: var(--color-accent-interactive), border: none.
+        ▪ Sin marcar: background-color: transparent, border: 1px solid var(--color-text-secondary).
+    ◦ Tablas (ej., PACIENTES RECIENTES): Aunque no se especifican propiedades Glassmorphism para las tablas en sí, los elementos de texto y los iconos dentro de ellas seguirán la paleta de colores y la tipografía definidas por las variables CSS, utilizando --color-text-primary y --color-text-secondary para mantener la coherencia y legibilidad.
+• Uso de Iconografía:
+    ◦ Estilo: Los iconos serán de estilo de línea (line-style), con un grosor de trazo consistente (aproximadamente 1.5px) y terminaciones/esquinas suavemente redondeadas.
+    ◦ Color: Utilizarán un solo color, var(--color-text-primary), para una excelente integración con el modo oscuro.
+    ◦ Recomendación: Se recomienda el uso de bibliotecas como Iconify o Feather Icons para asegurar consistencia y escalabilidad.
+• Consideraciones específicas para el modo oscuro avanzado: El diseño del "Glassmorphism Oscuro" incorpora principios avanzados para asegurar la legibilidad y el confort visual en un tema oscuro:
+    ◦ Evitar el negro puro: El fondo principal es un gris carbón muy oscuro (#121212), no negro puro. Esto reduce la fatiga visual y permite la percepción de profundidad y sombras sutiles.
+    ◦ Colores de acento desaturados: Los tonos de azul (#4A69FF) y violeta (#8C52FF) utilizados para las "Auras" y acentos están desaturados. Esto previene la "vibración" óptica y mantiene un confort visual general, especialmente en exposiciones prolongadas.
+    ◦ Texto de alto contraste pero suavizado: El texto principal utiliza un blanco roto o gris muy claro (#F5F5F5), lo que suaviza el contraste general sin comprometer la legibilidad. Esto ayuda a reducir el deslumbramiento y cumple con una relación de contraste superior a 4.5:1 (WCAG), un estándar clave de accesibilidad.
+    ◦ Comunicación de profundidad sin sombras: En entornos oscuros, las sombras son ineficaces. El diseño utiliza un sistema multifacético para comunicar la elevación:
+        ▪ La luz como indicador de elevación: Las superficies que "se acercan" al usuario se vuelven más claras.
+        ▪ La superposición como señal de profundidad: El propio efecto de desenfoque del Glassmorfismo crea una separación perceptual entre el primer plano nítido y el fondo desenfocado.
+        ▪ La definición del borde como sustituto de la sombra: El sutil borde luminoso define claramente el contorno del panel, separándolo del fondo donde una sombra no sería visible.
+    ◦ Accesibilidad: Se aborda la accesibilidad mediante un enfoque dual de contraste:
+        ▪ Contraste de Contenido (Alto): Asegura alta legibilidad entre el texto/iconos y su fondo inmediato (el panel de vidrio oscuro y semi-transparente).
+        ▪ Contraste Estructural (Bajo): Mantiene el contraste entre el panel de vidrio y el fondo principal deliberadamente bajo para preservar el efecto flotante y esmerilado.

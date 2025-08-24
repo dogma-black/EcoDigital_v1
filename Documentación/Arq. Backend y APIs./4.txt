@@ -1,0 +1,101 @@
+Documento: Arq. Backend y APIs
+Especificación de Solicitudes y Respuestas
+Para asegurar la interoperabilidad y una comunicación fluida y predecible entre el Dashboard de Escritorio (frontend) y el Servidor de Aplicación (backend), es fundamental definir contratos claros para las APIs. Estos contratos especifican la estructura JSON esperada tanto en las solicitudes (Request Body) enviadas al backend como en las respuestas (Response Body) recibidas. Todas las comunicaciones de datos sensibles se realizarán de forma segura a través de HTTPS (TLS 1.3).
+1. Estructura JSON para Solicitudes (Request Body)
+Las solicitudes al backend generalmente contendrán objetos JSON con los datos necesarios para realizar una operación específica (creación, actualización, etc.). Los ejemplos a continuación ilustran estructuras genéricas:
+• Para Autenticación (Ej: POST /api/v1/auth/login)
+    ◦ Método: POST
+    ◦ Descripción: Envía las credenciales del usuario para iniciar sesión.
+    ◦ Estructura JSON:
+    ◦ Consideraciones: Las contraseñas se envían como texto plano en el cuerpo de la solicitud, pero la seguridad está garantizada por el cifrado TLS 1.3 en tránsito.
+• Para Creación de Recursos (Ej: POST /api/v1/patients)
+    ◦ Método: POST
+    ◦ Descripción: Crea un nuevo perfil de paciente en el sistema.
+    ◦ Estructura JSON:
+    ◦ Nota: datos_contacto se almacenaría como JSON en la base de datos.
+• Para Actualización de Recursos (Ej: PUT /api/v1/patients/{id})
+    ◦ Método: PUT
+    ◦ Descripción: Actualiza los datos de un paciente existente.
+    ◦ Estructura JSON:
+    ◦ Consideraciones: Solo los campos que necesitan ser modificados deben ser incluidos en la solicitud.
+• Para Agendamiento de Citas (Ej: POST /api/v1/appointments)
+    ◦ Método: POST
+    ◦ Descripción: Permite programar una nueva cita.
+    ◦ Estructura JSON:
+• Para Interacción con IA (Ej: POST /api/v1/ai/generate-email)
+    ◦ Método: POST
+    ◦ Descripción: Envía datos para que el modelo de IA (Gemma 3 o similar a Gemini) genere un borrador de correo electrónico.
+    ◦ Estructura JSON:
+    ◦ Nota: Otros endpoints de IA como /ai/summarize o /ai/chat esperarían campos como text_to_summarize o message respectivamente.
+2. Estructura JSON para Respuestas (Response Body)
+Las respuestas del backend indicarán el resultado de la operación solicitada. Las respuestas de éxito suelen contener los datos del recurso solicitado o modificado.
+• Para Recuperación de un Recurso Único (Ej: GET /api/v1/patients/{id})
+    ◦ Método: GET
+    ◦ Descripción: Devuelve los detalles completos de un paciente específico.
+    ◦ Estructura JSON (HTTP 200 OK):
+• Para Listado de Recursos con Paginación (Ej: GET /api/v1/patients)
+    ◦ Método: GET
+    ◦ Descripción: Devuelve una lista de pacientes, con soporte para paginación.
+    ◦ Estructura JSON (HTTP 200 OK):
+• Para Creación Exitosa (Ej: POST /api/v1/patients)
+    ◦ Método: POST
+    ◦ Descripción: Confirma la creación exitosa del recurso, incluyendo su identificador único.
+    ◦ Estructura JSON (HTTP 201 Created):
+• Para Login Exitoso (Ej: POST /api/v1/auth/login)
+    ◦ Método: POST
+    ◦ Descripción: Devuelve un token de autenticación para futuras solicitudes, junto con información básica del usuario y su rol.
+    ◦ Estructura JSON (HTTP 200 OK):
+• Para Respuesta de IA (Ej: POST /api/v1/ai/generate-email)
+    ◦ Método: POST
+    ◦ Descripción: Devuelve el texto generado por el modelo de IA.
+    ◦ Estructura JSON (HTTP 200 OK):
+3. Manejo de Archivos Grandes (Cloud Storage y URLs)
+Es importante destacar que los archivos grandes, como PDFs de historiales, imágenes (ej. RX) y videos cortos, no se enviarán directamente en el cuerpo de las solicitudes o respuestas JSON. En su lugar, se utilizará Google Cloud Storage (equivalente a S3/Blob) para el almacenamiento seguro de estos archivos. Los datos sensibles almacenados en Cloud Storage estarán cifrados en reposo.
+• Para Subida de Archivos: La aplicación de escritorio primero enviará el archivo directamente a Cloud Storage. Una vez que el archivo esté en la nube, el backend recibirá una URL (o un identificador) del archivo, que luego se almacenará en la base de datos relacional (Cloud SQL) junto con los metadatos relevantes del paciente o del historial clínico.
+• Para Acceso a Archivos: Cuando se necesite visualizar un archivo, el backend proporcionará una URL firmada o un enlace seguro de Cloud Storage en la respuesta JSON. El frontend utilizará esta URL para acceder y mostrar el archivo directamente desde Cloud Storage, evitando cargar el backend con transferencias de grandes volúmenes de datos.
+
+Manejo de Errores
+Un manejo de errores estandarizado es vital para la robustez y la facilidad de depuración de la API, proporcionando retroalimentación clara tanto al frontend como a los desarrolladores.
+1. Códigos de Estado HTTP Estándar
+El backend utilizará códigos de estado HTTP estándar para indicar el resultado de cada solicitud:
+• 200 OK: La solicitud fue exitosa. Se utiliza para operaciones GET que devuelven datos, y para PUT/DELETE que resultaron en una modificación/eliminación exitosa.
+• 201 Created: La solicitud POST fue exitosa y resultó en la creación de un nuevo recurso. La respuesta incluirá el recurso recién creado o su identificador.
+• 400 Bad Request: La solicitud del cliente es incorrecta, malformada o contiene datos inválidos. Esto incluye errores de validación de entrada.
+• 401 Unauthorized: La solicitud no ha sido aplicada porque le falta credenciales de autenticación válidas para el recurso solicitado. Esto ocurre si el token de autenticación está ausente, es inválido o ha expirado. También se usa cuando las credenciales de login son incorrectas.
+• 403 Forbidden: La solicitud es válida, pero el usuario autenticado no tiene los permisos necesarios para acceder al recurso o realizar la acción solicitada. El control de acceso basado en roles es fundamental aquí.
+• 404 Not Found: El recurso solicitado no existe en el servidor. Esto se aplica si se busca un ID de paciente que no existe.
+• 500 Internal Server Error: Un error genérico del servidor que impide completar la solicitud. Esto indica un problema inesperado en el backend, no relacionado directamente con la solicitud del cliente.
+2. Estructura JSON Estándar para Mensajes de Error
+Todos los errores, especialmente los de tipo 4xx y 5xx, se devolverán con una estructura JSON estandarizada para facilitar su procesamiento por parte del frontend:
+{
+  "error": "Mensaje conciso del error",
+  "code": 400, // Código de estado HTTP
+  "details": "Mensaje detallado para el desarrollador o información de validación"
+}
+• error: Una descripción breve y legible por el usuario del problema.
+• code: El código de estado HTTP relevante.
+• details: Información adicional que puede ser útil para la depuración o para mostrar validaciones específicas al usuario (ej. lista de campos inválidos).
+3. Ejemplos de Uso de Errores
+• Escenario: Solicitud con Campos Obligatorios Vacíos (400 Bad Request)
+    ◦ Descripción: El usuario intenta crear un paciente sin proporcionar el nombre.
+    ◦ Respuesta JSON:
+    ◦ Citas:. Mensajes como "Campo 'Nombre' requerido" o "Formato de email inválido".
+• Escenario: Credenciales de Login Incorrectas (401 Unauthorized)
+    ◦ Descripción: Un usuario intenta iniciar sesión con un nombre de usuario o contraseña incorrectos.
+    ◦ Respuesta JSON:
+    ◦ Citas:.
+• Escenario: Acceso Denegado por Permisos (403 Forbidden)
+    ◦ Descripción: Un usuario con rol de "Asistente" intenta acceder a la funcionalidad de "Gestionar Usuarios".
+    ◦ Respuesta JSON:
+    ◦ Citas: El sistema impone un control estricto de acceso basado en roles.
+• Escenario: Recurso No Encontrado (404 Not Found)
+    ◦ Descripción: El frontend solicita los detalles de un paciente con un id que no existe en la base de datos.
+    ◦ Respuesta JSON:
+    ◦ Citas:. Mensajes como "No se encontraron pacientes".
+• Escenario: Error Inesperado del Servidor (500 Internal Server Error)
+    ◦ Descripción: Un fallo inesperado ocurre en la lógica del backend (ej. un problema con la base de datos, un error en el código no manejado).
+    ◦ Respuesta JSON:
+    ◦ Citas:. Mensaje sobre "problemas de conexión o indisponibilidad del servicio".
+4. Registro de Errores (Logs de Auditoría)
+Es crucial que todos los errores, especialmente los errores 4xx y 5xx, sean registrados en el "Servicio de Logs de Auditoría (Cloud Logging / Audit Logs)". Estos logs son inmutables (Write Once, Read Many - WORM), lo que garantiza su integridad y son vitales para la detección de anomalías, la respuesta a incidentes y el cumplimiento normativo. Esto permite un monitoreo proactivo de la seguridad y el rendimiento del sistema.
+

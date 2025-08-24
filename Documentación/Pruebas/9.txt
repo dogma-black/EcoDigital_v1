@@ -1,0 +1,27 @@
+Plan de Ejecución de Pruebas
+1. Pruebas Unitarias y de Integración (Durante el Desarrollo)
+• Cuándo: Estas pruebas se ejecutarán de forma continua por el equipo de desarrollo de "Su Nombre/Nombre de su Empresa" durante la construcción de cada componente del sistema, tanto en el backend como en el frontend. Esto es fundamental en la Fase 1: El Núcleo Administrativo (Dashboard de Escritorio), que es la columna vertebral del ecosistema.
+• Cómo:
+    ◦ Pruebas Unitarias: Los desarrolladores verificarán individualmente el correcto funcionamiento de cada unidad de código (funciones, métodos, clases). Esto aplica a la lógica de negocio del Servidor de Aplicación (Backend), construido con Python/Flask/Django o Node.js/Express, y a los componentes de la interfaz de usuario del Dashboard de Escritorio, desarrollado con React, Vue.js o similar.
+    ◦ Pruebas de Integración: Se probará la interacción entre diferentes módulos del sistema y con los servicios de la nube. Esto incluye la comunicación segura mediante HTTPS (TLS 1.3) entre la aplicación de escritorio y el backend en Google Cloud Platform (GCP), la correcta interacción del backend con la Base de Datos Relacional (Cloud SQL) y el Almacenamiento de Archivos (Cloud Storage), y la integración del modelo de IA Gemma 3.
+    ◦ El objetivo es asegurar un "desarrollo controlado y de alta calidad" desde las primeras etapas.
+2. Pruebas Funcionales y de UI (Al Finalizar Funcionalidades)
+• Cuándo: Estas pruebas se realizarán una vez que las funcionalidades clave del sistema estén desarrolladas y listas para una verificación más amplia. Se llevarán a cabo principalmente al concluir cada fase del proyecto, con un enfoque intensivo en el Paso 5: Pruebas y Capacitación de la Fase 1, antes de la entrega.
+• Cómo:
+    ◦ Pruebas Funcionales: Se validará que cada funcionalidad del Dashboard de Escritorio cumple con los requisitos definidos. Por ejemplo, se probará la creación de perfiles de paciente, el registro detallado del historial clínico, la subida y asociación de documentos digitales, la programación y gestión de citas, el correcto funcionamiento del sistema de roles y accesos, y las automatizaciones y el chat interno con IA. Se verificarán los flujos de usuario detallados, como añadir un nuevo paciente o buscar el historial.
+    ◦ Pruebas de UI (Interfaz de Usuario): Se asegurará que el diseño "Glassmorphism Oscuro" se implementa correctamente, garantizando la "comodidad visual y una jerarquía de información clara". Esto incluye la legibilidad de textos y iconos, la aplicación de colores y tipografías, y la retroalimentación interactiva al pulsar botones (sutil aumento de brillo o ligero hundimiento).
+    ◦ Se comprobará el manejo de errores para escenarios como credenciales incorrectas, campos vacíos o problemas de conectividad, asegurando que los mensajes de error sean claros y concisos.
+    ◦ Las pruebas se realizarán tanto por el equipo de desarrollo como, de forma colaborativa, durante la Capacitación Inicial con el Dr. Sánchez y su equipo, quienes utilizarán el sistema en un entorno controlado. Se utilizarán herramientas como Google Workspace (Docs/Sheets) para documentar los hallazgos.
+3. Pruebas de Seguridad (Antes del Despliegue)
+• Cuándo: Las pruebas de seguridad son de máxima prioridad y se ejecutarán rigurosamente antes del despliegue de cada fase, especialmente de la Fase 1, dado que el Núcleo Administrativo Central maneja "información sensible".
+• Cómo:
+    ◦ Control de Acceso Basado en Roles (RBAC): Se validará que el sistema de roles ("Admin Principal", "Admin Secundario", "Asistente", "Invitado (Solo Lectura)") funcione correctamente, impidiendo el acceso no autorizado a funcionalidades o datos sensibles.
+    ◦ Cifrado de Datos: Se verificará que el cifrado de datos en tránsito (mediante HTTPS/TLS 1.3) y el cifrado en reposo de los datos sensibles en la Base de Datos (Cloud SQL) y el Almacenamiento de Archivos (Cloud Storage) se apliquen de forma efectiva.
+    ◦ Logs de Auditoría: Se confirmará que el Servicio de Logs de Auditoría (Cloud Logging / Audit Logs) registra cronológicamente todos los intentos de login (exitosos y fallidos) y cada acción del usuario (ej., modificación de datos de paciente), y que estos logs son inmutables (Write Once, Read Many - WORM), crucial para la detección de anomalías y la respuesta a incidentes.
+    ◦ Infraestructura de Red: Se asegurará que la Virtual Private Cloud (VPC) y el API Gateway / Load Balancer funcionen como la primera línea de defensa, aislando y protegiendo la infraestructura en la nube.
+4. Pruebas de Rendimiento (Antes del Despliegue)
+• Cuándo: Se realizarán pruebas de rendimiento antes del despliegue de cada fase para garantizar la "eficiencia operativa" y la escalabilidad del sistema.
+• Cómo:
+    ◦ Escalabilidad y Carga: Se someterá el sistema a pruebas de carga para asegurar que la infraestructura en la nube de GCP puede escalar automáticamente y manejar un mayor volumen de usuarios y datos sin degradación del rendimiento.
+    ◦ Tiempos de Respuesta: Se medirán los tiempos de respuesta para las operaciones críticas (ej., búsqueda de pacientes, carga de historiales, agendamiento de citas) para asegurar una experiencia de usuario fluida.
+    ◦ Conectividad: Se validará que el ecosistema funciona de manera óptima con una conexión a internet estable de al menos 250 Mbps, que es la velocidad recomendada para un rendimiento óptimo.

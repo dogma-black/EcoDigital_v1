@@ -1,0 +1,108 @@
+Lista de Documentación Esencial y Estructurada para el Desarrollo del Dashboard de Administración (Fase 1) - DETALLADA:
+
+Documento de Requisitos Funcionales Detallados del Dashboard:
+
+Propósito Específico: El Dashboard es el centro de operaciones principal para el personal médico y administrativo, permitiendo la gestión centralizada de la información de pacientes.
+Componentes de la Pantalla:
+Barra de Navegación Lateral (Izquierda):
+Identidad de la Aplicación: Logo (Icono circular) y Texto "CIRUGIA ESPECIAL".
+Navegación Principal (Iconos): Inicio (Icono de casa), Registros (Icono de documento), Colaboradores/Equipo (Icono de usuarios), Reportes (Icono de gráfico de barras), Integraciones/Módulos (Icono de cuadrícula).
+Sección "Mis Archivos": Barra de Búsqueda (Campo de texto con icono de lupa), Estructura de Carpetas (Sistema de árbol), Carpetas Visibles (General, Operaciones, Consultas, Laboratorio), Funcionalidad de Filtrado por Carpeta.
+Sección "Automatizaciones": Descripción y placeholders.
+Header Superior (Barra Superior):
+Accesos Rápidos a Servicios (Iconos de aplicaciones, interpretado como accesos a Google Drive, SharePoint, herramientas de colaboración).
+Controles de Usuario (Derecha): Búsqueda Global (Icono de lupa), Notificaciones (Icono de campana), Fecha y Hora (Muestra actual), Perfil de Usuario (Avatar con menú desplegable: Mi Perfil, Configuración, Cerrar Sesión).
+Área de Contenido Principal:
+Módulo "Base de Datos":
+Título ("Base de Datos").
+Subtítulo ("Registro de pacientes Cirugía Ecensial 2024").
+Barra de Acciones: Eliminar (Icono papelera - borrado suave), Filtros (Icono filtro - panel/modal con opciones avanzadas), Exportar (CSV/Excel), + Nuevo Registro (Botón principal).
+Tabla de Datos: Columnas (Checkbox de Selección, ID/Nombre del Paciente - negrita y enlace a detalles, Columnas de Datos Adicionales - texto regular, Estado - píldora de color Active/Inactive, Menú de Acciones - icono tres puntos con opciones: Ver Detalles, Editar Registro, Ver Historial Clínico Completo, Archivar, Eliminar Suave).
+Módulo "Asistente virtual":
+Título ("Asistente virtual").
+Funcionalidad: Interacción por lenguaje natural, Búsqueda Inteligente (ej. buscar archivos, recordar nombres), Recuperación y Acciones Contextuales (ej. enviar por correo, descargar), Automatización de Tareas (ej. enviar correos, generar borradores, crear proyectos).
+Módulo "Notas":
+Título ("Notas").
+Funcionalidad: Tomar notas personales/recordatorios, Posible función "adjuntar nota a paciente".
+Módulo "Visor de Archivos Visuales":
+Funcionalidad: Visualizar imágenes/videos relacionados con pacientes, Actualización contextual según paciente/búsqueda.
+Componentes: Carrusel de Vistas Previas (miniaturas, navegación con flechas), Filtros de Origen/Tipo (Cloud Drives, Photos, Videos).
+Flujos de Usuario Clave Detallados:
+Añadir un nuevo paciente (pasos completos).
+Buscar el historial de un paciente (interacción con Asistente Virtual).
+Archivar múltiples pacientes (selección, acción Eliminar, modal de confirmación, cambio de estado).
+Ver Detalles de Paciente (desde la tabla).
+Editar Registro de Paciente (desde el menú de acciones).
+Ver Historial Clínico Completo (desde el menú de acciones).
+Archivar un solo paciente (desde el menú de acciones).
+Eliminar Suave un solo paciente (desde el menú de acciones).
+Filtrar Tabla de Datos (uso del icono de filtro y opciones avanzadas).
+Exportar Datos de la Tabla.
+Interactuar con el Asistente Virtual para tareas específicas.
+Tomar y guardar notas en el widget "Notas".
+Navegar y filtrar archivos en el "Visor de Archivos Visuales".
+Log In y Log Out de usuario.
+Acceder a "Mi Perfil" y "Configuración".
+Requisitos No Funcionales: Rendimiento adecuado con 2TB de datos (considerando que gran parte estará en Cloud Storage), Usabilidad intuitiva, Seguridad (protección de datos sensibles, control de acceso), Fiabilidad, Escalabilidad.
+Documento de Diseño de la Base de Datos (Cloud SQL) - Detallado:
+
+Modelo Entidad-Relación (ERD) Completo: Incluyendo todas las entidades identificadas en los requisitos funcionales (Pacientes, Historial_Clinico, Citas, Documentos, Usuarios, Roles, Logs_Auditoria, Procedimientos, Procedimientos_Citas) y sus relaciones con cardinalidad definida.
+Especificación Completa de Tablas:
+Por cada tabla: Nombre exacto, Lista de columnas (Nombre, Tipo de Dato - ej. VARCHAR(255), INT, BOOLEAN, DATE, DATETIME, JSON, TEXT), Restricciones (NOT NULL, UNIQUE), Clave Primaria, Claves Foráneas (referenciando a qué tabla y columna).
+Diagrama Relacional Detallado.
+Estrategia de Indexación: Definición de índices en columnas clave para búsquedas y filtros frecuentes (ej. en nombre de paciente, fechas de citas).
+Plan de Migración de Datos Existentes: Proceso para cargar los archivos digitales iniciales (metadatos a la base de datos, archivos a Cloud Storage).
+Especificaciones de Seguridad de la Base de Datos: Configuración de usuarios y permisos de acceso, Requisitos de cifrado en reposo (manejo de claves), Plan de copias de seguridad y restauración.
+Elección y Configuración Inicial de Cloud SQL: Decisión entre MySQL/PostgreSQL y los pasos para configurar la instancia inicial en GCP.
+Documento de Especificación de la Arquitectura del Backend y Diseño de APIs - Detallado:
+
+Diagrama de Arquitectura del Sistema para la Fase 1: Mostrando la interacción entre la Aplicación de Escritorio (Frontend), API Gateway/Load Balancer, Servidor de Aplicación (Backend), Cloud SQL, Cloud Storage, Servicio de Logs, y la Integración con IA.
+Diseño Completo de Endpoints de la API (RESTful):
+Para Gestión de Pacientes: GET /patients (con parámetros para búsqueda, filtrado, paginación, ordenamiento), GET /patients/{id}, POST /patients, PUT /patients/{id}, DELETE /patients/{id} (para borrado suave), POST /patients/{id}/archive.
+Para Gestión de Historial Clínico: GET /patients/{id}/history, POST /patients/{id}/history, PUT /history/{id}, DELETE /history/{id} (borrado suave si aplica).
+Para Gestión de Citas: GET /appointments (con filtros por fecha, paciente, estado), GET /appointments/{id}, POST /appointments, PUT /appointments/{id}, DELETE /appointments/{id} (borrado suave).
+Para Gestión Documental: POST /patients/{id}/documents (subida de archivo), GET /patients/{id}/documents, GET /documents/{id} (para descargar/visualizar), DELETE /documents/{id} (borrado suave).
+Para Autenticación y Autorización: POST /login, Endpoints para gestionar usuarios (si se incluye en Fase 1), Endpoints para verificar permisos por rol.
+Para Integración con IA: Endpoints específicos para interactuar con el modelo (ej. POST /ai/generate-email, POST /ai/summarize, POST /ai/chat).
+Para Logs de Auditoría: Endpoints para registrar acciones clave.
+Especificación de Solicitudes y Respuestas: Estructura JSON esperada para cada endpoint (ejemplos de request body y response body).
+Manejo de Errores: Definición de códigos de estado HTTP estándar (200 OK, 201 Created, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 500 Internal Server Error) y estructura de los mensajes de error.
+Implementación de Autenticación (ej. tokens JWT) y Autorización (verificar roles y permisos en cada endpoint).
+Tecnología del Backend: Elección del lenguaje (Python/Node.js) y framework (Flask/Django/Express) y justificación.
+Configuración de Servicios de GCP: Detalle de la configuración de Compute Engine/Cloud Run, API Gateway/Load Balancer, Cloud Storage Buckets, Cloud Logging.
+Documento de Especificación Técnica del Frontend del Dashboard:
+
+Elección del Framework Frontend (React, Vue, Angular) y justificación.
+Estructura de la Aplicación: Organización de directorios, módulos y componentes.
+Diseño de Componentes Reutilizables: Especificación de los componentes de UI basados en la guía de estilo "Glassmorphism Oscuro" (botones, inputs, tablas, modales, tarjetas/paneles, etc.) con sus propiedades (props) y estados.
+Implementación del Sistema de Diseño: Cómo se aplicarán los estilos (CSS-in-JS, SCSS, etc.), uso de variables CSS (tokens de diseño). Traducción detallada de las propiedades de la guía de estilo [2] a código.
+Gestión del Estado: Elección e implementación de una estrategia de gestión del estado (ej. Redux, Vuex, Context API, Zustand).
+Consumo de APIs del Backend: Cómo se realizarán las llamadas a los endpoints, manejo de estados de carga y error en la UI.
+Implementación de la Tabla de Datos Interactiva: Paginación, ordenamiento, filtrado del lado del cliente/servidor, selección múltiple, menú de acciones por fila.
+Implementación del Asistente Virtual en la UI: Campo de entrada, visualización de respuestas, manejo de interacciones.
+Integración de Widgets Externos: Cómo se incrustarán o accederán a servicios como Gmail y Google Drive.
+Consideraciones Específicas de Electron (si aplica): Empaquetado, comunicación entre proceso principal y renderizador.
+Diseño Responsivo (si aplica para alguna parte del Dashboard o si se piensa en el futuro).
+Documento de Especificación de la Integración de Inteligencia Artificial - Detallado:
+
+Casos de Uso de IA Específicos en el Dashboard:
+Generación de borradores de correo electrónico (especificar qué información se usaría).
+Generación de plantillas para hojas membretadas (especificar entrada y salida).
+Generación de recordatorios automatizados (basado en fechas de citas, por ejemplo).
+Chat interno: Resúmenes de texto (ej. historial clínico), Redacción de informes cortos, Respuestas a consultas rápidas basadas en datos accesibles por la IA.
+Interacción con el Modelo de IA:
+Especificación de las APIs del modelo Gemma 3 o Gemini (si se accede vía API externa).
+Integración a través de Vertex AI (si se despliega allí).
+Formato exacto de los prompts de entrada para el modelo.
+Formato exacto de las respuestas esperadas del modelo.
+Manejo de Respuestas de la IA en el Backend/Frontend: Cómo se procesará y presentará la información generada por la IA al usuario.
+Consideraciones de Costo y Rendimiento de la IA.
+Plan de Pruebas Detallado para el Dashboard:
+
+Tipos de Pruebas: Pruebas Unitarias (por función/componente), Pruebas de Integración (frontend-backend, backend-BD, backend-IA), Pruebas Funcionales (cada funcionalidad listada en el punto 1), Pruebas de UI/Usabilidad, Pruebas de Seguridad (autenticación, autorización, inyecciones), Pruebas de Rendimiento (carga de datos en tablas grandes, respuesta de APIs).
+Casos de Prueba Específicos: Por cada funcionalidad y flujo de usuario detallado en el punto 1, definir los pasos para probar, los datos de entrada, y los resultados esperados.
+Pruebas de Roles y Permisos: Casos de prueba específicos para verificar que cada rol solo puede acceder y realizar las acciones permitidas.
+Pruebas de Borrado Suave: Verificar que los registros se marcan como inactivos en lugar de eliminarse permanentemente.
+Pruebas de Filtrado, Búsqueda y Paginación en la tabla.
+Pruebas de la integración con IA: Verificar que las respuestas son relevantes y se muestran correctamente.
+Criterios de Aceptación Claros: Qué significa que una prueba sea exitosa.

@@ -1,0 +1,48 @@
+2.4. Flujos de Usuario Clave
+Esta sección describe los flujos de usuario más importantes dentro del Área de Contenido Principal del Dashboard de Administración, el cual es el "Núcleo Administrativo Central" y el principal entregable de la Fase 1 del proyecto. El Dashboard está diseñado para optimizar la gestión de pacientes y mejorar la eficiencia operativa, abordando la dispersión de información y los procesos manuales.
+A. Añadir un Nuevo Paciente
+Este flujo permite al personal del consultorio registrar nuevos pacientes en el sistema.
+1. Acceso a la Función: El usuario navega a la "Barra de Navegación Lateral" y selecciona la opción "Pacientes", luego hace clic en "Nuevo Paciente". Alternativamente, puede hacer clic directamente en el botón principal "+ Nuevo Registro" ubicado en la "Barra de Acciones" del módulo "Base de Datos".
+2. Pantalla de Creación: Se abre un formulario o modal titulado "Creación de Perfil de Paciente".
+3. Ingreso de Datos: El usuario debe ingresar los datos demográficos y de contacto del nuevo paciente, como nombre, apellido, fecha de nacimiento, teléfono, correo electrónico y dirección.
+4. Validaciones: Si el usuario intenta guardar el registro sin completar campos obligatorios o con formatos incorrectos (ej., un email inválido), el sistema mostrará mensajes de error claros, como "Campo 'Nombre' requerido" o "Formato de email inválido".
+5. Guardado: Una vez que se ingresan los datos válidamente, el usuario hace clic en el botón "Guardar Paciente".
+6. Resultado Esperado: La tabla del módulo "Base de Datos" se actualiza automáticamente con el nuevo registro de paciente, el cual aparecerá en estado "Active".
+B. Buscar el Historial de un Paciente (Interacción con Asistente Virtual)
+Este flujo demuestra la capacidad de búsqueda inteligente del Asistente Virtual integrado con Gemma 3 para acceder rápidamente a la información del paciente.
+1. Acceso al Asistente: El usuario se dirige al módulo "Asistente virtual" en el Área de Contenido Principal. Se puede interactuar a través de un icono o una sección dedicada al chat.
+2. Interacción de Búsqueda: El usuario utiliza lenguaje natural para realizar una consulta de búsqueda, por ejemplo, "Hola, estoy buscando un archivo me urge", "Recuerdas el nombre del paciente?", o "Si!! es Laura Vargas". El Asistente Virtual está diseñado para comprender y procesar estas consultas complejas utilizando la IA.
+3. Recuperación Inteligente: El Asistente Virtual interpreta la solicitud y localiza la información o los archivos pertinentes en el sistema.
+4. Respuesta y Acciones Contextuales: El asistente responde al usuario, por ejemplo, diciendo "Lo encontré", y ofrece acciones contextuales relacionadas con el recurso encontrado, como "¿te lo envío a tu correo o prefieres descargarlo?". Para la búsqueda de historial, el asistente provee un enlace directo al historial clínico o a la galería de archivos visuales del paciente. Es importante señalar que este chat funciona únicamente con texto y no tiene la capacidad de generar archivos de ningún formato.
+C. Archivar Múltiples Pacientes
+Este flujo permite la gestión en lote de registros de pacientes, realizando un borrado suave.
+1. Selección de Registros: El usuario selecciona una o más filas en la "Tabla de Datos" del módulo "Base de Datos" utilizando los "Checkbox de Selección" ubicados en la primera columna de cada fila. Un "checkbox maestro" en el encabezado de la columna permite seleccionar o deseleccionar todos los registros visibles.
+2. Activación de la Acción: Una vez seleccionadas las filas, el botón "Eliminar" (icono de papelera) en la "Barra de Acciones" se activa.
+3. Confirmación: Al hacer clic en "Eliminar", aparece un modal de confirmación preguntando al usuario, por ejemplo, "¿Desea archivar los X registros seleccionados?".
+4. Ejecución del Borrado Suave: Tras la confirmación del usuario, el sistema ejecuta un borrado suave (soft delete) de los registros. Esto significa que los registros no se eliminan permanentemente de la base de datos, sino que se marcan internamente como inactivos o archivados (ej., is_deleted = true).
+5. Resultado Esperado: Las filas correspondientes desaparecen de la vista activa de la tabla, y su estado interno en la base de datos cambia a "Inactive".
+D. Ver Detalles de Paciente
+Este flujo permite acceder a una vista completa y detallada de la información de un paciente específico.
+1. Acceso a los Detalles: Desde la "Tabla de Datos" del módulo "Base de Datos", el usuario puede hacer clic en el "ID/Nombre del Paciente" (texto en negrita) en la fila correspondiente al paciente deseado. Este elemento actúa como un enlace directo.
+2. Pantalla de Detalles: Al hacer clic en el enlace, el sistema redirige al usuario a una vista de detalle completa del paciente, también conocida como la "ficha del paciente".
+3. Contenido Esperado: En esta pantalla, el usuario espera ver el perfil completo del paciente con todos sus datos demográficos y de contacto, así como resúmenes de consultas y progreso de tratamiento, y acceso a la gestión documental avanzada, incluyendo la visualización de imágenes y videos relacionados. Esta pantalla también es el punto de partida para acciones adicionales como "Añadir a Historial".
+E. Editar Registro de Paciente
+Este flujo permite modificar la información existente de un paciente.
+1. Acceso a la Edición: Desde la "Tabla de Datos" del módulo "Base de Datos", el usuario hace clic en el "Menú de Acciones" (icono de tres puntos) en la fila del paciente que desea editar.
+2. Selección de Acción: Del menú desplegable, el usuario selecciona la opción "Editar Registro".
+3. Proceso de Modificación: Se abre un formulario o modal, similar al de creación, pero pre-llenado con los datos actuales del paciente. El usuario realiza las modificaciones necesarias en los campos deseados [inferencia, similar a los formularios de creación o historial clínico que implican entrada de datos].
+4. Guardado de Cambios: Una vez realizadas las modificaciones, el usuario hace clic en el botón "Guardar" o "Actualizar" [inferencia]. Los cambios se envían de forma segura al Servidor de Aplicación (Backend) a través de APIs RESTful utilizando HTTPS (TLS 1.3).
+5. Registro de Auditoría: El backend procesa la solicitud, actualiza la "Base de Datos Relacional (Cloud SQL)" y registra cronológicamente esta acción de modificación de datos en el "Servicio de Logs de Auditoría (Cloud Logging / Audit Logs)", que son inmutables.
+6. Confirmación: El sistema muestra una confirmación visual al usuario, indicando que los cambios han sido guardados exitosamente.
+F. Ver Historial Clínico Completo
+Este flujo permite una visualización detallada y cronológica del historial médico de un paciente.
+1. Acceso al Historial: Desde la "Tabla de Datos" del módulo "Base de Datos", el usuario hace clic en el "Menú de Acciones" (icono de tres puntos) en la fila del paciente deseado. Alternativamente, desde la tabla "Pacientes Recientes" en el Área Central del Dashboard, puede hacer clic en la opción "Ver Historial".
+2. Selección de Acción: Del menú desplegable, el usuario selecciona la opción "Ver Historial Clínico Completo".
+3. Contenido Esperado: Se presenta una vista que contiene el registro cronológico y detallado de cada consulta, diagnóstico, notas de evolución, procedimientos y tratamientos del paciente. Este historial también permite la capacidad de adjuntar documentos relevantes, y se espera que se integre con el "Visor de Archivos Visuales" para mostrar imágenes y videos contextuales relacionados con el paciente.
+G. Archivar un Solo Paciente
+Este flujo permite archivar individualmente un registro de paciente mediante un borrado suave.
+1. Acceso a la Acción: Desde la "Tabla de Datos" del módulo "Base de Datos", el usuario hace clic en el "Menú de Acciones" (icono de tres puntos) en la fila del paciente que desea archivar.
+2. Selección de Acción: Del menú desplegable, el usuario selecciona la opción "Archivar". (Nota: La opción "Eliminar (Suave)" también está disponible y realiza la misma función de borrado lógico).
+3. Confirmación (Implícito): Aunque no se especifica explícitamente para el archivado individual, se esperaría un modal de confirmación similar al de múltiples pacientes para prevenir acciones accidentales.
+4. Ejecución del Borrado Suave: El registro del paciente se marca internamente como inactivo o archivado (is_deleted = true) en la base de datos.
+5. Resultado Esperado: El estado del paciente en la tabla puede cambiar visualmente a "Inactive" (una píldora de color rojo/gris) o el registro puede desaparecer de la vista activa, dependiendo de los filtros aplicados.

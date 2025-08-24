@@ -1,0 +1,41 @@
+6. Elección y Configuración Inicial de Cloud SQL
+La base de datos relacional para el "Ecosistema Digital Inteligente para Cirugía Especial" se hospedará en Google Cloud SQL. Cloud SQL es un servicio de base de datos completamente gestionado por Google Cloud Platform (GCP) que facilita la configuración, el mantenimiento, la gestión y el escalado de bases de datos relacionales en la nube.
+Elección del Motor de Base de Datos (MySQL o PostgreSQL): Las fuentes del proyecto indican que se pueden utilizar sistemas de gestión de bases de datos como MySQL o PostgreSQL. La elección final entre MySQL y PostgreSQL se determinará en una fase posterior, basándose en consideraciones más detalladas, como:
+• Requisitos Específicos de Funcionalidad: Si alguna de las bases de datos ofrece características o extensiones únicas que sean particularmente ventajosas para las funcionalidades avanzadas del ecosistema.
+• Experiencia del Equipo de Desarrollo: La familiaridad y experiencia del equipo de desarrollo con un motor de base de datos en particular pueden influir en la elección para optimizar la eficiencia y reducir la curva de aprendizaje.
+• Patrones de Uso y Rendimiento Esperado: Aunque ambos son robustos, pueden tener diferencias sutiles en el rendimiento para ciertos tipos de cargas de trabajo (ej., operaciones de lectura intensivas vs. escritura intensivas, complejidad de consultas).
+• Consideraciones de Licenciamiento y Comunidad: MySQL es de código abierto con diversas opciones de licenciamiento, mientras que PostgreSQL es completamente de código abierto y conocido por su fuerte adherencia a los estándares SQL y su comunidad activa.
+Independientemente del motor elegido, ambos son compatibles con Cloud SQL y ofrecen características de alta disponibilidad y recuperación de desastres.
+Configuración Inicial de la Instancia en GCP (Alto Nivel): El proceso de configuración inicial de la instancia de Cloud SQL en GCP implica los siguientes pasos clave:
+1. Creación de la Instancia:
+    ◦ Acceder a la consola de Google Cloud Platform y navegar a la sección de Cloud SQL.
+    ◦ Seleccionar la opción para crear una nueva instancia de base de datos.
+    ◦ Elegir el motor de base de datos deseado (MySQL o PostgreSQL).
+    ◦ Especificar la región donde se desplegará la instancia para asegurar baja latencia con el Servidor de Aplicación (Backend).
+    ◦ Definir la configuración de la máquina (tipo de CPU, memoria) y el tipo de almacenamiento (ej., SSD) y su tamaño inicial.
+2. Configuración de Red y Conectividad:
+    ◦ Configurar la instancia para que opere dentro de la Virtual Private Cloud (VPC) del proyecto. Esto asegura que la base de datos esté en una red aislada y segura, fundamental para la seguridad de los datos.
+    ◦ Establecer la conectividad de IP privada para el backend, lo que mejora la seguridad y el rendimiento al mantener el tráfico de la base de datos dentro de la red privada de Google.
+    ◦ Configurar las redes autorizadas y reglas de firewall para permitir solo el tráfico desde el Servidor de Aplicación (Backend) y otras IPs de administración necesarias.
+3. Creación de Usuarios Iniciales:
+    ◦ Crear usuarios de base de datos con contraseñas seguras y el "principio de privilegio mínimo". Es decir, el usuario que utilizará el backend para conectarse a la base de datos solo tendrá los permisos necesarios para las operaciones que realice (lectura, escritura, modificación de tablas específicas), sin privilegios administrativos excesivos.
+    ◦ Para la gestión de contraseñas de usuarios en la aplicación, se utilizarán funciones de hash seguras para almacenar hash_password en la tabla USUARIOS.
+7. Consideraciones Adicionales
+Además de las secciones anteriores, existen otras consideraciones importantes para el diseño y la implementación de la base de datos:
+1. Proyección y Gestión del Almacenamiento:
+    ◦ El servicio de infraestructura en la nube de Google Cloud incluye una capacidad de hasta 1 Terabyte (1000 GB) mensual como cortesía durante los primeros seis meses.
+    ◦ Si bien las fuentes no mencionan explícitamente una proyección de 2TB, cualquier aumento en la capacidad de almacenamiento más allá del 1 Terabyte incluido tendrá un costo adicional.
+    ◦ Es fundamental aclarar que este almacenamiento (tanto el inicial de 1TB como cualquier aumento futuro) incluye tanto el espacio utilizado por la Base de Datos Relacional (Cloud SQL) para los datos estructurados como el espacio para los archivos digitales grandes almacenados en Cloud Storage. Se deberá monitorear de cerca el consumo de almacenamiento para gestionar los costos de manera eficiente.
+2. Distinción Clara entre Datos Estructurados y Archivos Grandes:
+    ◦ Se reafirma que la Base de Datos Relacional (Cloud SQL) se utilizará exclusivamente para almacenar información estructurada y crítica como perfiles de pacientes, historiales clínicos, citas, usuarios y roles.
+    ◦ El Almacenamiento de Archivos (Cloud Storage - S3/Blob) se designará para el almacenamiento centralizado y seguro de archivos digitales pesados, como PDFs, imágenes (ej., RX) y videos cortos asociados a los expedientes de los pacientes. Esta separación optimiza el rendimiento y el costo de almacenamiento, y la base de datos Cloud SQL almacenará únicamente la url_almacenamiento que apunta a la ubicación del archivo en Cloud Storage.
+3. Seguridad de los Datos Sensibles (Cifrado):
+    ◦ Una consideración primordial es que todos los datos sensibles estarán cifrados en reposo, tanto en la Base de Datos Relacional (Cloud SQL) como en el Almacenamiento de Archivos (Cloud Storage). Esto es una medida de seguridad crítica para proteger la información del paciente contra accesos no autorizados.
+    ◦ Las contraseñas de usuario se almacenarán utilizando funciones de hash seguras (campo hash_password) en lugar de texto plano.
+4. Escalabilidad y Alta Disponibilidad:
+    ◦ La elección de GCP y sus servicios (Cloud SQL, Cloud Storage) proporciona inherentemente escalabilidad (la capacidad de expandirse para manejar un mayor volumen de pacientes y datos sin interrupciones) y alta disponibilidad (minimizando el tiempo de inactividad del sistema). Estas características son fundamentales para la continuidad operativa del consultorio.
+5. Requisito de Conectividad:
+    ◦ Para un rendimiento óptimo del ecosistema, se requiere una conexión a internet estable de al menos 250 Mbps. La dependencia de la infraestructura en la nube hace que la calidad de la conexión sea crucial.
+6. Vinculación del Costo de la Nube al Plan de Mantenimiento:
+    ◦ La cortesía de Google Cloud por los primeros seis meses está directamente vinculada a la vigencia del Plan de Mantenimiento y Soporte mensual. Si el cliente decide no continuar con el plan de mantenimiento durante este periodo, la cortesía del servicio en la nube finalizará en ese mismo momento. Esta es una condición importante que la alta dirección debe considerar.
+Con estas secciones, el "Documento de Diseño de la Base de Datos (Cloud SQL)" está completo.

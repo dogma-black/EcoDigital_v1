@@ -1,0 +1,694 @@
+Plan Detallado de Pruebas para el Dashboard del Ecosistema Digital para Cirugía Especial
+
+1. Introducción y Propósito
+
+Este documento detalla el plan de pruebas exhaustivas para el "Dashboard de Escritorio", el cual es el "Núcleo Administrativo Central" y el entregable principal de la Fase 1 del proyecto "Ecosistema Digital Inteligente para Cirugía Especial". El Dashboard de Escritorio es la columna vertebral y la base de datos central de todo el ecosistema, y su propósito es optimizar la gestión de pacientes, mejorar la eficiencia operativa, y centralizar la información crítica del consultorio en un lugar seguro y accesible.
+El objetivo de este plan es asegurar la calidad, fiabilidad, rendimiento y seguridad de la aplicación antes de su despliegue y uso en un entorno real. Las pruebas son de vital importancia para el "Ecosistema Digital Inteligente para Cirugía Especial", ya que el sistema busca ser "potente, seguro y excepcionalmente intuitivo". A través de un proceso de pruebas riguroso, se busca reducir los "procesos manuales que consumen tiempo" y el "riesgo de errores", liberando tiempo valioso para el personal.
+Un enfoque primordial de este ecosistema es la "seguridad de datos", ya que maneja información sensible del paciente. Las pruebas de seguridad son cruciales para validar las múltiples capas de protección implementadas, incluyendo:
+• El Control de Acceso Basado en Roles (RBAC), que garantiza que solo usuarios autorizados (Administradores, Admin Principal, Admin Secundario, Asistentes) accedan a funcionalidades e información según sus permisos.
+• El cifrado de datos en tránsito a través de HTTPS (TLS 1.3) entre la aplicación de escritorio y la infraestructura en la nube.
+• El almacenamiento seguro de credenciales mediante hashing y el cifrado de datos sensibles en reposo en la Base de Datos Relacional (Cloud SQL - MySQL/PostgreSQL) y el Almacenamiento de Archivos (Cloud Storage - S3/Blob).
+• El Servicio de Logs de Auditoría (Cloud Logging / Audit Logs), que registra inmutablemente (Write Once, Read Many - WORM) todos los intentos de login y las actividades del usuario, siendo vital para la detección de anomalías y la respuesta a incidentes.
+• La Virtual Private Cloud (VPC) y el API Gateway / Load Balancer, que actúan como la primera línea de defensa para la infraestructura en la nube.
+La necesidad de una conexión a internet estable de al menos 250 Mbps para un rendimiento óptimo del ecosistema también subraya la importancia de las pruebas de rendimiento y estrés. En resumen, este plan de pruebas es un pilar fundamental para garantizar que el Dashboard cumpla con su promesa de ser un centro de control digital potente, seguro y confiable para el consultorio del Dr. Sánchez García.
+2. Alcance de las Pruebas
+El presente Plan Detallado de Pruebas se enfoca exclusivamente en el "Dashboard de Escritorio", también conocido como el "Núcleo Administrativo Central", el cual es el entregable principal de la Fase 1 del proyecto "Ecosistema Digital Inteligente para Cirugía Especial". Este alcance específico garantiza que la columna vertebral del ecosistema sea robusta, segura y funcional antes de proceder con fases posteriores.
+2.1. Componentes y Funcionalidades Incluidas en las Pruebas (Fase 1 del Dashboard)
+Las pruebas cubrirán exhaustivamente todos los módulos y flujos de usuario detallados para el Dashboard de Escritorio en la Fase 1 del proyecto. Esto incluye, pero no se limita a:
+• Flujo de Acceso: Login de Usuario y Dashboard Principal:
+    ◦ Login de Usuario: Autenticación de usuarios con "Nombre de Usuario" y "Contraseña". Pruebas de inicio de sesión exitoso y fallido, incluyendo mensajes de error por credenciales incorrectas o campos vacíos. Validación de la persistencia de la sesión tras un login exitoso y la opción de "Cerrar Sesión".
+    ◦ Dashboard Principal (Vista General): Verificación de la visualización correcta de la "Cabecera" (usuario logueado y rol) y la adaptación de la "Barra de Navegación Lateral" según el rol del usuario. Pruebas de la visualización y actualización de los paneles del "Área Central del Dashboard" como "CITAS DEL DÍA", "MÉTRICAS RÁPIDAS" y "PACIENTES RECIENTES".
+    ◦ Navegación: Pruebas de la navegación a todas las secciones principales y sub-secciones a través de la barra lateral: "Pacientes", "Agenda", "Procedimientos", "Reportes", "Documentos", "Administración".
+    ◦ Widgets y Accesos Directos: Verificación del acceso rápido a Gmail, Google Drive y aplicaciones de Office a través de los widgets visibles en la interfaz.
+• Gestión Integral del Expediente del Paciente:
+    ◦ Creación de Perfiles de Paciente: Verificación del formulario de "Creación de Perfil de Paciente", incluyendo todos los campos demográficos y de contacto. Pruebas de validación de campos obligatorios y formatos inválidos.
+    ◦ Búsqueda Avanzada de Pacientes: Pruebas de la funcionalidad de búsqueda por cualquier campo (nombre, ID, palabra clave en notas) y la visualización de resultados.
+    ◦ Registro Historial Clínico Detallado: Verificación del formulario "Registro de Historial Clínico", incluyendo campos para "Fecha de Consulta", "Diagnóstico", "Notas de Evolución", "Procedimientos y Tratamientos". Pruebas de la capacidad para añadir nuevas entradas cronológicas.
+• Gestión Documental Avanzada:
+    ◦ Subida y Asociación de Documentos: Pruebas de la funcionalidad para subir y asociar todo tipo de archivos digitales (PDF, imágenes, videos cortos) directamente al expediente del paciente o a una entrada específica del historial clínico. Verificación de mensajes de error para tipos de archivo no soportados o tamaños excedidos.
+    ◦ Visualización de Documentos: Pruebas del visor de archivos visuales con su carrusel de vistas previas y filtros por origen/tipo (Cloud Drives, Photos, Videos).
+• Módulo de Agenda y Citas:
+    ◦ Agendar Nueva Cita: Pruebas del formulario para agendar citas, incluyendo la selección de paciente, fecha, hora, tipo de cita y estado. Verificación de la detección de conflictos de horario.
+    ◦ Gestión de Citas Existentes: Pruebas de las funcionalidades para reprogramar, cancelar y cambiar el estado de las citas existentes.
+    ◦ Visualización de Calendario: Verificación del calendario interactivo y la visualización de citas del día.
+• Seguridad, Roles y Accesos Rápidos:
+    ◦ Gestión de Usuarios y Asignación de Roles: Pruebas de la capacidad para crear nuevas cuentas de usuario y asignar roles (Administrador, Admin Principal, Admin Secundario, Asistente, Invitado (Solo Lectura)). Esta funcionalidad será probada exhaustivamente para verificar que cada rol solo tiene acceso a sus permisos definidos.
+    ◦ Acceso a Logs de Auditoría: Verificación de la funcionalidad para visualizar los registros cronológicos de actividades y cambios realizados en el sistema.
+• Inteligencia y Automatización Integrada (Modelo de IA Gemma 3):
+    ◦ Chat Interno Básico: Pruebas de la interacción con el chat interno para consultas rápidas, resúmenes de texto o redacción de informes (solo texto).
+    ◦ Automatizaciones Básicas: Verificación de la capacidad para generar borradores de correos electrónicos, hojas membretadas y recordatorios a través de la IA.
+• Capacitación Inicial:
+    ◦ Generación de Material: Aunque la capacitación es una actividad programada, se probará la disponibilidad y relevancia del manual de funcionamiento y las preguntas frecuentes (FAQs) que la IA puede ayudar a generar.
+2.2. Aspectos Técnicos Incluidos en las Pruebas
+Las pruebas técnicas validarán la correcta interconexión y funcionamiento de los distintos componentes del ecosistema que soportan el Dashboard:
+• Integración Frontend-Backend:
+    ◦ Verificación de la comunicación fluida entre la aplicación de escritorio (frontend desarrollada con React/Vue.js y empaquetada con Electron.js) y el Servidor de Aplicación (backend construido con Python/Flask/Django o Node.js/Express).
+    ◦ Pruebas de la exactitud y consistencia de los datos entre el frontend y el backend en todas las operaciones CRUD (Crear, Leer, Actualizar, Eliminar - suave).
+    ◦ Medición de los tiempos de respuesta de las APIs RESTful.
+• Integración Backend-Base de Datos:
+    ◦ Verificación de la interacción del backend con la Base de Datos Relacional (Cloud SQL - MySQL/PostgreSQL).
+    ◦ Pruebas de la integridad de los datos almacenados.
+    ◦ Evaluación del rendimiento de las consultas a la base de datos para asegurar el acceso rápido a la información.
+    ◦ Confirmación de que los datos sensibles están cifrados en reposo en la base de datos.
+• Integración Backend-Cloud Storage:
+    ◦ Verificación de la interacción del backend con el Almacenamiento de Archivos (Cloud Storage - S3/Blob) para la gestión de documentos digitales.
+    ◦ Pruebas de las funcionalidades de subida y descarga de archivos, y su correcta asociación con los expedientes de pacientes.
+    ◦ Confirmación de que los archivos están cifrados en reposo en Cloud Storage.
+• Integración Backend-IA (Gemma 3):
+    ◦ Verificación de la integración del modelo de Inteligencia Artificial Gemma 3 (o similar a Gemini) en el backend mediante APIs.
+    ◦ Pruebas de la precisión y relevancia de las respuestas y contenidos generados por la IA (redacción de correos, hojas membretadas, recordatorios, respuestas del chat, resúmenes).
+    ◦ Evaluación del rendimiento y la latencia en las interacciones con la IA.
+• Seguridad de APIs y Control de Acceso (RBAC):
+    ◦ Validación de que toda la comunicación entre la aplicación de escritorio y la infraestructura en la nube se realiza exclusivamente a través de HTTPS (TLS 1.3), garantizando el cifrado de datos en tránsito.
+    ◦ Pruebas exhaustivas del Control de Acceso Basado en Roles (RBAC) para asegurar que cada rol (Administrador, Admin Principal, Admin Secundario, Asistente, Invitado - Solo Lectura) tiene acceso solo a las funcionalidades y datos que le corresponden. Esto incluye intentos de acceso no autorizado y verificación de mensajes de error adecuados.
+    ◦ Confirmación de que las credenciales de usuario se almacenan de forma segura mediante hashing y cifrado en reposo.
+    ◦ Verificación de que el API Gateway / Load Balancer actúan como la primera línea de defensa para el backend.
+• Registro y Auditoría (Logs de Auditoría):
+    ◦ Verificación de que todos los intentos de login (exitosos y fallidos) y cada acción relevante del usuario (ej., modificación de datos de paciente, creación de citas, gestión de usuarios) se registran cronológicamente en el "Servicio de Logs de Auditoría (Cloud Logging / Audit Logs)".
+    ◦ Confirmación de la inmutabilidad de los logs (Write Once, Read Many - WORM) para asegurar su integridad y trazabilidad.
+• Manejo de Errores y Estados Vacíos:
+    ◦ Pruebas de todos los escenarios de error especificados (credenciales incorrectas, campos vacíos/formato inválido, problemas de conectividad) y la visualización de mensajes de error claros y concisos.
+    ◦ Verificación del comportamiento del sistema cuando no hay datos para mostrar en ciertas secciones (ej., "No se encontraron pacientes", "No hay citas programadas para hoy").
+• Rendimiento y Conectividad:
+    ◦ Pruebas del rendimiento general de la aplicación bajo una conexión a internet estable de al menos 250 Mbps, según la recomendación para un óptimo funcionamiento del ecosistema. Esto incluirá la carga de datos, la navegación y la interacción con funcionalidades clave.
+• Diseño Visual y Usabilidad (Glassmorphism Oscuro):
+    ◦ Verificación de la implementación del estilo visual "Glassmorphism Oscuro" en todas las pantallas y componentes del Dashboard, asegurando la coherencia visual integral con los principios de diseño definidos (fondo gris carbón, paneles de vidrio esmerilado, efecto "Aurora", tipografía Inter, bordes sutiles y luminosos).
+    ◦ Pruebas de la legibilidad óptima y el doble enfoque de contraste para la accesibilidad.
+    ◦ Verificación de la retroalimentación interactiva al pulsar botones (aumento de brillo o ligero hundimiento).
+2.3. Exclusiones Explícitas de las Pruebas en esta Fase del Dashboard
+Es fundamental entender que este plan de pruebas se limita estrictamente a la Fase 1: El Núcleo Administrativo (Dashboard de Escritorio). Por lo tanto, las siguientes funcionalidades y componentes del ecosistema no se incluirán en las pruebas de esta fase, ya que corresponden a etapas futuras del proyecto o no forman parte del desarrollo principal:
+• Componentes de la Fase 2: Expansión a la Movilidad y Presencia Web:
+    ◦ La Aplicación Móvil para el equipo.
+    ◦ La Página web profesional del consultorio (incluyendo su diseño "Luxury, Tech, Accesible", secciones informativas, asistente virtual para FAQ y agendamiento, y pasarela de pagos).
+• Componentes de la Fase 3: Innovación y Experiencia del Paciente:
+    ◦ La Aplicación Móvil exclusiva para Clientes/Pacientes (incluyendo acceso a registro médico, agendamiento, material educativo, interfaz de voz, mensajería segura, pasarela de pagos).
+    ◦ La Integración del Asistente Virtual Inteligente (AVI) en WhatsApp (incluyendo su sincronización con la web, FAQ, agendamiento y notificaciones automatizadas).
+• Otros Aspectos Excluidos del Alcance del Proyecto o del Desarrollo Directo:
+    ◦ La digitalización (escaneo) de archivos físicos existentes.
+    ◦ Los servicios de marketing digital, gestión de redes sociales o campañas de promoción.
+    ◦ La compra de dominio y contratación del servicio de hosting para la página web, ya que son responsabilidad del cliente.
+    ◦ Cualquier funcionalidad o solicitud de cambio que no esté explícitamente detallada en el alcance definido para la Fase 1 del Dashboard.
+Aunque el backend y la infraestructura en la nube están diseñados para soportar futuras fases, el enfoque de estas pruebas estará en la interacción del Dashboard de Escritorio con estos componentes, sin extenderse a la validación de las funcionalidades o interfaces de las aplicaciones móviles o la página web en sí.
+Tipos de Pruebas
+Pruebas Unitarias
+• Propósito: Las pruebas unitarias tienen como objetivo verificar que unidades individuales de código, como funciones, métodos o componentes pequeños, funcionan correctamente de forma aislada. Esto permite identificar y corregir defectos en las etapas tempranas del ciclo de desarrollo, reduciendo costos y complejidad.
+• Aplicación:
+    ◦ En el Backend: Se aplicarán en módulos clave de la lógica de negocio, como las funciones de validación de datos (ej., validación de entrada para nombres de usuario, contraseñas, o campos de paciente), la lógica de autenticación y autorización basada en roles (verificando que un usuario con un rol específico tenga o no acceso a ciertas funcionalidades), y la interacción básica con APIs externas (como las llamadas a la API de Gemma 3 para automatizaciones).
+    ◦ En el Frontend: Se realizarán en componentes reutilizables como botones de acción ("Iniciar Sesión", "Guardar Paciente", "Agendar Cita"), campos de entrada, elementos de navegación, y la lógica de manipulación local de datos o estados de la UI.
+• Enfoque: Se centran en la corrección interna del código y su funcionamiento aislado, sin depender de otros módulos o servicios.
+Pruebas de Integración
+• Propósito: Las pruebas de integración buscan verificar la correcta interacción y comunicación entre diferentes módulos o servicios que componen el ecosistema. Esto es crucial para un sistema distribuido como este, que depende de la nube y de múltiples componentes interconectados.
+• Aplicación:
+    ◦ Frontend-Backend API Communication: Se probará la comunicación entre la aplicación de escritorio y el Servidor de Aplicación (Backend) a través de APIs RESTful, asegurando que los datos se envíen y reciban correctamente utilizando HTTPS (TLS 1.3) para cifrar los datos en tránsito.
+    ◦ Backend-Base de Datos (Cloud SQL): Verificación de que el backend interactúa correctamente con la Base de Datos Relacional (Cloud SQL - MySQL/PostgreSQL) para almacenar, recuperar y actualizar datos de pacientes, historiales clínicos, citas, usuarios y roles. Esto incluye el almacenamiento seguro y cifrado en reposo.
+    ◦ Backend-Cloud Storage: Comprobar que el backend puede subir, descargar y asociar archivos digitales (PDFs, imágenes, videos cortos) a Cloud Storage de forma segura y cifrada.
+    ◦ Backend-IA (Gemma 3): Asegurar que las llamadas del backend a la API del modelo de Inteligencia Artificial Gemma 3 (o similar a Gemini) para funciones de automatización y el chat interno se realicen de manera eficiente y devuelvan los resultados esperados.
+• Enfoque: Garantizar que los datos se transfieran correctamente entre los componentes y que las interfaces (APIs) funcionen según lo esperado, sin errores de comunicación o formato.
+Pruebas Funcionales (End-to-End)
+• Propósito: Estas pruebas verifican que cada funcionalidad completa del Dashboard, desde la interacción del usuario en el frontend hasta la acción en el backend y la base de datos, funciona de acuerdo con los requisitos de negocio. Simulan el uso real del sistema por parte del personal del consultorio.
+• Aplicación: Se enfocarán en probar cada flujo de usuario clave detallado en los documentos proporcionados, especialmente en el "Mapa Detallado: Recorrido del Usuario en el Dashboard de Escritorio".
+    ◦ Flujo de Login: Desde el ingreso de credenciales hasta la redirección exitosa al Dashboard principal y la correcta visualización de las secciones según el rol del usuario.
+    ◦ Gestión de Pacientes: Creación de perfiles, búsqueda avanzada, y el registro cronológico de historial clínico detallado con la capacidad de adjuntar documentos.
+    ◦ Gestión Documental: Subida, asociación y visualización de archivos digitales (PDF, imágenes, videos cortos) directamente en el expediente del paciente.
+    ◦ Módulo de Agenda y Citas: Programación, reprogramación y gestión de citas con estados personalizables, incluyendo la visualización de citas del día.
+    ◦ Gestión de Usuarios y Roles: Creación de nuevas cuentas de usuario y asignación de roles con permisos específicos, así como el acceso (para Admin Principal) a los logs de auditoría.
+    ◦ Interacciones de IA y Automatización: Uso del chat interno para consultas rápidas, resúmenes de texto o redacción de informes, y activación de automatizaciones básicas como redacción de correos o generación de hojas membretadas.
+• Enfoque: Validar que el sistema completo, desde el punto de vista del usuario final, cumple con todas las especificaciones funcionales y de negocio. Se confirmará que los datos se transfieren y persisten correctamente en cada paso del flujo, y que las respuestas del sistema son las esperadas en diferentes escenarios (éxito, error, estados vacíos).
+Pruebas de UI/Usabilidad
+• Propósito: Estas pruebas se centran en verificar que la interfaz de usuario es intuitiva, fácil de navegar, visualmente consistente y que los elementos interactivos se comportan como se espera. También buscan asegurar la comodidad visual y la legibilidad.
+• Aplicación: Se aplicarán a toda la interfaz de usuario del Dashboard, desde la pantalla de Login hasta todas las secciones y paneles del Dashboard Principal, siguiendo rigurosamente el estilo visual "Glassmorphism Oscuro".
+• Enfoque:
+    ◦ Experiencia del Usuario: Evaluar la facilidad de interacción con componentes como botones, formularios, tablas y menús.
+    ◦ Navegación: Asegurar que la navegación entre vistas sea fluida e intuitiva.
+    ◦ Coherencia Visual: Confirmar que el diseño "Glassmorphism Oscuro", con su fondo gris carbón (#121212), paneles flotantes de "vidrio esmerilado" (backdrop-filter: blur(24px)), auras de color (azul #4A69FF y violeta #8C52FF), texto nítido y brillante (#F5F5F5), y bordes sutiles y luminosos, se aplica de manera consistente en toda la interfaz.
+    ◦ Accesibilidad: Verificar que la legibilidad del texto sea óptima (contraste > 4.5:1 WCAG) y que el diseño sea accesible, especialmente considerando a pacientes mayores o con dificultades tecnológicas, como se busca en el ecosistema general.
+    ◦ Retroalimentación Interactiva: Probar que la interacción al pulsar botones (sutil aumento de brillo o ligero hundimiento) proporcione una retroalimentación clara e inmediata al usuario.
+Pruebas de Seguridad
+• Propósito: Las pruebas de seguridad tienen como propósito identificar vulnerabilidades y asegurar que la aplicación protege los datos sensibles y controla el acceso adecuadamente. Es crucial para abordar las "preocupaciones de seguridad de datos".
+• Enfoque:
+    ◦ Autenticación (Login con credenciales válidas/inválidas): Se probará rigurosamente la pantalla de Login, que es el punto de entrada fundamental al "Ecosistema Digital Inteligente para Cirugía Especial".
+        ▪ Se verificará que solo los usuarios autorizados (Administradores, Admin Principal, Admin Secundario, Asistentes) puedan acceder al sistema.
+        ▪ Las credenciales se enviarán de forma segura al Servidor de Aplicación (Backend) alojado en Google Cloud Platform (GCP), utilizando HTTPS (TLS 1.3) para cifrar los datos en tránsito, protegiéndolos de interceptaciones.
+        ▪ El backend verificará las credenciales contra la Base de Datos Relacional (Cloud SQL - MySQL/PostgreSQL), donde los datos sensibles como contraseñas se almacenan cifrados en reposo y mediante funciones de hash (indicado por hash_password VARCHAR).
+        ▪ En caso de credenciales incorrectas, se espera que la aplicación permanezca en la pantalla de Login y muestre un mensaje de error claro y conciso, como "Usuario o contraseña incorrectos". El Servicio de Logs de Auditoría registrará este intento fallido.
+        ▪ Se probarán escenarios de campos vacíos o formatos inválidos, esperando mensajes de validación como "Campo 'Nombre de Usuario' requerido" o "Campo 'Contraseña' requerido".
+    ◦ Autorización (Verificar que cada rol solo tiene acceso a las funcionalidades y datos permitidos): El sistema impone un Control de Acceso Basado en Roles (RBAC) estricto.
+        ▪ Se probará cada rol ("Admin Principal", "Admin Secundario", "Asistente", "Invitado (Solo Lectura)") para asegurar que sus permisos sobre la información y funcionalidades del Dashboard se aplican correctamente.
+        ▪ Por ejemplo, se verificará que solo el "Admin Principal" tenga acceso a la "Gestión de Usuarios" y a la visualización de los "Logs de Auditoría".
+        ▪ Se asegurará que un "Asistente" pueda gestionar pacientes, citas y documentos, pero no tenga acceso a la gestión de usuarios o logs.
+    ◦ Validación de entrada para prevenir ataques (ej. inyección SQL, XSS): Aunque las fuentes no especifican ataques concretos, se menciona la validación de entrada para campos obligatorios y formatos válidos en formularios (ej., creación de perfil de paciente, login). Esto implica que se implementarán controles a nivel de backend y frontend para sanear y validar las entradas de usuario, lo cual es fundamental para mitigar ataques de inyección (SQL, XSS) al interactuar con la Base de Datos Relacional (Cloud SQL) y al mostrar contenido en la interfaz. El uso de frameworks como Python/Flask/Django o Node.js/Express facilita la implementación de estas defensas.
+    ◦ Seguridad en el manejo de archivos subidos: Se probará la funcionalidad de "Gestión Documental Avanzada" que permite subir, asociar y visualizar archivos digitales (PDFs, imágenes, videos cortos) a Cloud Storage. Se verificará que estos archivos se almacenen de forma segura y cifrados en reposo en Cloud Storage. Las pruebas incluirán la validación de tipos de archivo soportados y límites de tamaño para prevenir la subida de contenido malicioso.
+    ◦ Seguridad de las APIs: Todas las comunicaciones entre la aplicación de escritorio y el Servidor de Aplicación (Backend) se realizan a través de APIs RESTful utilizando HTTPS (TLS 1.3). El API Gateway / Load Balancer actuará como el punto de entrada seguro y primera línea de defensa para todas las solicitudes, distribuyendo el tráfico y gestionando las conexiones de forma segura. Se probará la robustez de estos endpoints frente a intentos de acceso no autorizado y manipulación de datos.
+Pruebas de Rendimiento
+• Propósito: Medir la velocidad, capacidad de respuesta y estabilidad de la aplicación bajo diferentes cargas. El objetivo del ecosistema es optimizar la gestión de pacientes y mejorar la eficiencia operativa.
+• Enfoque:
+    ◦ Probar el tiempo que tarda en cargar la tabla de datos con un volumen grande de registros: El Dashboard Principal muestra tablas de datos dinámicos como "Pacientes Recientes". Se simulará un alto volumen de pacientes para asegurar que la carga de estos listados sea eficiente y no afecte la experiencia del usuario.
+    ◦ El tiempo de respuesta de las APIs críticas: Se evaluará la velocidad de respuesta de las APIs más utilizadas y fundamentales, tales como:
+        ▪ Búsqueda de pacientes: La "Búsqueda Avanzada" permite la búsqueda instantánea por cualquier campo. La API GET /patients se utilizará para estas pruebas.
+        ▪ Obtención de historial clínico: La visualización y el registro del "Historial Clínico Detallado" son funcionalidades centrales.
+        ▪ El backend procesa las solicitudes, interactúa con la Base de Datos Relacional (Cloud SQL) y el Almacenamiento de Archivos (Cloud Storage), y envía la información actualizada de vuelta al frontend.
+    ◦ El rendimiento de la interfaz al navegar o interactuar con componentes complejos: Se probará la fluidez de la navegación entre las diferentes secciones del Dashboard (Pacientes, Agenda, etc.), así como la interacción con elementos que requieren mayor procesamiento, como los formularios de creación o edición, y el calendario interactivo del "Módulo de Agenda y Citas". El diseño "Glassmorphism Oscuro" busca una experiencia de usuario fluida y de alta calidad, lo que implica un rendimiento de UI óptimo.
+    ◦ El impacto del uso del Visor de Archivos Visuales: Se probará cómo el sistema maneja la visualización de archivos digitales (imágenes, videos cortos) asociados a los expedientes de los pacientes, especialmente al navegar por galerías con múltiples elementos. Se evaluará el tiempo de carga y la capacidad de respuesta del visor bajo diferentes condiciones.
+    ◦ Considerar el impacto del volumen proyectado de 2TB de datos (principalmente en Cloud Storage) en el rendimiento general: El sistema se apoya en una arquitectura de nube robusta y escalable en GCP. El Almacenamiento de Archivos (Cloud Storage) está diseñado para almacenar grandes volúmenes de archivos digitales y se menciona una capacidad incluida de hasta 1 Terabyte (1000 GB) mensual como cortesía inicial, con costos adicionales para volúmenes mayores. El rendimiento dependerá en gran medida de una conexión a internet estable de al menos 250 Mbps, que es un requisito de conectividad para el ecosistema.
+Pruebas de Regresión
+• Propósito: Asegurar que los cambios o nuevas funcionalidades no han introducido errores en partes existentes del sistema.
+• Cuándo se ejecutarán: Después de cada nueva implementación significativa o corrección de errores.
+    ◦ El "Núcleo Administrativo Central" o Dashboard de Escritorio es la columna vertebral y la base de datos central de todo el ecosistema, desarrollado en la Fase 1. Cualquier cambio en esta fase fundacional, como la implementación de la "Inteligencia y Automatización Integrada" con Gemma 3 o la "Gestión de Usuarios y Roles", requerirá pruebas de regresión.
+    ◦ El proyecto se ejecuta en tres fases secuenciales, donde cada fase construye sobre la anterior. Esto implica que las funcionalidades desarrolladas en fases posteriores (como la Página Web Profesional en Fase 2 o la Aplicación Móvil para Pacientes en Fase 3) que interactúan con el backend centralizado y la base de datos de la Fase 1, necesitarán pruebas de regresión para garantizar la compatibilidad y estabilidad del sistema integral.
+    ◦ El "Plan de Mantenimiento y Soporte" mensual de $6,000.00 MXN incluye "actualizaciones de seguridad y la evolución continua de la aplicación". Esta evolución continua, que implica nuevas funcionalidades o mejoras, requerirá un ciclo constante de pruebas de regresión para mantener la integridad del sistema a lo largo del tiempo.
+Casos de Prueba Detallados:
+1. Pruebas de Login y Acceso
+ID: CP-LOGIN-001
+• Descripción Breve del Escenario que se Prueba: Inicio de sesión exitoso de un usuario con rol "Admin Principal".
+• Precondiciones:
+    ◦ La aplicación de escritorio del "Núcleo Administrativo Central" está instalada y ejecutándose.
+    ◦ Existe un usuario de prueba en la base de datos con el rol "Admin Principal" y credenciales válidas.
+    ◦ Conexión a internet estable de al menos 250 Mbps.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Abrir la aplicación de escritorio.
+    2. En la "Pantalla: Login de Usuario", ingresar el "Nombre de Usuario" y "Contraseña" válidos del Admin Principal en los campos designados.
+    3. Hacer clic en el botón "Iniciar Sesión".
+• Datos de Entrada de Prueba:
+    ◦ Nombre de Usuario: admin.principal
+    ◦ Contraseña: PasswordSeguro123
+• Resultado Esperado:
+    ◦ Las credenciales se envían al backend de forma segura mediante HTTPS (TLS 1.3).
+    ◦ El backend verifica las credenciales con la Base de Datos Relacional (Cloud SQL) donde las contraseñas están hasheadas y cifradas en reposo.
+    ◦ El "Servicio de Logs de Auditoría" registra un intento de login exitoso.
+    ◦ El sistema redirecciona al usuario al "Dashboard Principal (Vista General)".
+    ◦ La cabecera del dashboard muestra "Bienvenido, Dr. Admin Principal (Admin)".
+    ◦ La barra de navegación lateral presenta todas las secciones, incluyendo "Administración (Gestionar Usuarios, Ver Logs de Auditoría)".
+• Criterios de Éxito/Fallo: La prueba pasa si el usuario es redirigido al Dashboard principal con el rol correcto y acceso a todas las funcionalidades esperadas para un "Admin Principal"; de lo contrario, falla.
+ID: CP-LOGIN-002
+• Descripción Breve del Escenario que se Prueba: Intento de inicio de sesión con credenciales incorrectas.
+• Precondiciones:
+    ◦ La aplicación de escritorio está instalada y ejecutándose.
+    ◦ Conexión a internet estable de al menos 250 Mbps.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Abrir la aplicación de escritorio.
+    2. En la "Pantalla: Login de Usuario", ingresar un "Nombre de Usuario" existente y una "Contraseña" incorrecta.
+    3. Hacer clic en el botón "Iniciar Sesión".
+• Datos de Entrada de Prueba:
+    ◦ Nombre de Usuario: admin.principal
+    ◦ Contraseña: ContrasenaIncorrecta
+• Resultado Esperado:
+    ◦ El backend rechaza las credenciales después de verificarlas con la base de datos.
+    ◦ El "Servicio de Logs de Auditoría" registra un intento de login fallido.
+    ◦ La aplicación permanece en la "Pantalla: Login de Usuario".
+    ◦ Se muestra un mensaje de error claro y conciso: "Usuario o contraseña incorrectos".
+• Criterios de Éxito/Fallo: La prueba pasa si la aplicación permanece en la pantalla de Login y muestra el mensaje de error "Usuario o contraseña incorrectos"; de lo contrario, falla.
+ID: CP-LOGIN-003
+• Descripción Breve del Escenario que se Prueba: Intento de inicio de sesión dejando campos vacíos.
+• Precondiciones:
+    ◦ La aplicación de escritorio está instalada y ejecutándose.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Abrir la aplicación de escritorio.
+    2. En la "Pantalla: Login de Usuario", dejar el campo "Nombre de Usuario" vacío y/o el campo "Contraseña" vacío.
+    3. Hacer clic en el botón "Iniciar Sesión".
+• Datos de Entrada de Prueba:
+    ◦ Nombre de Usuario: (vacío)
+    ◦ Contraseña: (vacío)
+• Resultado Esperado:
+    ◦ La aplicación permanece en la "Pantalla: Login de Usuario".
+    ◦ Se muestran mensajes de validación para los campos requeridos: "Campo 'Nombre de Usuario' requerido" y/o "Campo 'Contraseña' requerido".
+    ◦ No se realiza una llamada al backend si la validación es a nivel de frontend.
+• Criterios de Éxito/Fallo: La prueba pasa si la aplicación permanece en la pantalla de Login y muestra los mensajes de validación para campos vacíos; de lo contrario, falla.
+ID: CP-LOGIN-004
+• Descripción Breve del Escenario que se Prueba: Intento de inicio de sesión sin conexión a internet.
+• Precondiciones:
+    ◦ La aplicación de escritorio está instalada y ejecutándose.
+    ◦ La computadora no tiene conexión a internet.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Desconectar la computadora de internet.
+    2. Abrir la aplicación de escritorio.
+    3. En la "Pantalla: Login de Usuario", ingresar el "Nombre de Usuario" y "Contraseña" (válidos o inválidos) en los campos designados.
+    4. Hacer clic en el botón "Iniciar Sesión".
+• Datos de Entrada de Prueba:
+    ◦ Nombre de Usuario: cualquier_usuario
+    ◦ Contraseña: cualquier_password
+• Resultado Esperado:
+    ◦ La aplicación intenta comunicarse con el backend en la nube pero falla debido a la falta de conectividad.
+    ◦ La aplicación permanece en la "Pantalla: Login de Usuario".
+    ◦ Se muestra un mensaje de error general sobre problemas de conexión o indisponibilidad del servicio (ej., "No se pudo conectar al servidor. Por favor, intente de nuevo más tarde.").
+• Criterios de Éxito/Fallo: La prueba pasa si la aplicación muestra un mensaje de error de conectividad y permanece en la pantalla de Login; de lo contrario, falla.
+2. Pruebas de Gestión Integral del Expediente del Paciente
+ID: CP-PACIENTES-001
+• Descripción Breve del Escenario que se Prueba: Creación de un nuevo perfil de paciente con datos completos y válidos.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Pacientes" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Nuevo Paciente".
+    3. En el "Formulario de Creación de Perfil de Paciente", llenar todos los campos obligatorios y opcionales con datos válidos.
+    4. Hacer clic en el botón "Guardar Paciente".
+• Datos de Entrada de Prueba:
+    ◦ Nombre: Juan
+    ◦ Apellido: Pérez García
+    ◦ Fecha de Nacimiento: 1985-07-15
+    ◦ Teléfono: 5512345678
+    ◦ Email: juan.perez@example.com
+    ◦ Dirección: Calle Falsa 123
+• Resultado Esperado:
+    ◦ Se envía una solicitud POST al backend para crear el nuevo paciente.
+    ◦ El nuevo perfil de paciente se crea y se guarda en la "Base de Datos Relacional (Cloud SQL)".
+    ◦ La tabla "Pacientes Recientes" en el Dashboard Principal se actualiza para incluir al nuevo paciente.
+    ◦ El "Servicio de Logs de Auditoría" registra la creación del nuevo paciente.
+• Criterios de Éxito/Fallo: La prueba pasa si el paciente se crea correctamente, se visualiza en la tabla de pacientes recientes y se registra la acción en los logs de auditoría; de lo contrario, falla.
+ID: CP-PACIENTES-002
+• Descripción Breve del Escenario que se Prueba: Intento de creación de un nuevo perfil de paciente con campos obligatorios vacíos.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Pacientes" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Nuevo Paciente".
+    3. En el "Formulario de Creación de Perfil de Paciente", dejar el campo "Nombre" vacío y/o el campo "Apellido" vacío.
+    4. Hacer clic en el botón "Guardar Paciente".
+• Datos de Entrada de Prueba:
+    ◦ Nombre: (vacío)
+    ◦ Apellido: Pérez García
+    ◦ Fecha de Nacimiento: 1985-07-15
+    ◦ Teléfono: 5512345678
+    ◦ Email: juan.perez@example.com
+• Resultado Esperado:
+    ◦ La aplicación permanece en el formulario de "Creación de Perfil de Paciente".
+    ◦ Se muestra un mensaje de validación para el campo faltante: "Campo 'Nombre' requerido".
+    ◦ No se realiza una solicitud de creación al backend.
+• Criterios de Éxito/Fallo: La prueba pasa si la aplicación muestra el mensaje de validación y no permite guardar el paciente; de lo contrario, falla.
+ID: CP-PACIENTES-003
+• Descripción Breve del Escenario que se Prueba: Búsqueda avanzada de un paciente existente por nombre.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal", "Admin Secundario", "Asistente" o "Invitado (Solo Lectura)".
+    ◦ Existe al menos un paciente de prueba en la base de datos.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Pacientes" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Buscar Paciente".
+    3. En el campo de búsqueda, ingresar el nombre completo o parcial de un paciente existente.
+    4. Hacer clic en el botón "Buscar".
+• Datos de Entrada de Prueba:
+    ◦ Criterio de Búsqueda: Laura Vargas
+• Resultado Esperado:
+    ◦ Se envía una solicitud GET al backend (ej. GET /patients?query=Laura Vargas).
+    ◦ La "Búsqueda de Pacientes" muestra una "Tabla de resultados" con los pacientes que coinciden con el criterio de búsqueda.
+    ◦ Las opciones de "Acción" ("Ver Historial", "Nueva Cita") están disponibles para los resultados.
+• Criterios de Éxito/Fallo: La prueba pasa si la tabla de resultados muestra correctamente los pacientes coincidentes; de lo contrario, falla.
+ID: CP-PACIENTES-004
+• Descripción Breve del Escenario que se Prueba: Registro de una nueva entrada en el historial clínico detallado de un paciente.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+    ◦ Existe un paciente al que se le registrará el historial.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Buscar un paciente existente (ej. CP-PACIENTES-003) y hacer clic en "Ver Historial" desde la tabla de resultados o "Pacientes Recientes".
+    2. Desde la "Ficha del Paciente", hacer clic en "Añadir a Historial".
+    3. En el "Formulario de Registro de Historial Clínico", completar los campos "Fecha de Consulta", "Diagnóstico" y "Notas de Evolución".
+    4. Hacer clic en el botón "Guardar Historial".
+• Datos de Entrada de Prueba:
+    ◦ Fecha de Consulta: 2024-07-20
+    ◦ Diagnóstico: Fractura de peroné
+    ◦ Notas de Evolución: Paciente presenta dolor leve, se indica reposo y antiinflamatorios.
+• Resultado Esperado:
+    ◦ Se envía una solicitud al backend para guardar la nueva entrada del historial.
+    ◦ La nueva entrada se guarda cronológicamente en el "Historial Clínico Detallado" del paciente en la "Base de Datos Relacional (Cloud SQL)".
+    ◦ El "Servicio de Logs de Auditoría" registra la acción de modificación de datos del paciente.
+• Criterios de Éxito/Fallo: La prueba pasa si la nueva entrada del historial clínico aparece correctamente en la ficha del paciente y se registra la acción en los logs de auditoría; de lo contrario, falla.
+3. Pruebas de Gestión Documental Avanzada
+ID: CP-DOCUMENTOS-001
+• Descripción Breve del Escenario que se Prueba: Subida y asociación de un archivo PDF al expediente de un paciente.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+    ◦ Existe un paciente al que se le adjuntará el documento.
+    ◦ Se dispone de un archivo PDF de prueba válido.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la ficha de un paciente existente (ej. tras búsqueda o desde "Pacientes Recientes").
+    2. Hacer clic en la opción para "Adjuntar Documentos" (ya sea en el historial clínico o en una sección dedicada de documentos).
+    3. En el diálogo de selección de archivos, seleccionar un archivo PDF de prueba.
+    4. Confirmar la subida o etiquetar el documento si la interfaz lo requiere.
+• Datos de Entrada de Prueba:
+    ◦ Archivo: Informe_Radiografia_Juan_Perez.pdf
+    ◦ Tamaño: 1.5 MB
+• Resultado Esperado:
+    ◦ El archivo se sube a "Cloud Storage" y se almacena cifrado en reposo.
+    ◦ El documento digital se asocia directamente al expediente del paciente (o a una entrada específica del historial clínico).
+    ◦ El "Servicio de Logs de Auditoría" registra la subida del documento.
+• Criterios de Éxito/Fallo: La prueba pasa si el PDF se sube, se asocia correctamente al paciente y es visible en su expediente, y la acción se registra en los logs de auditoría; de lo contrario, falla.
+ID: CP-DOCUMENTOS-002
+• Descripción Breve del Escenario que se Prueba: Intento de subida de un archivo con tipo no soportado.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+    ◦ Existe un paciente para adjuntar el documento.
+    ◦ Se dispone de un archivo de prueba con extensión no soportada (ej. .exe, .zip).
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la ficha de un paciente existente.
+    2. Hacer clic en la opción para "Adjuntar Documentos".
+    3. En el diálogo de selección de archivos, seleccionar un archivo de tipo no soportado (ej. malware.exe).
+    4. Confirmar la subida.
+• Datos de Entrada de Prueba:
+    ◦ Archivo: documento_malicioso.exe
+• Resultado Esperado:
+    ◦ La aplicación bloquea la subida en el frontend o el backend la rechaza.
+    ◦ Se muestra un mensaje de error: "Tipo de archivo no válido".
+    ◦ No se registra ninguna acción de subida exitosa en el "Servicio de Logs de Auditoría" para este intento.
+• Criterios de Éxito/Fallo: La prueba pasa si el sistema impide la subida del archivo no soportado y muestra un mensaje de error relevante; de lo contrario, falla.
+ID: CP-DOCUMENTOS-003
+• Descripción Breve del Escenario que se Prueba: Visualización de un documento digital previamente subido en el expediente del paciente.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal", "Admin Secundario" o "Asistente".
+    ◦ Existe un paciente con al menos un documento digital (ej. PDF, imagen, video corto) asociado a su expediente en "Cloud Storage".
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la ficha de un paciente existente.
+    2. Acceder a la sección donde se listan los documentos asociados al paciente o al "Visor de Archivos Visuales".
+    3. Hacer clic en la miniatura o el nombre de un documento para visualizarlo.
+• Datos de Entrada de Prueba: (N/A, se utiliza un documento existente)
+• Resultado Esperado:
+    ◦ El sistema recupera el archivo desde "Cloud Storage".
+    ◦ El documento se abre y visualiza correctamente dentro del visor integrado de la aplicación o en una ventana emergente.
+    ◦ La visualización de imágenes y videos se realiza de manera fluida, sin demoras significativas, considerando la conectividad de al menos 250 Mbps.
+• Criterios de Éxito/Fallo: La prueba pasa si el documento se visualiza correctamente y de forma fluida; de lo contrario, falla.
+4. Pruebas del Módulo de Agenda y Citas
+ID: CP-AGENDA-001
+• Descripción Breve del Escenario que se Prueba: Agendamiento de una nueva cita para un paciente.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+    ◦ Existe un paciente al que se le agendará la cita.
+    ◦ El horario seleccionado está disponible.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Agenda" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Agendar Cita".
+    3. En el "Formulario de Agendar Nueva Cita", seleccionar un paciente existente, una "Fecha", una "Hora" y un "Tipo de Cita".
+    4. Seleccionar el "Estado" de la cita como "Programada".
+    5. Hacer clic en el botón "Guardar Cita".
+• Datos de Entrada de Prueba:
+    ◦ Paciente: Juan Pérez García
+    ◦ Fecha: 2024-07-25
+    ◦ Hora: 10:00 AM
+    ◦ Tipo de Cita: Primera Consulta
+    ◦ Estado: Programada
+• Resultado Esperado:
+    ◦ La nueva cita se guarda en la "Base de Datos Relacional (Cloud SQL)".
+    ◦ La cita aparece visible en el "Calendario Interactivo" y en el panel "CITAS DEL DÍA" en el Dashboard Principal.
+    ◦ El "Servicio de Logs de Auditoría" registra la creación de la cita.
+• Criterios de Éxito/Fallo: La prueba pasa si la cita se crea correctamente, es visible en el calendario y se registra en los logs de auditoría; de lo contrario, falla.
+ID: CP-AGENDA-002
+• Descripción Breve del Escenario que se Prueba: Intento de agendamiento de una cita en un horario ya ocupado.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+    ◦ Existe una cita ya agendada para una fecha y hora específica.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Agenda" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Agendar Cita".
+    3. En el "Formulario de Agendar Nueva Cita", intentar agendar una cita para la misma "Fecha" y "Hora" de una cita ya existente.
+    4. Hacer clic en el botón "Guardar Cita".
+• Datos de Entrada de Prueba:
+    ◦ Paciente: Nuevo Paciente
+    ◦ Fecha: 2024-07-25 (misma que cita existente)
+    ◦ Hora: 10:00 AM (misma que cita existente)
+    ◦ Tipo de Cita: Seguimiento
+• Resultado Esperado:
+    ◦ La aplicación impide el agendamiento y permanece en el formulario.
+    ◦ Se muestra un mensaje de conflicto: "Horario no disponible".
+• Criterios de Éxito/Fallo: La prueba pasa si el sistema detecta el conflicto de horario y muestra el mensaje de error correspondiente; de lo contrario, falla.
+ID: CP-AGENDA-003
+• Descripción Breve del Escenario que se Prueba: Reprogramación de una cita existente a una nueva fecha y hora.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+    ◦ Existe una cita de prueba ya agendada y visible en el agenda.
+    ◦ La nueva fecha y hora seleccionada están disponibles.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Agenda" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Ver Calendario".
+    3. Seleccionar una cita existente en el calendario y hacer clic en ella para ver los "Detalles de Cita".
+    4. Hacer clic en el botón "Reprogramar" o editar los campos de fecha/hora.
+    5. Seleccionar una nueva "Fecha" y "Hora".
+    6. Guardar los cambios.
+• Datos de Entrada de Prueba:
+    ◦ Cita Original: 2024-07-25 10:00 AM - Juan Pérez
+    ◦ Nueva Fecha: 2024-08-01
+    ◦ Nueva Hora: 11:30 AM
+• Resultado Esperado:
+    ◦ La cita se actualiza en la "Base de Datos Relacional (Cloud SQL)" con la nueva fecha y hora.
+    ◦ La cita se muestra en el calendario en su nueva posición y desaparece de la anterior.
+    ◦ El "Servicio de Logs de Auditoría" registra la modificación de la cita.
+• Criterios de Éxito/Fallo: La prueba pasa si la cita se reprograma correctamente y la acción se registra en los logs de auditoría; de lo contrario, falla.
+5. Pruebas de Seguridad, Roles y Accesos Rápidos
+ID: CP-SEGURIDAD-001
+• Descripción Breve del Escenario que se Prueba: Creación de una nueva cuenta de usuario con rol "Asistente" por un "Admin Principal".
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal".
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Administración" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Gestionar Usuarios".
+    3. Hacer clic en el botón "Crear Nuevo Usuario".
+    4. Completar los campos de usuario (Nombre de Usuario, Contraseña) y seleccionar "Asistente" del desplegable de roles.
+    5. Hacer clic en "Guardar Usuario".
+• Datos de Entrada de Prueba:
+    ◦ Nombre de Usuario: asistente.prueba
+    ◦ Contraseña: PasswordAsistente1!
+    ◦ Rol: Asistente
+• Resultado Esperado:
+    ◦ La nueva cuenta de usuario se crea y se guarda en la "Base de Datos Relacional (Cloud SQL)", con la contraseña hasheada y el rol asignado.
+    ◦ El usuario aparece en el listado de usuarios en la pantalla "Gestión de Usuarios".
+    ◦ El "Servicio de Logs de Auditoría" registra la creación del nuevo usuario.
+• Criterios de Éxito/Fallo: La prueba pasa si el nuevo usuario con rol "Asistente" se crea correctamente y la acción se registra en los logs de auditoría; de lo contrario, falla.
+ID: CP-SEGURIDAD-002
+• Descripción Breve del Escenario que se Prueba: Intento de acceso a "Gestionar Usuarios" por un usuario con rol "Asistente" (permiso denegado).
+• Precondiciones:
+    ◦ Usuario logueado con rol "Asistente".
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Administración" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Gestionar Usuarios".
+• Datos de Entrada de Prueba: (N/A)
+• Resultado Esperado:
+    ◦ El sistema deniega el acceso a la pantalla "Gestión de Usuarios".
+    ◦ Se muestra un mensaje de "Acceso Denegado" o simplemente la opción no es visible/clicable.
+    ◦ El "Servicio de Logs de Auditoría" puede registrar un intento de acceso no autorizado, si la implementación lo contempla a este nivel.
+• Criterios de Éxito/Fallo: La prueba pasa si el usuario "Asistente" no puede acceder a la gestión de usuarios y se le notifica la denegación de acceso; de lo contrario, falla.
+ID: CP-SEGURIDAD-003
+• Descripción Breve del Escenario que se Prueba: Acceso y visualización de los logs de auditoría por un "Admin Principal".
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal".
+    ◦ Existen registros en el "Servicio de Logs de Auditoría".
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Administración" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Ver Logs de Auditoría".
+• Datos de Entrada de Prueba: (N/A)
+• Resultado Esperado:
+    ◦ La aplicación muestra la "Pantalla: Logs de Auditoría" con una "Tabla cronológica" de todas las actividades y cambios realizados en el sistema (ej., creación de pacientes, modificaciones de citas, intentos de login).
+    ◦ Los logs son inmutables (Write Once, Read Many - WORM), asegurando su integridad.
+• Criterios de Éxito/Fallo: La prueba pasa si el "Admin Principal" puede acceder y visualizar la tabla completa de logs de auditoría sin errores; de lo contrario, falla.
+6. Pruebas de Inteligencia y Automatización Integrada (Modelo de IA Gemma 3)
+ID: CP-IA-001
+• Descripción Breve del Escenario que se Prueba: Interacción con el "Chat Interno Básico" para una consulta rápida.
+• Precondiciones:
+    ◦ Usuario logueado con cualquier rol.
+    ◦ El modelo de IA "Gemma 3" está integrado y operativo en el backend a través de APIs.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Hacer clic en el icono o navegar a la sección dedicada al chat interno en el Dashboard.
+    2. En el "Campo de entrada de texto", ingresar una consulta simple.
+    3. Hacer clic en "Enviar".
+• Datos de Entrada de Prueba:
+    ◦ Consulta: Resúmeme el historial de Juan Pérez García.
+• Resultado Esperado:
+    ◦ El backend envía la consulta al modelo "Gemma 3".
+    ◦ El chat interno muestra una respuesta relevante generada por la IA en formato de texto.
+    ◦ La interacción es solo de texto y no genera archivos.
+• Criterios de Éxito/Fallo: La prueba pasa si la IA responde correctamente a la consulta en formato de texto y no intenta generar un archivo; de lo contrario, falla.
+ID: CP-IA-002
+• Descripción Breve del Escenario que se Prueba: Uso de la IA para generar un borrador de correo electrónico.
+• Precondiciones:
+    ◦ Usuario logueado con cualquier rol.
+    ◦ El modelo de IA "Gemma 3" está integrado y operativo en el backend a través de APIs.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a un módulo que permita la automatización de la redacción de correos o usar el chat interno.
+    2. Ingresar una instrucción para generar un borrador de correo.
+    3. Hacer clic en "Enviar" o activar la función de generación.
+• Datos de Entrada de Prueba:
+    ◦ Instrucción: Redacta un correo de recordatorio de cita para Juan Pérez para el 25 de julio a las 10 AM.
+• Resultado Esperado:
+    ◦ La IA genera un borrador de correo electrónico basado en la instrucción y lo muestra en la interfaz (ej., en el chat o en un campo de texto de un formulario de correo).
+    ◦ El contenido es coherente con la solicitud y en formato de texto.
+• Criterios de Éxito/Fallo: La prueba pasa si la IA genera un borrador de correo electrónico relevante y en el formato de texto esperado; de lo contrario, falla.
+7. Pruebas de Cerrar Sesión
+ID: CP-LOGOUT-001
+• Descripción Breve del Escenario que se Prueba: Cierre de sesión exitoso desde el Dashboard Principal.
+• Precondiciones:
+    ◦ Usuario logueado con cualquier rol en el Dashboard Principal.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. En la "Cabecera (Header)" del Dashboard Principal, hacer clic en la opción "Cerrar Sesión".
+• Datos de Entrada de Prueba: (N/A)
+• Resultado Esperado:
+    ◦ La sesión del usuario se invalida en el backend.
+    ◦ El usuario es redirigido a la "Pantalla: Login de Usuario".
+    ◦ El "Servicio de Logs de Auditoría" registra la acción de cierre de sesión.
+• Criterios de Éxito/Fallo: La prueba pasa si el usuario es redirigido a la pantalla de Login y su sesión es correctamente terminada; de lo contrario, falla.
+
+5. Pruebas Específicas Importantes (Ejemplos de Enfoque):
+• Enfoque en probar a fondo las funcionalidades críticas como:
+    ◦ Ciclo completo de gestión de Pacientes (Crear, Ver, Editar, Archivar, Eliminar Suave):
+        ▪ Creación de Perfiles: Se debe verificar la correcta creación de perfiles de paciente con todos sus datos demográficos y de contacto. Esto incluye probar la validación de campos obligatorios y formatos incorrectos, como el mensaje "Campo 'Nombre' requerido" o "Formato de email inválido".
+        ▪ Visualización: Es crucial probar la capacidad de búsqueda instantánea de pacientes por cualquier campo (nombre, ID, palabra clave en notas) y que el sistema devuelva resultados precisos. También, verificar que el "Dashboard Principal" muestre a los "Pacientes Recientes" en una tabla con la información adecuada y opciones de "Acción" como "Ver Historial" o "Nueva Cita".
+        ▪ Edición: Se debe asegurar que los datos de un paciente puedan ser modificados y guardados correctamente, y que estos cambios se reflejen en la base de datos.
+        ▪ Registro Historial Clínico Detallado: Probar la adición de nuevas entradas cronológicas en el historial clínico de un paciente, verificando que se incluyan campos como "Fecha de Consulta", "Diagnóstico", "Notas de Evolución" y "Procedimientos y Tratamientos". Cada entrada debe vincularse al paciente específico.
+        ▪ Archivar / Eliminar Suave: Un aspecto crítico es la implementación del "borrado suave" (soft delete). Las pruebas deben confirmar que, al seleccionar registros y hacer clic en "Eliminar", los datos no se borran permanentemente de la base de datos, sino que se marcan como inactivos o archivados (ej., is_deleted = true). Esto garantiza que la información no se pierda accidentalmente y se mantenga para auditoría o recuperación futura. Esta funcionalidad aborda la "saturación y dispersión de información" y la "dificultad en el seguimiento eficiente del paciente".
+    ◦ Funcionalidades de Búsqueda y Filtrado (probar diferentes criterios, casos borde, búsqueda vacía):
+        ▪ Búsqueda Avanzada: Se debe verificar la eficacia de la búsqueda por múltiples criterios (nombre, ID, palabra clave en notas) y a nivel global en la aplicación.
+        ▪ Casos Borde y Búsqueda Vacía: Probar búsquedas con caracteres especiales, nombres muy largos/cortos, y especialmente qué ocurre cuando una búsqueda no encuentra resultados, asegurando que se muestre un mensaje claro como "No se encontraron pacientes".
+        ▪ Filtros: El sistema ofrece opciones de filtrado avanzado (por fecha, estado, tipo de consulta) y una estructura de carpetas (General, Operaciones, Consultas, Laboratorio) que funciona como filtro. Se debe validar que al aplicar estos filtros, el contenido del área principal se actualice correctamente para mostrar solo los registros pertenecientes a la categoría seleccionada.
+    ◦ Gestión Documental (Subir diferentes tipos de archivos, ver archivos, eliminar suave):
+        ▪ Subida y Asociación: Probar la capacidad de subir, asociar y visualizar todo tipo de archivos digitales (PDF, imágenes, videos cortos) directamente en el expediente del paciente o en una entrada específica del historial clínico. Es crucial verificar que los archivos se almacenen en Cloud Storage y que estén "cifrados en reposo".
+        ▪ Visualización: Comprobar el visor de archivos visuales, asegurando que el carrusel de vistas previas funcione correctamente y que los filtros de origen/tipo (Cloud Drives, Photos, Videos) funcionen como se espera.
+        ▪ Manejo de Errores de Subida: Probar escenarios donde se intentan subir tipos de archivo no soportados, archivos que exceden el tamaño máximo, o fallos de conexión, y verificar que los mensajes de error sean claros (ej., "Tipo de archivo no válido", "Error al subir el archivo").
+        ▪ Eliminación Suave: Al igual que con los pacientes, se debe verificar que los documentos se marquen como inactivos en lugar de eliminarse físicamente, manteniendo la integridad y seguridad de los datos.
+    ◦ Gestión de Citas (Crear, Editar, Eliminar, probar con fechas pasadas/futuras):
+        ▪ Creación y Agendamiento: Probar la creación de nuevas citas, verificando la correcta selección de paciente, fecha, hora, tipo de cita y estado (Programada, Confirmada, etc.). Es vital probar los escenarios de conflicto de horario para asegurar que se muestre el mensaje "Horario no disponible" si la hora ya está ocupada.
+        ▪ Gestión de Citas Existentes: Probar las acciones de reprogramación, cancelación y cambio de estado de las citas (Confirmada, Atendida, Cancelada), asegurando que los cambios se reflejen correctamente en el calendario interactivo.
+        ▪ Fechas Pasadas/Futuras: Asegurar que el sistema maneje correctamente la visualización y gestión de citas en el pasado y futuro, incluyendo la visualización de "Citas del Día" en el dashboard. Estas funcionalidades son clave para abordar los "procesos manuales que consumen tiempo" y la "falta de control ágil de visitas diarias".
+    ◦ Todas las interacciones definidas con el Asistente Virtual (probar diferentes comandos/preguntas, verificar respuestas):
+        ▪ Chat Interno: Probar las capacidades de interacción con el chat interno básico, incluyendo la realización de consultas rápidas, obtención de resúmenes de texto y redacción de informes, confirmando que solo funciona con texto y no genera archivos.
+        ▪ Automatizaciones Básicas: Validar la redacción automatizada de correos electrónicos, la generación de hojas membretadas y la creación de recordatorios a través de la IA.
+        ▪ Búsqueda Inteligente: Probar comandos en lenguaje natural para la búsqueda de archivos o información específica (ej., "Hola, estoy buscando un archivo me urge", "Recuerdas el nombre del paciente?", "Si!! es Laura Vargas").
+        ▪ Recuperación y Acciones Contextuales: Verificar que el asistente localice los recursos y ofrezca acciones contextuales como enviar por correo o descargar.
+        ▪ Automatización de Tareas: Confirmar que el asistente puede ejecutar acciones conectadas a las APIs del sistema, como enviar correos o generar borradores de documentos.
+        ▪ Generación de Contenido para Capacitación: La IA (Gemma 3) puede ayudar a generar preguntas frecuentes (FAQs) para el manual de usuario, lo cual también debe ser probado.
+    ◦ Pruebas de Seguridad: Intentar acceder a funcionalidades de Administrador con un usuario Asistente, intentar eliminar un registro con borrado fuerte si solo se permite borrado suave, probar inyecciones simples en campos de entrada.
+        ▪ Control de Acceso Basado en Roles (RBAC): Realizar pruebas exhaustivas para asegurar que cada rol (Administrador, Admin Principal, Admin Secundario, Asistente, Invitado (Solo Lectura)) solo pueda acceder a las funcionalidades y la información correspondiente a sus permisos. Por ejemplo, un "Asistente" no debería poder gestionar usuarios o ver logs de auditoría. Este es un pilar fundamental para las "preocupaciones de seguridad de datos".
+        ▪ Borrado Suave vs. Fuerte: Verificar que, incluso si se intenta una eliminación directa o "fuerte", el sistema aplique consistentemente el "borrado suave".
+        ▪ Cifrado de Datos: Aunque las pruebas directas de cifrado pueden requerir acceso a la infraestructura, se debe confirmar que las contraseñas se almacenen "cifradas en reposo" (hashing) y que los "datos sensibles" en la base de datos (Cloud SQL) y el almacenamiento de archivos (Cloud Storage) estén "cifrados en reposo".
+        ▪ Cifrado en Tránsito: Asegurar que toda la comunicación entre la aplicación de escritorio y la infraestructura en la nube utilice "HTTPS (TLS 1.3)" para cifrar los datos en tránsito.
+        ▪ Logs de Auditoría: Verificar que cada intento de inicio de sesión (exitoso o fallido) y cada acción del usuario (ej., modificación de datos de paciente, creación de citas) se registre "cronológicamente" en el "Servicio de Logs de Auditoría" y que estos logs sean "inmutables (WORM)".
+        ▪ Pruebas de Inyección: Aunque no se detalla cómo se realizará, es una buena práctica probar con "inyecciones simples en campos de entrada" para detectar vulnerabilidades comunes.
+    ◦ Pruebas de Roles y Permisos: Crear matriz de permisos y probar que cada rol solo puede ejecutar las acciones permitidas.
+        ▪ Matriz de Permisos: Se debe desarrollar una matriz detallada que especifique qué acciones y secciones son accesibles para cada rol: "Admin Principal" (control total, gestión de usuarios, ver logs), "Admin Secundario" (todo excepto gestión de usuarios y logs), "Asistente" (gestión de pacientes, citas, documentos, reportes), y "Invitado (Solo Lectura)" (ver pacientes, citas, reportes).
+        ▪ Validación de Acciones: Ejecutar pruebas con usuarios de cada rol para confirmar que solo pueden realizar las acciones definidas por sus permisos y que se les niegue el acceso a funcionalidades restringidas, mostrando mensajes de error apropiados si intentan acceder a ellas.
+    ◦ Pruebas de Borrado Suave: Verificar en la base de datos que los registros se marcan como inactivos y no se eliminan físicamente.
+        ▪ Inspección de Base de Datos: Después de realizar operaciones de "eliminación" desde la interfaz de usuario, se debe acceder directamente a la base de datos (Cloud SQL) para confirmar que los registros correspondientes no han sido eliminados físicamente, sino que su estado ha cambiado a "inactivo" o que se ha establecido un indicador como is_deleted = true. Esto es crucial para la integridad de los datos y el cumplimiento de las políticas de seguridad.
+Criterios de Entrada y Salida de las Pruebas para la Fase 1: El Núcleo Administrativo (Dashboard de Escritorio)
+La Fase 1 se enfoca en la construcción del "Núcleo Administrativo (Dashboard de Escritorio)", que es la columna vertebral y base de datos central del ecosistema. Su objetivo es asegurar la integridad y seguridad de la información desde el primer día. Las pruebas de esta fase son cruciales para validar las funcionalidades clave antes de la entrega.
+Criterios de Entrada (Qué debe estar listo antes de comenzar las pruebas)
+Para iniciar las pruebas de la Fase 1 del Dashboard de Escritorio, las siguientes condiciones deben cumplirse:
+1. Código Implementado para Todas las Funcionalidades de la Fase 1:
+    ◦ La interfaz de usuario (frontend) de la aplicación de escritorio debe estar completamente desarrollada utilizando React, Vue.js o un framework similar, y empaquetada con Electron.js para compatibilidad con Windows/macOS.
+    ◦ Toda la lógica de negocio y las APIs (backend) para las funcionalidades de la Fase 1 deben estar codificadas, utilizando Python (Flask/Django) o Node.js (Express).
+    ◦ Esto incluye el desarrollo completo de la Gestión Integral del Expediente del Paciente (creación, búsqueda, historial clínico detallado), la Gestión Documental Avanzada (subida, asociación y visualización de archivos), el Módulo de Agenda y Citas (programación y gestión de citas), la Seguridad, Roles y Accesos Rápidos (login, roles), y la Inteligencia y Automatización Integrada (chat interno, automatizaciones básicas de IA).
+2. Entorno de Pruebas Configurado y Desplegado:
+    ◦ La infraestructura en la nube en Google Cloud Platform (GCP) debe estar completamente configurada y desplegada. Esto incluye:
+        ▪ Virtual Private Cloud (VPC) lógicamente aislada y segura.
+        ▪ API Gateway / Load Balancer como puntos de entrada seguros y distribuidores de tráfico para el backend.
+        ▪ Servidor de Aplicación (Backend) desplegado en servicios como Compute Engine o Cloud Run.
+        ▪ Base de Datos Relacional (Cloud SQL - MySQL/PostgreSQL) para almacenar información estructurada.
+        ▪ Almacenamiento de Archivos (Cloud Storage) para documentos digitales.
+        ▪ Servicio de Logs de Auditoría (Cloud Logging / Audit Logs) configurado para registrar cronológicamente actividades.
+    ◦ La conectividad entre la aplicación de escritorio y la infraestructura en la nube debe estar establecida a través de HTTPS (TLS 1.3).
+    ◦ Se recomienda una conexión a internet estable de al menos 250 Mbps para un rendimiento óptimo del ecosistema.
+3. Datos de Prueba Disponibles y Seguros:
+    ◦ El esquema de la base de datos para USUARIOS, PACIENTES, HISTORIAL_CLINICO, CITAS, DOCUMENTOS, ROLES, y LOGS_AUDITORIA debe estar completamente definido e implementado.
+    ◦ Los datos sensibles, como contraseñas, deben estar cifrados en reposo en la base de datos (mediante hashing) y en Cloud Storage.
+    ◦ Se deben haber cargado datos de prueba representativos para cada módulo funcional de la Fase 1 (ej., perfiles de pacientes, historiales clínicos, documentos, citas programadas, usuarios con diferentes roles).
+4. Integración con IA Funcional:
+    ◦ El modelo de Inteligencia Artificial Gemma 3 (o similar a Gemini) debe estar integrado directamente en el backend mediante APIs, listo para potenciar las funcionalidades de automatización y el chat interno.
+5. Especificaciones de Diseño e Interfaz Listas:
+    ◦ Todos los elementos visuales del diseño "Glassmorphism Oscuro" (fondo gris carbón suave, auras de color azul oceánico y violeta, paneles flotantes de vidrio esmerilado, texto nítido y brillante con la fuente Inter) deben estar implementados según las especificaciones técnicas para la interfaz de usuario del Dashboard y el Login. Esto asegura una coherencia visual integral y comodidad para el usuario.
+Criterios de Salida (Qué condiciones deben cumplirse para considerar que las pruebas de la Fase 1 han finalizado con éxito)
+Para considerar que las pruebas de la Fase 1 han finalizado con éxito, la aplicación de escritorio debe cumplir con las siguientes condiciones:
+1. Funcionalidad Completa y Correcta:
+    ◦ Todas las funcionalidades de la Fase 1 deben operar como se espera y sin errores significativos, abarcando:
+        ▪ Gestión Integral del Expediente del Paciente: Creación, búsqueda avanzada, y registro detallado del historial clínico (consultas, diagnósticos, notas, procedimientos, tratamientos).
+        ▪ Gestión Documental Avanzada: Capacidad de subir, asociar y visualizar archivos digitales (PDF, imágenes, videos cortos) al expediente del paciente.
+        ▪ Módulo de Agenda y Citas: Programación, reprogramación y gestión de citas con estados personalizables, y visualización efectiva en el calendario.
+        ▪ Seguridad, Roles y Accesos Rápidos: El sistema de login debe autenticar correctamente a los usuarios, aplicar el control de acceso basado en roles (Admin Principal, Admin Secundario, Asistente, Invitado), y gestionar usuarios y roles de forma segura.
+        ▪ Inteligencia y Automatización Integrada: El chat interno con Gemma 3 debe responder a consultas rápidas, generar resúmenes de texto y permitir la redacción de correos, hojas membretadas y recordatorios.
+    ◦ Los widgets y accesos directos a servicios externos como Gmail y Google Drive deben funcionar correctamente.
+2. Rendimiento y Estabilidad:
+    ◦ El sistema debe demostrar un rendimiento óptimo en las operaciones críticas, como la búsqueda de pacientes o la carga de historiales clínicos, con tiempos de respuesta aceptables.
+    ◦ La aplicación debe ser estable y no presentar cierres inesperados, bloqueos o degradación de rendimiento durante el uso continuo.
+3. Seguridad y Privacidad de Datos:
+    ◦ La autenticación y autorización basada en roles debe funcionar sin fallos, impidiendo el acceso indebido a información o funcionalidades.
+    ◦ El cifrado de datos en tránsito (HTTPS/TLS 1.3) y en reposo (Cloud SQL, Cloud Storage) debe ser verificado como completamente funcional, protegiendo la información sensible del paciente.
+    ◦ El Servicio de Logs de Auditoría debe registrar de forma inmutable (WORM) todos los intentos de login (exitosos y fallidos), así como las acciones relevantes de los usuarios (ej., modificación de datos de paciente, creación de citas), y estos logs deben ser accesibles para revisión.
+4. Manejo Robusto de Errores y Mensajes:
+    ◦ Todos los escenarios de error previstos (ej., credenciales incorrectas, campos vacíos/formato inválido, problemas de conectividad) deben mostrar mensajes claros y concisos al usuario, permitiéndole entender el problema y tomar la acción adecuada.
+    ◦ Los "estados vacíos" (ej., "No se encontraron pacientes", "No hay citas programadas para hoy") deben ser manejados con mensajes informativos en lugar de espacios en blanco.
+5. Coherencia de la Interfaz de Usuario (UI/UX) y Accesibilidad:
+    ◦ El diseño "Glassmorphism Oscuro" debe aplicarse de manera consistente en toda la aplicación de escritorio, manteniendo la coherencia visual, la comodidad visual, y una jerarquía de información clara.
+    ◦ La legibilidad del texto y los iconos debe ser óptima (cumpliendo con una relación de contraste superior a 4.5:1 WCAG).
+    ◦ La retroalimentación interactiva (ej., aumento de brillo o hundimiento al pulsar botones) debe ser clara y consistente.
+6. Preparación para Capacitación y Migración de Datos:
+    ◦ La aplicación debe ser suficientemente estable para la sesión de capacitación inicial del Dr. Sánchez y su equipo.
+    ◦ Los manuales de funcionamiento deben estar preparados, posiblemente con la ayuda de la IA para generar FAQs.
+    ◦ La migración inicial de archivos digitales existentes del consultorio al nuevo sistema debe haberse completado con éxito.
+7. Resolución de Defectos:
+    ◦ Todos los defectos de prioridad "Crítica" y "Mayor" identificados durante las pruebas deben haber sido resueltos y verificados.
+Recursos para las Pruebas: Ecosistema Digital Inteligente para Cirugía Especial (Fase 1: El Núcleo Administrativo)
+La Fase 1 se enfoca en la construcción del "Núcleo Administrativo (Dashboard de Escritorio)", que es la columna vertebral y base de datos central del ecosistema. Las pruebas de esta fase son cruciales para validar las funcionalidades clave antes de la entrega.
+1. Personal de Pruebas
+El "equipo de desarrollo" o "Su Nombre/Nombre de su Empresa" es el encargado de diseñar, construir e implementar el ecosistema. Este mismo equipo es responsable de "Realizar pruebas exhaustivas de todas las funcionalidades, asegurando la seguridad y el rendimiento". No se especifica la existencia de un equipo de pruebas independiente; por lo tanto, las actividades de prueba recaen en el equipo de desarrollo. El Dr. Joel Sánchez García y su equipo son los usuarios clave y beneficiarios finales del ecosistema.
+2. Entorno de Pruebas (Configuración)
+El entorno de pruebas será una réplica de la infraestructura de producción, basada en Google Cloud Platform (GCP). Los componentes clave de este entorno en la nube incluyen:
+• Virtual Private Cloud (VPC): Una sección lógicamente aislada dentro de la nube pública de GCP donde se despliegan todos los recursos del sistema, creando un entorno de red privado y seguro.
+• API Gateway / Load Balancer: Actúan como los puntos de entrada seguros para todas las solicitudes provenientes de las aplicaciones cliente, distribuyendo el tráfico de manera eficiente y garantizando la disponibilidad y seguridad del sistema.
+• Servidor de Aplicación (Backend): Donde reside la lógica de negocio central y las APIs, construido con Python (Flask/Django) o Node.js (Express), y desplegado utilizando servicios de GCP como Compute Engine o Cloud Run. La integración del modelo de IA Gemma 3 también reside aquí.
+• Base de Datos Relacional (Cloud SQL): Almacena toda la información estructurada y crítica, como perfiles de pacientes, historiales clínicos, citas, usuarios y roles, utilizando MySQL o PostgreSQL. Los datos sensibles estarán cifrados en reposo.
+• Almacenamiento de Archivos (Cloud Storage): Utilizado para el almacenamiento centralizado y seguro de archivos digitales asociados a los expedientes de los pacientes (PDFs, imágenes, videos cortos). Estos archivos también estarán cifrados en reposo.
+• Servicio de Logs de Auditoría (Cloud Logging / Audit Logs): Vital para el monitoreo de la seguridad y el seguimiento de operaciones, registrando cronológicamente todas las actividades y cambios realizados; estos logs son inmutables (Write Once, Read Many - WORM).
+• Conectividad: La comunicación entre la aplicación de escritorio y la infraestructura en la nube se realizará a través de HTTPS (TLS 1.3), cifrando los datos en tránsito. Se recomienda una conexión a internet estable de al menos 250 Mbps para un rendimiento óptimo del ecosistema.
+• Aplicación de Escritorio: El frontend de la aplicación de escritorio se desarrollará con React, Vue.js o similar, y se empaquetará con Electron.js para compatibilidad con Windows/macOS.
+3. Herramientas de Prueba
+La documentación no especifica herramientas de prueba automatizadas (ej., para pruebas unitarias, de integración o funcionales). Sin embargo, las herramientas de desarrollo y configuración mencionadas, que facilitan un desarrollo "controlado y de alta calidad", pueden contribuir indirectamente a la capacidad de prueba:
+• Herramientas de Diseño (UI/UX): Figma y Adobe Suite (XD, Photoshop, Illustrator) se utilizan para definir flujos de usuario, wireframes y prototipos. Aunque no son herramientas de prueba directa, una UI/UX bien definida y prototipada facilita las pruebas de usabilidad y funcionalidad desde etapas tempranas.
+• Herramientas de Modelado de Datos: MySQL o PostgreSQL como sistemas de gestión de bases de datos, y herramientas de modelado ERD como Lucidchart, dbdiagram.io o Google Drawings. Un modelo de datos bien estructurado y documentado es esencial para el diseño de pruebas de integración y base de datos.
+• Herramientas de Desarrollo Backend: Python (Flask/Django) o Node.js (Express) para el backend.
+• Herramientas de Infraestructura como Código (IaC): Terraform o Cloud Deployment Manager se mencionan para automatizar la creación y configuración de recursos en GCP. Esto permite la provisión de entornos de prueba consistentes y replicables.
+• Herramientas de Desarrollo Frontend: React, Vue.js o similar, y Electron.js para la aplicación de escritorio.
+• Herramientas de Colaboración: Google Workspace (Docs/Sheets) para la creación de manuales de usuario colaborativos. La IA (Gemma 3) puede ayudar a generar preguntas frecuentes (FAQs) para el manual de usuario, lo que podría asistir en la creación de casos de prueba o guías de capacitación.
+4. Datos de Prueba
+La disponibilidad de datos de prueba es un criterio de entrada clave para iniciar las pruebas de la Fase 1.
+• Datos de Prueba Representativos: Se deben haber cargado datos de prueba representativos para cada módulo funcional de la Fase 1. Esto incluye, por ejemplo:
+    ◦ Perfiles de pacientes.
+    ◦ Historiales clínicos.
+    ◦ Documentos.
+    ◦ Citas programadas.
+    ◦ Usuarios con diferentes roles.
+• Esquema de la Base de Datos: El esquema de la base de datos para USUARIOS, PACIENTES, HISTORIAL_CLINICO, CITAS, DOCUMENTOS, ROLES, y LOGS_AUDITORIA debe estar completamente definido e implementado.
+• Datos Sensibles: Los datos sensibles, como contraseñas, deben estar cifrados en reposo en la base de datos (mediante hashing) y en Cloud Storage. El campo hash_password en la tabla USUARIOS indica el uso de funciones de hash para almacenar contraseñas de forma segura.
+• Migración de Datos: La "migración inicial de archivos digitales existentes del consultorio al nuevo sistema" se realiza en la Fase 1. Esto sugiere que datos reales o muy realistas serán utilizados, lo cual es crucial para pruebas de volumen y rendimiento.
+Proceso de Gestión de Defectos (Bugs)
+La detección y resolución de bugs son cruciales para asegurar la "integridad y seguridad de la información" y la "eficiencia operativa". El ecosistema está diseñado para ser "potente, seguro y excepcionalmente intuitivo", y el manejo de defectos contribuye a mantener estos atributos.
+1. Detección y Reporte de Bugs
+• Durante el Desarrollo y Pruebas Internas (Fase 1 y subsiguientes): El "equipo de desarrollo" o "Su Nombre/Nombre de su Empresa" es directamente responsable de "Realizar pruebas exhaustivas de todas las funcionalidades, asegurando la seguridad y el rendimiento" [Recursos para las Pruebas: 1, Plan de Acción Detallado: Paso 5]. Durante estas pruebas, los desarrolladores y el equipo de QA (Control de Calidad, implícito en "pruebas exhaustivas") identificarán los bugs. La información de los fallos y comportamientos inesperados se documentará internamente para su posterior análisis.
+• Post-Implementación (Soporte al Cliente): Una vez que las fases del proyecto son entregadas, el Dr. Joel Sánchez García y su equipo ("usuarios clave" [Recursos para las Pruebas: 1]) serán los principales reportadores de bugs o incidentes. El "Plan de Mantenimiento y Soporte del Ecosistema" incluye "soporte técnico 24/7 (remoto y presencial según diagnóstico)" [Plan de Trabajo: 6, Preguntas Frecuentes: 7, Línea de Tiempo: Después de la Finalización del Proyecto y la Fase 1]. Esto implica que cualquier error o comportamiento anómalo que detecten en la operación diaria será reportado directamente al equipo de "Su Nombre/Nombre de su Empresa" a través de los canales de soporte que se establezcan (aunque no se especifican los canales exactos, se infiere una comunicación directa y constante).
+2. Priorización de Bugs
+Las fuentes no especifican una matriz de priorización formal (ej., crítico, mayor, medio, menor), sin embargo, los objetivos y soluciones del ecosistema guían la prioridad:
+• Alta Prioridad: Los defectos que comprometan la "seguridad de datos" [Acceso Seguro: 1, 6, 14-16, 18, 23-29; Arquitectura Nube: 9-14; Dashboard: I, II, 4, 6, 9; Ecosistema Digital: Arquitectura y Diseño Glassmorphism Oscuro: Introducción, Pilar 1, Consideraciones Clave; Guía de Estudio: I, II, III, IV, VI, VII, VIII; Plan de Acción Detallado: FASE 1, IMPACTO; Pantalla #1 Login: 1, 3, 7; Pantalla #2 Home: 1, 5, 8; Pantalla #Login: 1, 3, 7], impidan el acceso al sistema (como un fallo en el login [Acceso Seguro: 9, Pantalla #1 Login: 3, Pantalla #2 Home: 6, Pantalla #Login: 3]), o detengan funcionalidades críticas para la "eficiencia operativa" [Automatización e Inteligencia: 1; Dashboard: I, II; Ecosistema Digital: Arquitectura y Diseño Glassmorphism Oscuro: Introducción, Pilar 1; Arquitectura Nube: 2, 3; Guía de Estudio: I, IV, VI; Plan de Acción Detallado: IMPACTO; Pantalla #2 Home: 1, 2, 8] (ej. gestión de expedientes, agendamiento de citas) serían tratados con la máxima urgencia. La "actualización de seguridad" es parte del mantenimiento continuo [Plan de Trabajo: 6, Preguntas Frecuentes: 7, Línea de Tiempo: Después de la Finalización del Proyecto y la Fase 1].
+• Prioridad Media a Baja: Bugs que afecten la usabilidad sin impedir la funcionalidad, o que generen errores menores, serían priorizados según su impacto en el flujo de trabajo y la cantidad de usuarios afectados. Los mensajes de error definidos para diversos escenarios (ej., "Usuario o contraseña incorrectos", "Campo 'Nombre' requerido", "Problemas de Conectividad") [Acceso Seguro: 9, Mapa Detallado: 1. Flujo de Acceso, Pantalla #1 Login: 3, Pantalla #2 Home: 6, Pantalla #Login: 3] sugieren que la claridad de la retroalimentación al usuario es importante, por lo que los defectos en el manejo de errores también serían abordados.
+3. Asignación de Bugs
+• La responsabilidad de la investigación y resolución de los bugs recae directamente en "Su Nombre/Nombre de su Empresa" [Línea de Tiempo: Elenco de Personajes, Su Nombre/Nombre de su Empresa], el equipo de desarrollo encargado de la "diseño, construcción e implementación" del ecosistema [Recursos para las Pruebas: 1, Plan de Acción Detallado: Situación] y del "mantenimiento y soporte continuo" [Línea de Tiempo: Después de la Finalización del Proyecto y la Fase 1].
+4. Seguimiento y Resolución de Bugs
+• Registro y Seguimiento (Implícito): Aunque no se especifica una herramienta de seguimiento de bugs dedicada (como Jira o Trello), el uso de "Google Workspace (Docs/Sheets)" para "crear manuales de usuario colaborativos" [Recursos para las Pruebas: 3, Plan de Acción Detallado: Paso 5] sugiere que se podrían emplear herramientas colaborativas simples para registrar y seguir los bugs internamente. Cada bug reportado sería documentado con detalles como la descripción, pasos para reproducir, fecha de reporte, estado (abierto, en progreso, resuelto, cerrado), y la persona asignada.
+• Análisis con Logs de Auditoría: Una herramienta técnica fundamental para el seguimiento y diagnóstico de bugs es el "Servicio de Logs de Auditoría (Cloud Logging / Audit Logs)" [Acceso Seguro: 7, Arquitectura Nube: 6, Dashboard: 44, Pantalla #1 Login: 5, Pantalla #2 Home: 5, Pantalla #Login: 5, Ecosistema Digital: Arquitectura y Diseño Glassmorphism Oscuro: 6, Plan de Acción Detallado: Paso 3]. Estos logs registran "cronológicamente todas las actividades y cambios realizados" [Acceso Seguro: 7, Arquitectura Nube: 6, Plan de Acción Detallado: Paso 3] y son "inmutables (Write Once, Read Many - WORM)" [Acceso Seguro: 7, Arquitectura Nube: 6, Pantalla #1 Login: 5, Pantalla #2 Home: 5, Pantalla #Login: 5]. Esta capacidad permite al equipo de desarrollo rastrear la secuencia de eventos que llevó al bug, entender su contexto y verificar la correcta aplicación de las soluciones.
+• Proceso de Resolución: Una vez diagnosticado, el equipo de desarrollo trabajará en la solución, la implementará, y realizará pruebas internas para asegurar que el bug ha sido corregido y que no se introducen nuevas regresiones. Las "actualizaciones de seguridad y evolución continua" [Plan de Trabajo: 6, Preguntas Frecuentes: 7, Línea de Tiempo: Después de la Finalización del Proyecto y la Fase 1] garantizan que estas correcciones sean parte del ciclo de vida del software.
+• Comunicación Continua: El "soporte técnico 24/7" [Plan de Trabajo: 6, Preguntas Frecuentes: 7, Línea de Tiempo: Después de la Finalización del Proyecto y la Fase 1] implica que se mantendrá una comunicación constante con el Dr. Sánchez y su equipo sobre el progreso y la resolución de los problemas reportados, cerrando el ciclo de retroalimentación.
+Plan de Ejecución de Pruebas
+1. Pruebas Unitarias y de Integración (Durante el Desarrollo)
+• Cuándo: Estas pruebas se ejecutarán de forma continua por el equipo de desarrollo de "Su Nombre/Nombre de su Empresa" durante la construcción de cada componente del sistema, tanto en el backend como en el frontend. Esto es fundamental en la Fase 1: El Núcleo Administrativo (Dashboard de Escritorio), que es la columna vertebral del ecosistema.
+• Cómo:
+    ◦ Pruebas Unitarias: Los desarrolladores verificarán individualmente el correcto funcionamiento de cada unidad de código (funciones, métodos, clases). Esto aplica a la lógica de negocio del Servidor de Aplicación (Backend), construido con Python/Flask/Django o Node.js/Express, y a los componentes de la interfaz de usuario del Dashboard de Escritorio, desarrollado con React, Vue.js o similar.
+    ◦ Pruebas de Integración: Se probará la interacción entre diferentes módulos del sistema y con los servicios de la nube. Esto incluye la comunicación segura mediante HTTPS (TLS 1.3) entre la aplicación de escritorio y el backend en Google Cloud Platform (GCP), la correcta interacción del backend con la Base de Datos Relacional (Cloud SQL) y el Almacenamiento de Archivos (Cloud Storage), y la integración del modelo de IA Gemma 3.
+    ◦ El objetivo es asegurar un "desarrollo controlado y de alta calidad" desde las primeras etapas.
+2. Pruebas Funcionales y de UI (Al Finalizar Funcionalidades)
+• Cuándo: Estas pruebas se realizarán una vez que las funcionalidades clave del sistema estén desarrolladas y listas para una verificación más amplia. Se llevarán a cabo principalmente al concluir cada fase del proyecto, con un enfoque intensivo en el Paso 5: Pruebas y Capacitación de la Fase 1, antes de la entrega.
+• Cómo:
+    ◦ Pruebas Funcionales: Se validará que cada funcionalidad del Dashboard de Escritorio cumple con los requisitos definidos. Por ejemplo, se probará la creación de perfiles de paciente, el registro detallado del historial clínico, la subida y asociación de documentos digitales, la programación y gestión de citas, el correcto funcionamiento del sistema de roles y accesos, y las automatizaciones y el chat interno con IA. Se verificarán los flujos de usuario detallados, como añadir un nuevo paciente o buscar el historial.
+    ◦ Pruebas de UI (Interfaz de Usuario): Se asegurará que el diseño "Glassmorphism Oscuro" se implementa correctamente, garantizando la "comodidad visual y una jerarquía de información clara". Esto incluye la legibilidad de textos y iconos, la aplicación de colores y tipografías, y la retroalimentación interactiva al pulsar botones (sutil aumento de brillo o ligero hundimiento).
+    ◦ Se comprobará el manejo de errores para escenarios como credenciales incorrectas, campos vacíos o problemas de conectividad, asegurando que los mensajes de error sean claros y concisos.
+    ◦ Las pruebas se realizarán tanto por el equipo de desarrollo como, de forma colaborativa, durante la Capacitación Inicial con el Dr. Sánchez y su equipo, quienes utilizarán el sistema en un entorno controlado. Se utilizarán herramientas como Google Workspace (Docs/Sheets) para documentar los hallazgos.
+3. Pruebas de Seguridad (Antes del Despliegue)
+• Cuándo: Las pruebas de seguridad son de máxima prioridad y se ejecutarán rigurosamente antes del despliegue de cada fase, especialmente de la Fase 1, dado que el Núcleo Administrativo Central maneja "información sensible".
+• Cómo:
+    ◦ Control de Acceso Basado en Roles (RBAC): Se validará que el sistema de roles ("Admin Principal", "Admin Secundario", "Asistente", "Invitado (Solo Lectura)") funcione correctamente, impidiendo el acceso no autorizado a funcionalidades o datos sensibles.
+    ◦ Cifrado de Datos: Se verificará que el cifrado de datos en tránsito (mediante HTTPS/TLS 1.3) y el cifrado en reposo de los datos sensibles en la Base de Datos (Cloud SQL) y el Almacenamiento de Archivos (Cloud Storage) se apliquen de forma efectiva.
+    ◦ Logs de Auditoría: Se confirmará que el Servicio de Logs de Auditoría (Cloud Logging / Audit Logs) registra cronológicamente todos los intentos de login (exitosos y fallidos) y cada acción del usuario (ej., modificación de datos de paciente), y que estos logs son inmutables (Write Once, Read Many - WORM), crucial para la detección de anomalías y la respuesta a incidentes.
+    ◦ Infraestructura de Red: Se asegurará que la Virtual Private Cloud (VPC) y el API Gateway / Load Balancer funcionen como la primera línea de defensa, aislando y protegiendo la infraestructura en la nube.
+4. Pruebas de Rendimiento (Antes del Despliegue)
+• Cuándo: Se realizarán pruebas de rendimiento antes del despliegue de cada fase para garantizar la "eficiencia operativa" y la escalabilidad del sistema.
+• Cómo:
+    ◦ Escalabilidad y Carga: Se someterá el sistema a pruebas de carga para asegurar que la infraestructura en la nube de GCP puede escalar automáticamente y manejar un mayor volumen de usuarios y datos sin degradación del rendimiento.
+    ◦ Tiempos de Respuesta: Se medirán los tiempos de respuesta para las operaciones críticas (ej., búsqueda de pacientes, carga de historiales, agendamiento de citas) para asegurar una experiencia de usuario fluida.
+    ◦ Conectividad: Se validará que el ecosistema funciona de manera óptima con una conexión a internet estable de al menos 250 Mbps, que es la velocidad recomendada para un rendimiento óptimo.

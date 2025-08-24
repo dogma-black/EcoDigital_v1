@@ -1,0 +1,363 @@
+Casos de Prueba Detallados:
+1. Pruebas de Login y Acceso
+ID: CP-LOGIN-001
+• Descripción Breve del Escenario que se Prueba: Inicio de sesión exitoso de un usuario con rol "Admin Principal".
+• Precondiciones:
+    ◦ La aplicación de escritorio del "Núcleo Administrativo Central" está instalada y ejecutándose.
+    ◦ Existe un usuario de prueba en la base de datos con el rol "Admin Principal" y credenciales válidas.
+    ◦ Conexión a internet estable de al menos 250 Mbps.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Abrir la aplicación de escritorio.
+    2. En la "Pantalla: Login de Usuario", ingresar el "Nombre de Usuario" y "Contraseña" válidos del Admin Principal en los campos designados.
+    3. Hacer clic en el botón "Iniciar Sesión".
+• Datos de Entrada de Prueba:
+    ◦ Nombre de Usuario: admin.principal
+    ◦ Contraseña: PasswordSeguro123
+• Resultado Esperado:
+    ◦ Las credenciales se envían al backend de forma segura mediante HTTPS (TLS 1.3).
+    ◦ El backend verifica las credenciales con la Base de Datos Relacional (Cloud SQL) donde las contraseñas están hasheadas y cifradas en reposo.
+    ◦ El "Servicio de Logs de Auditoría" registra un intento de login exitoso.
+    ◦ El sistema redirecciona al usuario al "Dashboard Principal (Vista General)".
+    ◦ La cabecera del dashboard muestra "Bienvenido, Dr. Admin Principal (Admin)".
+    ◦ La barra de navegación lateral presenta todas las secciones, incluyendo "Administración (Gestionar Usuarios, Ver Logs de Auditoría)".
+• Criterios de Éxito/Fallo: La prueba pasa si el usuario es redirigido al Dashboard principal con el rol correcto y acceso a todas las funcionalidades esperadas para un "Admin Principal"; de lo contrario, falla.
+ID: CP-LOGIN-002
+• Descripción Breve del Escenario que se Prueba: Intento de inicio de sesión con credenciales incorrectas.
+• Precondiciones:
+    ◦ La aplicación de escritorio está instalada y ejecutándose.
+    ◦ Conexión a internet estable de al menos 250 Mbps.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Abrir la aplicación de escritorio.
+    2. En la "Pantalla: Login de Usuario", ingresar un "Nombre de Usuario" existente y una "Contraseña" incorrecta.
+    3. Hacer clic en el botón "Iniciar Sesión".
+• Datos de Entrada de Prueba:
+    ◦ Nombre de Usuario: admin.principal
+    ◦ Contraseña: ContrasenaIncorrecta
+• Resultado Esperado:
+    ◦ El backend rechaza las credenciales después de verificarlas con la base de datos.
+    ◦ El "Servicio de Logs de Auditoría" registra un intento de login fallido.
+    ◦ La aplicación permanece en la "Pantalla: Login de Usuario".
+    ◦ Se muestra un mensaje de error claro y conciso: "Usuario o contraseña incorrectos".
+• Criterios de Éxito/Fallo: La prueba pasa si la aplicación permanece en la pantalla de Login y muestra el mensaje de error "Usuario o contraseña incorrectos"; de lo contrario, falla.
+ID: CP-LOGIN-003
+• Descripción Breve del Escenario que se Prueba: Intento de inicio de sesión dejando campos vacíos.
+• Precondiciones:
+    ◦ La aplicación de escritorio está instalada y ejecutándose.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Abrir la aplicación de escritorio.
+    2. En la "Pantalla: Login de Usuario", dejar el campo "Nombre de Usuario" vacío y/o el campo "Contraseña" vacío.
+    3. Hacer clic en el botón "Iniciar Sesión".
+• Datos de Entrada de Prueba:
+    ◦ Nombre de Usuario: (vacío)
+    ◦ Contraseña: (vacío)
+• Resultado Esperado:
+    ◦ La aplicación permanece en la "Pantalla: Login de Usuario".
+    ◦ Se muestran mensajes de validación para los campos requeridos: "Campo 'Nombre de Usuario' requerido" y/o "Campo 'Contraseña' requerido".
+    ◦ No se realiza una llamada al backend si la validación es a nivel de frontend.
+• Criterios de Éxito/Fallo: La prueba pasa si la aplicación permanece en la pantalla de Login y muestra los mensajes de validación para campos vacíos; de lo contrario, falla.
+ID: CP-LOGIN-004
+• Descripción Breve del Escenario que se Prueba: Intento de inicio de sesión sin conexión a internet.
+• Precondiciones:
+    ◦ La aplicación de escritorio está instalada y ejecutándose.
+    ◦ La computadora no tiene conexión a internet.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Desconectar la computadora de internet.
+    2. Abrir la aplicación de escritorio.
+    3. En la "Pantalla: Login de Usuario", ingresar el "Nombre de Usuario" y "Contraseña" (válidos o inválidos) en los campos designados.
+    4. Hacer clic en el botón "Iniciar Sesión".
+• Datos de Entrada de Prueba:
+    ◦ Nombre de Usuario: cualquier_usuario
+    ◦ Contraseña: cualquier_password
+• Resultado Esperado:
+    ◦ La aplicación intenta comunicarse con el backend en la nube pero falla debido a la falta de conectividad.
+    ◦ La aplicación permanece en la "Pantalla: Login de Usuario".
+    ◦ Se muestra un mensaje de error general sobre problemas de conexión o indisponibilidad del servicio (ej., "No se pudo conectar al servidor. Por favor, intente de nuevo más tarde.").
+• Criterios de Éxito/Fallo: La prueba pasa si la aplicación muestra un mensaje de error de conectividad y permanece en la pantalla de Login; de lo contrario, falla.
+2. Pruebas de Gestión Integral del Expediente del Paciente
+ID: CP-PACIENTES-001
+• Descripción Breve del Escenario que se Prueba: Creación de un nuevo perfil de paciente con datos completos y válidos.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Pacientes" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Nuevo Paciente".
+    3. En el "Formulario de Creación de Perfil de Paciente", llenar todos los campos obligatorios y opcionales con datos válidos.
+    4. Hacer clic en el botón "Guardar Paciente".
+• Datos de Entrada de Prueba:
+    ◦ Nombre: Juan
+    ◦ Apellido: Pérez García
+    ◦ Fecha de Nacimiento: 1985-07-15
+    ◦ Teléfono: 5512345678
+    ◦ Email: juan.perez@example.com
+    ◦ Dirección: Calle Falsa 123
+• Resultado Esperado:
+    ◦ Se envía una solicitud POST al backend para crear el nuevo paciente.
+    ◦ El nuevo perfil de paciente se crea y se guarda en la "Base de Datos Relacional (Cloud SQL)".
+    ◦ La tabla "Pacientes Recientes" en el Dashboard Principal se actualiza para incluir al nuevo paciente.
+    ◦ El "Servicio de Logs de Auditoría" registra la creación del nuevo paciente.
+• Criterios de Éxito/Fallo: La prueba pasa si el paciente se crea correctamente, se visualiza en la tabla de pacientes recientes y se registra la acción en los logs de auditoría; de lo contrario, falla.
+ID: CP-PACIENTES-002
+• Descripción Breve del Escenario que se Prueba: Intento de creación de un nuevo perfil de paciente con campos obligatorios vacíos.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Pacientes" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Nuevo Paciente".
+    3. En el "Formulario de Creación de Perfil de Paciente", dejar el campo "Nombre" vacío y/o el campo "Apellido" vacío.
+    4. Hacer clic en el botón "Guardar Paciente".
+• Datos de Entrada de Prueba:
+    ◦ Nombre: (vacío)
+    ◦ Apellido: Pérez García
+    ◦ Fecha de Nacimiento: 1985-07-15
+    ◦ Teléfono: 5512345678
+    ◦ Email: juan.perez@example.com
+• Resultado Esperado:
+    ◦ La aplicación permanece en el formulario de "Creación de Perfil de Paciente".
+    ◦ Se muestra un mensaje de validación para el campo faltante: "Campo 'Nombre' requerido".
+    ◦ No se realiza una solicitud de creación al backend.
+• Criterios de Éxito/Fallo: La prueba pasa si la aplicación muestra el mensaje de validación y no permite guardar el paciente; de lo contrario, falla.
+ID: CP-PACIENTES-003
+• Descripción Breve del Escenario que se Prueba: Búsqueda avanzada de un paciente existente por nombre.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal", "Admin Secundario", "Asistente" o "Invitado (Solo Lectura)".
+    ◦ Existe al menos un paciente de prueba en la base de datos.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Pacientes" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Buscar Paciente".
+    3. En el campo de búsqueda, ingresar el nombre completo o parcial de un paciente existente.
+    4. Hacer clic en el botón "Buscar".
+• Datos de Entrada de Prueba:
+    ◦ Criterio de Búsqueda: Laura Vargas
+• Resultado Esperado:
+    ◦ Se envía una solicitud GET al backend (ej. GET /patients?query=Laura Vargas).
+    ◦ La "Búsqueda de Pacientes" muestra una "Tabla de resultados" con los pacientes que coinciden con el criterio de búsqueda.
+    ◦ Las opciones de "Acción" ("Ver Historial", "Nueva Cita") están disponibles para los resultados.
+• Criterios de Éxito/Fallo: La prueba pasa si la tabla de resultados muestra correctamente los pacientes coincidentes; de lo contrario, falla.
+ID: CP-PACIENTES-004
+• Descripción Breve del Escenario que se Prueba: Registro de una nueva entrada en el historial clínico detallado de un paciente.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+    ◦ Existe un paciente al que se le registrará el historial.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Buscar un paciente existente (ej. CP-PACIENTES-003) y hacer clic en "Ver Historial" desde la tabla de resultados o "Pacientes Recientes".
+    2. Desde la "Ficha del Paciente", hacer clic en "Añadir a Historial".
+    3. En el "Formulario de Registro de Historial Clínico", completar los campos "Fecha de Consulta", "Diagnóstico" y "Notas de Evolución".
+    4. Hacer clic en el botón "Guardar Historial".
+• Datos de Entrada de Prueba:
+    ◦ Fecha de Consulta: 2024-07-20
+    ◦ Diagnóstico: Fractura de peroné
+    ◦ Notas de Evolución: Paciente presenta dolor leve, se indica reposo y antiinflamatorios.
+• Resultado Esperado:
+    ◦ Se envía una solicitud al backend para guardar la nueva entrada del historial.
+    ◦ La nueva entrada se guarda cronológicamente en el "Historial Clínico Detallado" del paciente en la "Base de Datos Relacional (Cloud SQL)".
+    ◦ El "Servicio de Logs de Auditoría" registra la acción de modificación de datos del paciente.
+• Criterios de Éxito/Fallo: La prueba pasa si la nueva entrada del historial clínico aparece correctamente en la ficha del paciente y se registra la acción en los logs de auditoría; de lo contrario, falla.
+3. Pruebas de Gestión Documental Avanzada
+ID: CP-DOCUMENTOS-001
+• Descripción Breve del Escenario que se Prueba: Subida y asociación de un archivo PDF al expediente de un paciente.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+    ◦ Existe un paciente al que se le adjuntará el documento.
+    ◦ Se dispone de un archivo PDF de prueba válido.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la ficha de un paciente existente (ej. tras búsqueda o desde "Pacientes Recientes").
+    2. Hacer clic en la opción para "Adjuntar Documentos" (ya sea en el historial clínico o en una sección dedicada de documentos).
+    3. En el diálogo de selección de archivos, seleccionar un archivo PDF de prueba.
+    4. Confirmar la subida o etiquetar el documento si la interfaz lo requiere.
+• Datos de Entrada de Prueba:
+    ◦ Archivo: Informe_Radiografia_Juan_Perez.pdf
+    ◦ Tamaño: 1.5 MB
+• Resultado Esperado:
+    ◦ El archivo se sube a "Cloud Storage" y se almacena cifrado en reposo.
+    ◦ El documento digital se asocia directamente al expediente del paciente (o a una entrada específica del historial clínico).
+    ◦ El "Servicio de Logs de Auditoría" registra la subida del documento.
+• Criterios de Éxito/Fallo: La prueba pasa si el PDF se sube, se asocia correctamente al paciente y es visible en su expediente, y la acción se registra en los logs de auditoría; de lo contrario, falla.
+ID: CP-DOCUMENTOS-002
+• Descripción Breve del Escenario que se Prueba: Intento de subida de un archivo con tipo no soportado.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+    ◦ Existe un paciente para adjuntar el documento.
+    ◦ Se dispone de un archivo de prueba con extensión no soportada (ej. .exe, .zip).
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la ficha de un paciente existente.
+    2. Hacer clic en la opción para "Adjuntar Documentos".
+    3. En el diálogo de selección de archivos, seleccionar un archivo de tipo no soportado (ej. malware.exe).
+    4. Confirmar la subida.
+• Datos de Entrada de Prueba:
+    ◦ Archivo: documento_malicioso.exe
+• Resultado Esperado:
+    ◦ La aplicación bloquea la subida en el frontend o el backend la rechaza.
+    ◦ Se muestra un mensaje de error: "Tipo de archivo no válido".
+    ◦ No se registra ninguna acción de subida exitosa en el "Servicio de Logs de Auditoría" para este intento.
+• Criterios de Éxito/Fallo: La prueba pasa si el sistema impide la subida del archivo no soportado y muestra un mensaje de error relevante; de lo contrario, falla.
+ID: CP-DOCUMENTOS-003
+• Descripción Breve del Escenario que se Prueba: Visualización de un documento digital previamente subido en el expediente del paciente.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal", "Admin Secundario" o "Asistente".
+    ◦ Existe un paciente con al menos un documento digital (ej. PDF, imagen, video corto) asociado a su expediente en "Cloud Storage".
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la ficha de un paciente existente.
+    2. Acceder a la sección donde se listan los documentos asociados al paciente o al "Visor de Archivos Visuales".
+    3. Hacer clic en la miniatura o el nombre de un documento para visualizarlo.
+• Datos de Entrada de Prueba: (N/A, se utiliza un documento existente)
+• Resultado Esperado:
+    ◦ El sistema recupera el archivo desde "Cloud Storage".
+    ◦ El documento se abre y visualiza correctamente dentro del visor integrado de la aplicación o en una ventana emergente.
+    ◦ La visualización de imágenes y videos se realiza de manera fluida, sin demoras significativas, considerando la conectividad de al menos 250 Mbps.
+• Criterios de Éxito/Fallo: La prueba pasa si el documento se visualiza correctamente y de forma fluida; de lo contrario, falla.
+4. Pruebas del Módulo de Agenda y Citas
+ID: CP-AGENDA-001
+• Descripción Breve del Escenario que se Prueba: Agendamiento de una nueva cita para un paciente.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+    ◦ Existe un paciente al que se le agendará la cita.
+    ◦ El horario seleccionado está disponible.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Agenda" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Agendar Cita".
+    3. En el "Formulario de Agendar Nueva Cita", seleccionar un paciente existente, una "Fecha", una "Hora" y un "Tipo de Cita".
+    4. Seleccionar el "Estado" de la cita como "Programada".
+    5. Hacer clic en el botón "Guardar Cita".
+• Datos de Entrada de Prueba:
+    ◦ Paciente: Juan Pérez García
+    ◦ Fecha: 2024-07-25
+    ◦ Hora: 10:00 AM
+    ◦ Tipo de Cita: Primera Consulta
+    ◦ Estado: Programada
+• Resultado Esperado:
+    ◦ La nueva cita se guarda en la "Base de Datos Relacional (Cloud SQL)".
+    ◦ La cita aparece visible en el "Calendario Interactivo" y en el panel "CITAS DEL DÍA" en el Dashboard Principal.
+    ◦ El "Servicio de Logs de Auditoría" registra la creación de la cita.
+• Criterios de Éxito/Fallo: La prueba pasa si la cita se crea correctamente, es visible en el calendario y se registra en los logs de auditoría; de lo contrario, falla.
+ID: CP-AGENDA-002
+• Descripción Breve del Escenario que se Prueba: Intento de agendamiento de una cita en un horario ya ocupado.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+    ◦ Existe una cita ya agendada para una fecha y hora específica.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Agenda" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Agendar Cita".
+    3. En el "Formulario de Agendar Nueva Cita", intentar agendar una cita para la misma "Fecha" y "Hora" de una cita ya existente.
+    4. Hacer clic en el botón "Guardar Cita".
+• Datos de Entrada de Prueba:
+    ◦ Paciente: Nuevo Paciente
+    ◦ Fecha: 2024-07-25 (misma que cita existente)
+    ◦ Hora: 10:00 AM (misma que cita existente)
+    ◦ Tipo de Cita: Seguimiento
+• Resultado Esperado:
+    ◦ La aplicación impide el agendamiento y permanece en el formulario.
+    ◦ Se muestra un mensaje de conflicto: "Horario no disponible".
+• Criterios de Éxito/Fallo: La prueba pasa si el sistema detecta el conflicto de horario y muestra el mensaje de error correspondiente; de lo contrario, falla.
+ID: CP-AGENDA-003
+• Descripción Breve del Escenario que se Prueba: Reprogramación de una cita existente a una nueva fecha y hora.
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal" o "Asistente".
+    ◦ Existe una cita de prueba ya agendada y visible en el agenda.
+    ◦ La nueva fecha y hora seleccionada están disponibles.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Agenda" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Ver Calendario".
+    3. Seleccionar una cita existente en el calendario y hacer clic en ella para ver los "Detalles de Cita".
+    4. Hacer clic en el botón "Reprogramar" o editar los campos de fecha/hora.
+    5. Seleccionar una nueva "Fecha" y "Hora".
+    6. Guardar los cambios.
+• Datos de Entrada de Prueba:
+    ◦ Cita Original: 2024-07-25 10:00 AM - Juan Pérez
+    ◦ Nueva Fecha: 2024-08-01
+    ◦ Nueva Hora: 11:30 AM
+• Resultado Esperado:
+    ◦ La cita se actualiza en la "Base de Datos Relacional (Cloud SQL)" con la nueva fecha y hora.
+    ◦ La cita se muestra en el calendario en su nueva posición y desaparece de la anterior.
+    ◦ El "Servicio de Logs de Auditoría" registra la modificación de la cita.
+• Criterios de Éxito/Fallo: La prueba pasa si la cita se reprograma correctamente y la acción se registra en los logs de auditoría; de lo contrario, falla.
+5. Pruebas de Seguridad, Roles y Accesos Rápidos
+ID: CP-SEGURIDAD-001
+• Descripción Breve del Escenario que se Prueba: Creación de una nueva cuenta de usuario con rol "Asistente" por un "Admin Principal".
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal".
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Administración" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Gestionar Usuarios".
+    3. Hacer clic en el botón "Crear Nuevo Usuario".
+    4. Completar los campos de usuario (Nombre de Usuario, Contraseña) y seleccionar "Asistente" del desplegable de roles.
+    5. Hacer clic en "Guardar Usuario".
+• Datos de Entrada de Prueba:
+    ◦ Nombre de Usuario: asistente.prueba
+    ◦ Contraseña: PasswordAsistente1!
+    ◦ Rol: Asistente
+• Resultado Esperado:
+    ◦ La nueva cuenta de usuario se crea y se guarda en la "Base de Datos Relacional (Cloud SQL)", con la contraseña hasheada y el rol asignado.
+    ◦ El usuario aparece en el listado de usuarios en la pantalla "Gestión de Usuarios".
+    ◦ El "Servicio de Logs de Auditoría" registra la creación del nuevo usuario.
+• Criterios de Éxito/Fallo: La prueba pasa si el nuevo usuario con rol "Asistente" se crea correctamente y la acción se registra en los logs de auditoría; de lo contrario, falla.
+ID: CP-SEGURIDAD-002
+• Descripción Breve del Escenario que se Prueba: Intento de acceso a "Gestionar Usuarios" por un usuario con rol "Asistente" (permiso denegado).
+• Precondiciones:
+    ◦ Usuario logueado con rol "Asistente".
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Administración" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Gestionar Usuarios".
+• Datos de Entrada de Prueba: (N/A)
+• Resultado Esperado:
+    ◦ El sistema deniega el acceso a la pantalla "Gestión de Usuarios".
+    ◦ Se muestra un mensaje de "Acceso Denegado" o simplemente la opción no es visible/clicable.
+    ◦ El "Servicio de Logs de Auditoría" puede registrar un intento de acceso no autorizado, si la implementación lo contempla a este nivel.
+• Criterios de Éxito/Fallo: La prueba pasa si el usuario "Asistente" no puede acceder a la gestión de usuarios y se le notifica la denegación de acceso; de lo contrario, falla.
+ID: CP-SEGURIDAD-003
+• Descripción Breve del Escenario que se Prueba: Acceso y visualización de los logs de auditoría por un "Admin Principal".
+• Precondiciones:
+    ◦ Usuario logueado con rol "Admin Principal".
+    ◦ Existen registros en el "Servicio de Logs de Auditoría".
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a la sección "Administración" en la "Barra de Navegación Lateral".
+    2. Hacer clic en la sub-opción "Ver Logs de Auditoría".
+• Datos de Entrada de Prueba: (N/A)
+• Resultado Esperado:
+    ◦ La aplicación muestra la "Pantalla: Logs de Auditoría" con una "Tabla cronológica" de todas las actividades y cambios realizados en el sistema (ej., creación de pacientes, modificaciones de citas, intentos de login).
+    ◦ Los logs son inmutables (Write Once, Read Many - WORM), asegurando su integridad.
+• Criterios de Éxito/Fallo: La prueba pasa si el "Admin Principal" puede acceder y visualizar la tabla completa de logs de auditoría sin errores; de lo contrario, falla.
+6. Pruebas de Inteligencia y Automatización Integrada (Modelo de IA Gemma 3)
+ID: CP-IA-001
+• Descripción Breve del Escenario que se Prueba: Interacción con el "Chat Interno Básico" para una consulta rápida.
+• Precondiciones:
+    ◦ Usuario logueado con cualquier rol.
+    ◦ El modelo de IA "Gemma 3" está integrado y operativo en el backend a través de APIs.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Hacer clic en el icono o navegar a la sección dedicada al chat interno en el Dashboard.
+    2. En el "Campo de entrada de texto", ingresar una consulta simple.
+    3. Hacer clic en "Enviar".
+• Datos de Entrada de Prueba:
+    ◦ Consulta: Resúmeme el historial de Juan Pérez García.
+• Resultado Esperado:
+    ◦ El backend envía la consulta al modelo "Gemma 3".
+    ◦ El chat interno muestra una respuesta relevante generada por la IA en formato de texto.
+    ◦ La interacción es solo de texto y no genera archivos.
+• Criterios de Éxito/Fallo: La prueba pasa si la IA responde correctamente a la consulta en formato de texto y no intenta generar un archivo; de lo contrario, falla.
+ID: CP-IA-002
+• Descripción Breve del Escenario que se Prueba: Uso de la IA para generar un borrador de correo electrónico.
+• Precondiciones:
+    ◦ Usuario logueado con cualquier rol.
+    ◦ El modelo de IA "Gemma 3" está integrado y operativo en el backend a través de APIs.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. Navegar a un módulo que permita la automatización de la redacción de correos o usar el chat interno.
+    2. Ingresar una instrucción para generar un borrador de correo.
+    3. Hacer clic en "Enviar" o activar la función de generación.
+• Datos de Entrada de Prueba:
+    ◦ Instrucción: Redacta un correo de recordatorio de cita para Juan Pérez para el 25 de julio a las 10 AM.
+• Resultado Esperado:
+    ◦ La IA genera un borrador de correo electrónico basado en la instrucción y lo muestra en la interfaz (ej., en el chat o en un campo de texto de un formulario de correo).
+    ◦ El contenido es coherente con la solicitud y en formato de texto.
+• Criterios de Éxito/Fallo: La prueba pasa si la IA genera un borrador de correo electrónico relevante y en el formato de texto esperado; de lo contrario, falla.
+7. Pruebas de Cerrar Sesión
+ID: CP-LOGOUT-001
+• Descripción Breve del Escenario que se Prueba: Cierre de sesión exitoso desde el Dashboard Principal.
+• Precondiciones:
+    ◦ Usuario logueado con cualquier rol en el Dashboard Principal.
+• Pasos Específicos a Seguir para Ejecutar la Prueba:
+    1. En la "Cabecera (Header)" del Dashboard Principal, hacer clic en la opción "Cerrar Sesión".
+• Datos de Entrada de Prueba: (N/A)
+• Resultado Esperado:
+    ◦ La sesión del usuario se invalida en el backend.
+    ◦ El usuario es redirigido a la "Pantalla: Login de Usuario".
+    ◦ El "Servicio de Logs de Auditoría" registra la acción de cierre de sesión.
+• Criterios de Éxito/Fallo: La prueba pasa si el usuario es redirigido a la pantalla de Login y su sesión es correctamente terminada; de lo contrario, falla.

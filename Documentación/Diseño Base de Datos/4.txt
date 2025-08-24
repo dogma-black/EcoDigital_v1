@@ -1,0 +1,57 @@
+Continuando con el "Documento de Diseño de la Base de Datos (Cloud SQL)", a continuación se presentan las secciones adicionales solicitadas:
+8. Estrategia de Indexación
+La estrategia de indexación es fundamental para optimizar el rendimiento de la base de datos, especialmente en operaciones de búsqueda y filtrado de datos. Los índices permiten que el motor de la base de datos localice rápidamente filas sin tener que escanear una tabla entera, mejorando drásticamente la velocidad de las consultas. Dada la necesidad de "búsqueda instantánea de pacientes" y el acceso eficiente a historiales clínicos, una correcta indexación es crucial para la "eficiencia operativa" del ecosistema.
+Candidatos para la Creación de Índices:
+Basándose en los requisitos funcionales del "Ecosistema Digital Inteligente para Cirugía Especial", las siguientes columnas son candidatas primarias para la creación de índices, incluyendo índices únicos para claves primarias y foráneas, y índices no únicos para columnas frecuentemente utilizadas en búsquedas o filtros:
+• PACIENTES Tabla:
+    ◦ id_paciente: Clave primaria, se indexará automáticamente. Es crucial para la búsqueda de pacientes por ID y la vinculación a otras tablas como HISTORIAL_CLINICO y CITAS.
+    ◦ nombre, apellido: Estas columnas serán utilizadas frecuentemente para la "búsqueda instantánea de pacientes" por nombre o apellido. Un índice combinado o índices separados en estas columnas acelerarán las búsquedas.
+    ◦ activo: Utilizada para filtrar pacientes activos en el sistema.
+• HISTORIAL_CLINICO Tabla:
+    ◦ id_historial: Clave primaria, se indexará automáticamente.
+    ◦ id_paciente: Clave foránea, esencial para buscar el historial clínico de un paciente específico. La indexación de esta FK optimizará las uniones (JOINs) y las búsquedas por paciente.
+    ◦ fecha_consulta: Es probable que se realicen búsquedas y filtros por fecha de consulta para el "Registro Historial Clínico Detallado".
+• CITAS Tabla:
+    ◦ id_cita: Clave primaria, se indexará automáticamente.
+    ◦ id_paciente: Clave foránea, utilizada para vincular citas a pacientes y para filtrar citas por paciente.
+    ◦ fecha_hora: Fundamental para el "Módulo de Agenda y Citas", permitiendo búsquedas rápidas por fecha y hora para visualizar las "Citas del Día".
+    ◦ estado: Utilizada para filtrar citas por su estado (ej., "Confirmada", "Cancelada", "Atendida").
+• USUARIOS Tabla:
+    ◦ id_usuario: Clave primaria, se indexará automáticamente.
+    ◦ nombre: Utilizada para el login y la identificación de usuarios en los logs de auditoría.
+    ◦ id_role: Clave foránea, esencial para determinar los "permisos del usuario" y para la funcionalidad de "Seguridad, Roles y Accesos Rápidos".
+• LOGS_AUDITORIA Tabla:
+    ◦ id_log: Clave primaria, se indexará automáticamente.
+    ◦ fecha_hora: Crucial para la recuperación cronológica de eventos en el "Servicio de Logs de Auditoría".
+    ◦ id_usuario_autor: Permite filtrar los logs por el usuario que realizó la acción.
+    ◦ tabla_afectada y id_registro_afectado: Permiten rastrear acciones sobre registros específicos. Un índice compuesto o índices individuales pueden ser beneficiosos aquí.
+La implementación de estos índices se realizará durante la fase de modelado y diseño de la base de datos para asegurar el rendimiento óptimo del sistema desde el inicio.
+9. Plan de Migración de Datos Existentes
+La migración de datos existentes es una parte integral de la Fase 1 del proyecto, asegurando la "carga inicial de los documentos que usted y su equipo ya poseen en formato digital" para integrarlos al nuevo sistema. Este proceso busca "eliminar la dispersión de archivos" y centralizar la información.
+El plan de migración de archivos digitales se abordará a alto nivel de la siguiente manera:
+1. Identificación y Recopilación de Archivos: Se colaborará con el consultorio para identificar y recopilar todos los archivos digitales existentes (PDFs, imágenes de estudios como RX, videos cortos de procedimientos, etc.) que necesiten ser integrados al sistema. Es importante destacar que el proyecto NO incluye la digitalización (escaneo) de archivos físicos existentes; solo se migrarán los archivos que ya estén en formato digital.
+2. Extracción y Estructuración de Metadatos:
+    ◦ Para cada archivo digital, se extraerán o se solicitarán los metadatos relevantes (ej., nombre del paciente asociado, fecha del documento, tipo de archivo, descripción).
+    ◦ Estos metadatos se estructurarán de acuerdo con el esquema de la "Base de Datos Relacional (Cloud SQL)". Por ejemplo, para los documentos de pacientes, se vincularán al id_historial o id_paciente en las tablas DOCUMENTOS o HISTORIAL_CLINICO.
+3. Carga Segura a Cloud Storage:
+    ◦ Los archivos digitales grandes y pesados se subirán al servicio de "Almacenamiento de Archivos (Cloud Storage - S3/Blob)" de Google Cloud Platform (GCP).
+    ◦ Es crucial que, al igual que la base de datos, estos archivos estén cifrados en reposo en Cloud Storage, garantizando la seguridad de la información sensible del paciente.
+4. Vinculación en la Base de Datos (Cloud SQL):
+    ◦ Una vez que los archivos estén cargados en Cloud Storage, la "Base de Datos Relacional (Cloud SQL)" no almacenará los archivos directamente. En su lugar, la tabla DOCUMENTOS almacenará la url_almacenamiento (URL de acceso) que apunta a la ubicación segura del archivo en Cloud Storage, junto con otros metadatos como nombre_archivo y tipo_archivo.
+    ◦ Esto permite que la aplicación de escritorio, a través del backend, acceda y visualice los documentos asociados al expediente del paciente de forma eficiente.
+5. Verificación y Control de Calidad: Se realizarán verificaciones post-migración para asegurar que todos los archivos se hayan cargado correctamente, que los metadatos sean precisos y que las vinculaciones entre la base de datos y Cloud Storage funcionen según lo esperado.
+La migración de datos se realizará en la Fase 1 del proyecto, aprovechando herramientas de Google Cloud Storage para este propósito.
+10. Especificaciones de Seguridad de la Base de Datos
+La seguridad de la base de datos es una "preocupación de seguridad de datos" fundamental que el ecosistema busca abordar. Se integra en múltiples capas de la arquitectura en la nube.
+1. Configuración de Usuarios y Permisos de Acceso a la Base de Datos:
+    ◦ El sistema implementa un estricto "Control de Acceso Basado en Roles (RBAC)". Al iniciar sesión, cada usuario es asociado a un rol específico ("Administrador", "Admin Principal", "Admin Secundario", "Asistente", "Invitado") que define sus permisos específicos sobre la información y funcionalidades.
+    ◦ El backend verifica las credenciales contra la "Base de Datos Relacional (Cloud SQL)" y consulta el Sistema de Roles (ROLES en el modelo de datos) para determinar los permisos del usuario.
+    ◦ Para la conectividad de la aplicación al backend y del backend a la base de datos, se aplicará el "principio de privilegio mínimo". Esto significa que el usuario de la base de datos que utiliza el backend para conectarse solo tendrá los permisos necesarios para realizar las operaciones requeridas (lectura, escritura, modificación en tablas específicas), sin privilegios administrativos excesivos.
+    ◦ La gestión de usuarios y la asignación de roles se realiza a través del Dashboard, en la sección de "Administración", accesible solo para roles con permisos adecuados como el "Admin Principal".
+2. Requisitos de Cifrado en Reposo para los Datos Sensibles:
+    ◦ Una medida de seguridad crítica para proteger la información sensible del paciente es el cifrado de datos en reposo.
+    ◦ Todos los datos sensibles estarán cifrados en reposo tanto en la "Base de Datos Relacional (Cloud SQL)" como en el "Almacenamiento de Archivos (Cloud Storage)". Esto asegura que, en caso de un acceso no autorizado al almacenamiento subyacente, los datos permanezcan ilegibles.
+    ◦ Para las contraseñas de usuario, la base de datos incluye un campo hash_password VARCHAR en la tabla USUARIOS, lo que sugiere el uso de funciones de hash seguras en lugar de almacenar las contraseñas en texto plano. Esto es una práctica estándar esencial contra fugas de datos.
+3. Plan de Copias de Seguridad y Restauración:
+    ◦ Aunque no se detalla un plan específico de copias de seguridad en todos los documentos, la "Guía de Replicación Técnica" y "Arquitectura Nube" mencionan explícitamente la necesidad de "Implementar copias de seguridad automáticas y recuperación ante desastres" como una recomendación para la base de datos Cloud SQL.
+    ◦ Esto es una buena práctica estándar para cualquier base de datos en producción, y la plataforma Google Cloud SQL ofrece capacidades de backup automático y point-in-time recovery, lo que garantiza la "alta disponibilidad" y minimiza el tiempo de inactividad. Un plan de restauración claro será crucial para mitigar el riesgo de pérdida de datos en caso de fallos del sistema o corrupción de datos.

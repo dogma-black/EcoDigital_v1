@@ -1,0 +1,75 @@
+Especificación Técnica del Frontend del Dashboard: Núcleo Administrativo Central
+1. Introducción y Propósito
+El presente documento tiene como objetivo principal detallar las especificaciones técnicas para la construcción del Frontend del "Dashboard de Escritorio", componente central del "Ecosistema Digital Inteligente para Cirugía Especial". Servirá como la guía definitiva para los equipos de diseño y desarrollo, asegurando una implementación coherente, de alta calidad y sin ambigüedades.
+El Dashboard de Escritorio es el "Núcleo Administrativo Central" del ecosistema, diseñado para ser el corazón operativo del consultorio del Dr. Joel Sánchez García. Su propósito fundamental es centralizar toda la información crítica del consultorio en un solo lugar seguro y accesible, ofreciendo una visión general del estado actual y un acceso rápido a las funcionalidades clave. Su objetivo es optimizar la gestión de pacientes, mejorar la eficiencia operativa al reducir los procesos manuales y el riesgo de errores, y liberar tiempo valioso para el personal. Además, está concebido para ser un entorno digital potente, seguro y excepcionalmente intuitivo, reflejando la calidad y el prestigio de la práctica médica del Dr. Sánchez García.
+2. Elección del Framework Frontend
+Para el desarrollo del Frontend del Dashboard, se recomienda la utilización de un framework moderno y robusto, siendo React o Vue.js las opciones preferidas y viables. Estos frameworks son ampliamente adoptados en la industria debido a su popularidad, amplios ecosistemas de herramientas y librerías, y su eficiencia en la creación de interfaces de usuario complejas y reactivas. Permiten un desarrollo modular, facilitan la gestión del estado y ofrecen un rendimiento óptimo para aplicaciones dinámicas.
+El Dashboard se empaquetará como una aplicación de escritorio utilizando Electron.js. Electron.js permite construir aplicaciones de escritorio nativas (compatibles con Windows y macOS) utilizando tecnologías web estándares como HTML, CSS y JavaScript. Esta elección es estratégica, ya que aprovecha la experiencia en desarrollo web para crear una aplicación de escritorio, lo que agiliza el proceso y garantiza una experiencia de usuario familiar y de alta calidad. La integración con el framework frontend elegido (React/Vue.js) es fluida, permitiendo que la lógica de negocio y la interfaz se desarrollen de manera cohesiva para el entorno de escritorio.
+3. Arquitectura y Estructura de la Aplicación
+3.1. Diagrama de Arquitectura de Alto Nivel del Frontend y su Interacción
+El Frontend del Dashboard de Escritorio actúa como la capa de presentación que permite la interacción del usuario con la lógica de negocio y los datos alojados en la nube. Se comunica de forma segura con el Backend a través de APIs RESTful.
+graph TD
+    A[Aplicación de Escritorio (Frontend)] -- HTTPS (TLS 1.3) --> B(API Gateway / Load Balancer - GCP)
+    B --> C[Servidor de Aplicación (Backend)]
+    C -- Lógica de Negocio --> D[Base de Datos Relacional (Cloud SQL - GCP)]
+    C -- Almacenamiento --> E[Almacenamiento de Archivos (Cloud Storage - GCP)]
+    C -- Logs --> F[Servicio de Logs de Auditoría (Cloud Logging - GCP)]
+    C -- Integración IA --> G[Modelo de IA (Gemma 3)]
+
+    D -- Cifrado en Reposo --> D
+    E -- Cifrado en Reposo --> E
+    G -- Consultas/Generación --> C
+Explicación del Flujo:
+1. El Usuario inicia la Aplicación de Escritorio (Frontend).
+2. La aplicación se conecta de forma segura a la infraestructura en la nube de Google Cloud Platform (GCP).
+3. Todas las solicitudes del Frontend hacia el Backend pasan por el API Gateway / Load Balancer, que actúa como el punto de entrada seguro y distribuye el tráfico eficientemente.
+4. La comunicación entre el Frontend y la nube se realiza a través de HTTPS (TLS 1.3) para cifrar los datos en tránsito, protegiendo la información sensible como las credenciales del usuario.
+5. El Servidor de Aplicación (Backend) procesa las solicitudes, interactúa con la Base de Datos Relacional (Cloud SQL) para datos estructurados (pacientes, citas, usuarios) y con el Almacenamiento de Archivos (Cloud Storage) para documentos digitales (PDFs, imágenes, videos). Los datos sensibles en ambos servicios de almacenamiento están cifrados en reposo.
+6. Cada acción del usuario y cada intento de login (exitoso o fallido) se registra cronológicamente en el Servicio de Logs de Auditoría (Cloud Logging / Audit Logs), los cuales son inmutables.
+7. El Backend también integra el modelo de Inteligencia Artificial Gemma 3 mediante APIs para potenciar funcionalidades de automatización y el chat interno.
+3.2. Estructura Detallada de Directorios y Carpetas del Proyecto Frontend
+Se propone la siguiente estructura de directorios, basada en principios de modularidad y separación de responsabilidades para facilitar la mantenibilidad, escalabilidad y colaboración del equipo:
+src/
+├── assets/                  # Contiene recursos estáticos como imágenes, iconos, fuentes
+│   ├── images/
+│   ├── icons/               # Iconos de estilo de línea (line-style) con grosor de trazo consistente [49-52]
+│   └── fonts/               # Fuente Inter (sans-serif geométrica) [45, 50-54]
+├── components/              # Componentes UI reutilizables y atómicos
+│   ├── buttons/
+│   ├── forms/
+│   ├── inputs/
+│   ├── layout/              # Componentes de layout (Header, Sidebar, MainContent) [52, 55-57]
+│   └── common/              # Otros componentes generales
+├── views/ (o pages/)        # Contiene las vistas principales o "pantallas" de la aplicación
+│   ├── Auth/                # Pantalla de Login [3, 7, 28, 58-60]
+│   ├── Dashboard/           # Pantalla Principal del Dashboard [4, 7, 8, 31, 36, 58]
+│   ├── Patients/            # Gestión Integral del Expediente del Paciente [2, 61-66]
+│   ├── Appointments/        # Módulo de Agenda y Citas [67-72]
+│   ├── Documents/           # Gestión Documental Avanzada [2, 63, 72-75]
+│   ├── Administration/      # Seguridad, Roles y Accesos Rápidos (Gestionar Usuarios, Ver Logs de Auditoría) [68, 71, 76-79]
+│   ├── Reports/             # Módulo de Reportes [7, 58, 80-82]
+│   └── AIAutomation/        # Inteligencia y Automatización Integrada (Chat Interno) [68, 71, 79, 83-85]
+├── services/ (o api/)       # Lógica para interactuar con el Backend (APIs)
+│   ├── auth.js              # Servicios de autenticación (Login, Logout) [86, 87]
+│   ├── patients.js          # Servicios para la gestión de pacientes [88, 89]
+│   ├── appointments.js      # Servicios para la gestión de citas [88, 89]
+│   ├── documents.js         # Servicios para la gestión de documentos [88, 89]
+│   ├── users.js             # Servicios para la gestión de usuarios y roles [88, 89]
+│   └── ai.js                # Servicios para la interacción con la IA (Gemma 3) [88, 89]
+├── styles/                  # Estilos globales y específicos
+│   ├── globals.css          # Estilos CSS globales, incluyendo las Propiedades Personalizadas de CSS [49-51, 90]
+│   ├── themes.css           # Definiciones de temas (Glassmorphism Oscuro) [91, 92]
+│   ├── components.css       # Estilos para componentes reutilizables
+│   └── views.css            # Estilos específicos para vistas/pantallas
+├── utils/                   # Funciones de utilidad (ej. formateo de fechas, validación de formularios)
+├── hooks/                   # Custom Hooks (si se usa React) para lógica reutilizable con estado
+├── store/ (o context/)      # Gestión de estado global de la aplicación (ej. información del usuario logueado, roles)
+└── App.js (o main.js)       # Punto de entrada principal de la aplicación
+3.3. Descripción de la Lógica de Organización
+• Modularidad y Reusabilidad: La aplicación se estructurará en módulos y componentes, lo que permite reutilizar el código en diferentes partes de la aplicación y facilita el desarrollo paralelo. Los componentes se diseñarán de forma atómica, encapsulando su propia lógica y estilos.
+• Separación de Responsabilidades:
+    ◦ Lógica de UI en Componentes/Vistas: Los componentes y las vistas (carpetas components y views) serán responsables de la presentación visual y la interacción directa con el usuario.
+    ◦ Lógica de Negocio y Llamadas a API en Servicios: Toda la lógica de comunicación con el backend, incluyendo las llamadas a las APIs RESTful y el manejo de la autenticación/autorización, residirá en la carpeta services (o api). Esto asegura que la lógica de presentación esté desacoplada de la lógica de datos.
+    ◦ Estilos Separados: Los estilos se gestionarán de forma centralizada en la carpeta styles, utilizando CSS Variables para mantener la coherencia visual del "Glassmorphism Oscuro" y facilitar futuras modificaciones. Esto evita la duplicación de código y asegura que el diseño sea adaptable y fácil de mantener.
+• Manejo de Estado: Se implementará una estrategia de manejo de estado global (usando Context API/Redux para React, o Vuex para Vue.js) para gestionar datos críticos como la información del usuario logueado, su rol y los permisos de acceso, asegurando que esta información esté disponible en toda la aplicación de manera eficiente.
+• Control de Acceso Basado en Roles (RBAC): El Frontend implementará la lógica para adaptar la interfaz de usuario (visibilidad de secciones, botones, etc.) basándose en el rol del usuario autenticado, cuyos permisos son validados por el Backend. Esto garantiza que solo se presenten las funcionalidades a las que el usuario tiene acceso según su perfil (Administrador Principal, Admin Secundario, Asistente, Invitado).

@@ -1,0 +1,74 @@
+Documento de Diseño de la Base de Datos (Cloud SQL)
+Este documento detalla el diseño de la base de datos relacional para el "Ecosistema Digital Inteligente para Cirugía Especial", la cual se alojará en Google Cloud Platform (GCP) utilizando Cloud SQL (MySQL/PostgreSQL). El objetivo es centralizar toda la información crítica del consultorio de manera segura, garantizando la integridad de los datos sensibles mediante cifrado en reposo.
+1. Modelo Entidad-Relación (ERD)
+El modelo Entidad-Relación (ERD) describe las principales entidades y sus interconexiones dentro del ecosistema digital, sirviendo como la columna vertebral para la gestión de pacientes y la operación diaria del consultorio. Este modelo asegura que la información estructurada, como perfiles de pacientes, historiales clínicos, citas y usuarios, se almacene de forma coherente y segura.
+Las entidades principales y sus relaciones son las siguientes:
+• PACIENTES y HISTORIAL_CLINICO: La entidad PACIENTES "tiene" una relación de uno a muchos con HISTORIAL_CLINICO, lo que significa que un paciente puede tener múltiples entradas en su historial clínico a lo largo del tiempo.
+• HISTORIAL_CLINICO y DOCUMENTOS: La entidad HISTORIAL_CLINICO "contiene" DOCUMENTOS. Esto permite adjuntar archivos digitales como PDFs, imágenes o videos cortos a entradas específicas del historial clínico de un paciente.
+• PACIENTES y CITAS: La entidad PACIENTES "agenda" CITAS. Un paciente puede tener múltiples citas programadas con el consultorio.
+• CITAS y PROCEDIMIENTOS_CITAS: La entidad CITAS "se relaciona con" PROCEDIMIENTOS_CITAS. Esta tabla intermedia permite asociar una o más citas con procedimientos específicos.
+• PROCEDIMIENTOS_CITAS y PROCEDIMIENTOS: La entidad PROCEDIMIENTOS_CITAS "detalla" PROCEDIMIENTOS. Esto vincula los procedimientos realizados con las citas correspondientes.
+• USUARIOS y ROLES: La entidad ROLES "asigna" USUARIOS. Cada usuario del sistema tiene un rol definido que determina sus permisos de acceso a la información y funcionalidades.
+• USUARIOS y LOGS_AUDITORIA: La entidad USUARIOS "realiza" operaciones que son registradas en LOGS_AUDITORIA. Este componente registra cronológicamente todas las actividades y cambios realizados en el sistema, siendo vital para la seguridad y el seguimiento de operaciones.
+2. Especificación Completa de Tablas (Parte 1)
+A continuación, se detalla la estructura y las características de las tablas PACIENTES e HISTORIAL_CLINICO, incluyendo sus columnas, tipos de datos, restricciones y relaciones.
+Tabla: PACIENTES
+Esta tabla centraliza la información demográfica y de contacto de todos los pacientes del consultorio.
+Columna
+Tipo de Dato
+Restricciones
+Descripción
+id_paciente
+INT
+PK, NOT NULL, AUTO_INCREMENT
+Identificador único y autoincremental para cada paciente.
+nombre
+VARCHAR(255)
+NOT NULL
+Nombre(s) del paciente.
+apellido
+VARCHAR(255)
+NOT NULL
+Apellido(s) del paciente.
+fecha_nac
+DATE
+NULLABLE
+Fecha de nacimiento del paciente.
+datos_contacto
+JSON
+NULLABLE
+Almacena información de contacto adicional (ej., teléfono, email, dirección) en formato JSON.
+activo
+BOOLEAN
+NOT NULL, DEFAULT TRUE
+Indica si el registro del paciente está activo (TRUE) o ha sido eliminado suavemente/archivado (FALSE).
+Tabla: HISTORIAL_CLINICO
+Esta tabla almacena el registro cronológico y detallado de cada interacción clínica con un paciente.
+Columna
+Tipo de Dato
+Restricciones
+Descripción
+id_historial
+INT
+PK, NOT NULL, AUTO_INCREMENT
+Identificador único y autoincremental para cada entrada del historial clínico.
+id_paciente
+INT
+FK a PACIENTES.id_paciente, NOT NULL
+Clave foránea que vincula la entrada del historial a un paciente específico.
+fecha_consulta
+DATE
+NOT NULL
+Fecha en la que se realizó la consulta o se registró la entrada.
+diagnostico
+TEXT
+NULLABLE
+Diagnóstico asociado a la consulta.
+notas_medico
+TEXT
+NULLABLE
+Notas detalladas del médico sobre la evolución, procedimientos o tratamientos.
+activo
+BOOLEAN
+NOT NULL, DEFAULT TRUE
+Indica si la entrada del historial está activa (TRUE) o ha sido marcada como inactiva/archivada (FALSE).

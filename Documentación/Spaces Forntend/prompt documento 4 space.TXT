@@ -1,0 +1,90 @@
+Por favor, genera el contenido completo y detallado para un documento de "Especificación Técnica del Frontend del Dashboard" para el proyecto "Ecosistema Digital para Cirugía Especial".
+
+El documento debe estar estructurado en las siguientes secciones, detallando cada punto basándose en la información proporcionada previamente en otros contextos (requisitos funcionales, guía de estilo, menciones de tecnología) y principios estándar de desarrollo frontend.
+
+1.  **Introducción y Propósito:**
+    *   Breve descripción del documento y su objetivo: detallar la construcción técnica del frontend del Dashboard de Administración.
+    *   Propósito del Dashboard en el ecosistema (centro de operaciones para personal médico/administrativo).
+
+2.  **Elección del Framework Frontend:**
+    *   Especificar el framework elegido (mencionar React, Vue.js o Angular como opciones viables y justificar brevemente basándose en popularidad, ecosistema, rendimiento).
+    *   Especificar el uso de Electron.js para empaquetar la aplicación de escritorio y cómo se integra con el framework frontend elegido (permite usar tecnologías web para app de escritorio).
+
+3.  **Arquitectura y Estructura de la Aplicación:**
+    *   Diagrama de alto nivel mostrando la arquitectura del frontend y cómo interactúa con el backend (APIs) a través de llamadas HTTP.
+    *   Estructura detallada de directorios y carpetas del proyecto frontend (ej. `src/components`, `src/views` o `src/pages`, `src/services` o `src/api`, `src/styles`, `src/assets`, `src/utils`, `src/hooks` si aplica).
+    *   Descripción de la lógica de organización (modularidad, separación de responsabilidades: lógica de UI en componentes, lógica de negocio/llamadas a API en servicios, estilos separados).
+
+4.  **Diseño de Componentes Reutilizables:**
+    *   Descripción de la importancia de los componentes para la consistencia visual, mantenibilidad y eficiencia.
+    *   Especificación detallada de *todos* los componentes de UI necesarios para el Dashboard, basándose en los Requisitos Funcionales (Documento 1) y la guía de estilo "Glassmorphism Oscuro". Para cada componente, describir:
+        *   Propósito y función en la interfaz.
+        *   Variantes (si aplican, ej. botón primario vs secundario, input de texto vs textarea).
+        *   Estados visuales (normal, hover, activo, focus, disabled, error, loading, marcado/desmarcado).
+        *   Propiedades (props) principales que recibirán datos o funciones (ej. `label`, `onClick`, `value`, `onChange`, `data`).
+        *   Cómo se alinea visualmente con la guía de estilo Glassmorphism (sin detallar CSS exacto aquí, solo la descripción visual).
+    *   **Listado Explícito de Componentes:**
+        *   Layout y Contenedores (Componentes para la Barra Lateral, Header, Área de Contenido Principal, Paneles/Tarjetas con efecto Glassmorphism).
+        *   Componentes de Navegación (Elementos individuales dentro de la barra lateral con icono y/o texto).
+        *   Botones (Tipos: Primario para acciones principales, Secundario para acciones menos prominentes).
+        *   Campos de Entrada de Texto (Input para campos cortos, Textarea para campos multi-línea como notas).
+        *   Checkboxes (Para selección de filas en tabla, etc.).
+        *   Iconos (Descripción de cómo se usarán, mencionando una biblioteca si es pertinente).
+        *   Elementos de Tipografía (Componentes para aplicar estilos de encabezados, párrafos, labels, etc., según la escala tipográfica).
+        *   Tabla de Datos (Componente complejo para mostrar listas de pacientes/citas/etc., incluyendo encabezados, filas, celdas, checkboxes de selección, icono de menú de acciones por fila).
+        *   Paginación para la tabla.
+        *   Componente de Filtros (Panel o modal con diferentes tipos de controles de filtro).
+        *   Modales (Para formularios de edición/creación, confirmaciones).
+        *   Paneles Laterales (Para filtros avanzados u otros detalles).
+        *   Componentes Específicos de Módulos:
+            *   Interfaz del Asistente Virtual (Área de visualización de mensajes, Campo de entrada para escribir, Botones de acción sugerida).
+            *   Componentes del Visor de Archivos Visuales (Carrusel contenedor, Elementos de miniatura individual, Vista ampliada, Flechas de navegación, Controles de filtro de origen/tipo).
+            *   Componentes para Widgets de Servicios Externos (Elementos visuales o iframes para integrar Gmail, Google Drive, etc.).
+        *   Componentes de Feedback Visual (Spinners de carga, mensajes de notificación/toast).
+        *   Formularios (Componentes contenedores para agrupar campos de entrada, botones de submit).
+
+5.  **Implementación del Sistema de Diseño (Glassmorphism Oscuro):**
+    *   Estrategia de implementación de estilos (ej. CSS Modules, SCSS, Styled Components) y justificación.
+    *   Definición y uso de Variables CSS (Tokens de Diseño): Cómo se codificarán la paleta de colores (con variables semánticas como `--color-primary`, `--color-background-surface`), la escala tipográfica (`--font-size-h1`, `--font-weight-bold`), espaciado (`--space-unit`), border-radius (`--border-radius-card`), etc., basándose en la guía de estilo.
+    *   Implementación técnica detallada del efecto Glassmorphism en los componentes de panel/tarjeta (uso de `background-color` con opacidad RGBA, `backdrop-filter: blur()`, definición del `border` sutil). Mencionar prefijos de navegador (`-webkit-backdrop-filter`).
+    *   Implementación técnica del fondo Aurora UI: Describir cómo se creará el fondo dinámico (usando múltiples gradientes radiales o elementos `div` posicionados absolutamente con `filter: blur()`) y por qué es esencial para que el Glassmorphism sea visible (proporciona la "materia prima" visual).
+    *   Aplicación de estilos a los componentes reutilizables: Cómo se usarán las variables CSS y las clases/estilos para dar la apariencia Glassmorphism a los botones, inputs, tablas, etc., según se describió en la sección de Diseño de Componentes.
+    *   Uso de Iconografía: Cómo se integrará una biblioteca de iconos y cómo se aplicarán los estilos (color, tamaño) según la guía.
+    *   Consideraciones específicas para el modo oscuro avanzado: Cómo se aplicarán los colores y la tipografía para asegurar la legibilidad y el confort visual en el tema oscuro, basándose en las directrices del diseño.
+
+6.  **Gestión del Estado:**
+    *   Elección de una librería o patrón para la gestión del estado global de la aplicación (ej. Context API + useReducer si es simple, Redux/Zustand/Pinia/Vuex si es complejo). Justificar brevemente la elección.
+    *   Descripción de las partes principales del estado que necesitarán ser gestionadas globalmente (ej. datos del usuario autenticado, estado de carga y error global de APIs, datos de la tabla de pacientes, estado de visibilidad de modales/paneles).
+    *   Cómo se actualizará y accederá al estado desde diferentes componentes.
+
+7.  **Consumo de APIs del Backend:**
+    *   Estrategia para realizar las llamadas a los endpoints del backend desde el frontend (ej. usando `fetch`, `axios`, o creando un módulo de servicios dedicado).
+    *   Cómo se manejarán los estados de carga (`loading`), error (`error`), y éxito (`data`) de las llamadas a la API en la interfaz de usuario (ej. mostrando spinners, mensajes de error).
+    *   Cómo se gestionarán los tokens de autenticación (almacenamiento seguro en el frontend - ej. `localStorage` con precauciones, `sessionStorage`, cookies HTTPOnly - y cómo incluirlos en los headers de las solicitudes a la API).
+
+8.  **Implementación de Funcionalidades de UI Complejas:**
+    *   Detalle técnico de cómo se implementarán funcionalidades específicas que requieren lógica compleja en el frontend:
+        *   Tabla de Datos Interactiva: Cómo implementar la paginación, ordenamiento (si se hace en frontend o backend), filtrado (lógica para aplicar filtros), manejo de la selección múltiple, lógica para mostrar/ocultar el menú de acciones por fila.
+        *   Interacción con el Asistente Virtual: Cómo enviar el texto del usuario a la API del backend que interactúa con la IA y cómo mostrar las respuestas en tiempo real (o casi real).
+        *   Implementación del Visor de Archivos Visuales: Lógica para cargar las miniaturas, mostrar la vista ampliada, manejar la navegación del carrusel, aplicar filtros visuales.
+        *   Integración de Widgets de Servicios Externos: Si la integración es más que un enlace (ej. usar SDKs, iFrames seguros), describir cómo se hará.
+        *   Manejo de Formularios: Implementación de la lógica de formularios, validación del lado del cliente (si aplica antes de enviar al backend).
+
+9.  **Consideraciones de Rendimiento y Optimización del Frontend:**
+    *   Estrategias para optimizar la carga inicial (ej. code splitting para dividir el bundle de JavaScript, lazy loading de componentes no críticos).
+    *   Optimización del renderizado de listas grandes (si la tabla puede tener miles de filas, considerar virtualización de listas/tablas).
+    *   Manejo eficiente de imágenes y videos para no saturar el ancho de banda del usuario.
+
+10. **Consideraciones Específicas de Electron (si se usa):**
+    *   Manejo de funcionalidades específicas de escritorio que puedan ser necesarias (ej. acceso a archivos locales si aplica - aunque la mayoría estará en Cloud Storage, notificaciones nativas).
+    *   Comunicación entre el proceso principal de Electron (que maneja ventanas, menús) y el proceso de renderizado (donde corre la aplicación web).
+    *   Proceso de empaquetado y distribución de la aplicación final (`.exe`, `.dmg`).
+    *   Estrategia de actualizaciones de la aplicación de escritorio.
+
+11. **Diseño Responsivo y Adaptabilidad (si aplica):**
+    *   Especificar claramente si el diseño del Dashboard necesita adaptarse a diferentes tamaños de pantalla o si solo se enfocará en resoluciones de escritorio específicas.
+    *   Si es responsivo, describir las estrategias de implementación (ej. uso de flexbox/grid, media queries para adaptar el layout y los componentes a diferentes breakpoints).
+
+Este prompt contiene toda la información estructurada para generar el documento completo. Puedes copiarlo y usarlo con el modelo dividiéndolo en las partes que consideres manejables para el límite de caracteres que has identificado.
+
+Espero que este prompt completo te sea de gran utilidad para generar el documento. Lamento nuevamente los problemas y la falta de confianza.

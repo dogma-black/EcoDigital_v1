@@ -1,0 +1,253 @@
+4.1. Layout y Contenedores
+Estos componentes definen la estructura general de la aplicación y sus principales áreas de contenido.
+a. Contenedor Principal (App Layout)
+• Propósito y función: Sirve como el envoltorio de toda la aplicación de escritorio, estableciendo el fondo principal y la base para el efecto visual "Aurora".
+• Variantes: N/A. Es el layout base.
+• Estados visuales: N/A. Es un contenedor estático.
+• Propiedades (props): children (para contener todos los demás componentes del Dashboard).
+• Alineación visual con Glassmorphism: Presenta un fondo principal de gris carbón suave (#121212) para reducir la fatiga visual. Detrás de los paneles de vidrio, incorpora auras difusas de azul oceánico profundo (#4A69FF) y violeta vibrante (#8C52FF), esenciales para el efecto "Aurora" que proporciona el fondo dinámico para el Glassmorphism.
+b. Barra de Navegación Lateral (Sidebar)
+• Propósito y función: Permite al usuario navegar a las secciones principales del sistema, como "Pacientes", "Agenda", "Reportes", "Documentos" y "Administración". Su contenido se adapta al rol del usuario logueado.
+• Variantes: N/A. Es una estructura fija.
+• Estados visuales: N/A. Su contenido cambia dinámicamente según el rol.
+• Propiedades (props): sections (un array de objetos que define las secciones y sus sub-opciones accesibles para el usuario actual), currentUserRole (para adaptar las opciones de navegación).
+• Alineación visual con Glassmorphism: Actúa como un panel lateral que sigue la estética "Glassmorphism Oscuro". Aunque no se especifica explícitamente como "vidrio esmerilado" en sí, se infiere que mantendrá la paleta de colores y la tipografía para una coherencia integral.
+c. Cabecera (Header)
+• Propósito y función: Ubicada en la parte superior, muestra la información del usuario logueado (nombre y rol) y proporciona la opción para "Cerrar Sesión".
+• Variantes: N/A.
+• Estados visuales: N/A.
+• Propiedades (props): userName, userRole, onLogoutClick (función para manejar el cierre de sesión).
+• Alineación visual con Glassmorphism: El texto y los iconos son nítidos y brillantes, utilizando el color principal de texto blanco roto (#F5F5F5) para alta legibilidad sobre el fondo oscuro o semi-transparente.
+d. Área de Contenido Principal (Main Content Area)
+• Propósito y función: Es el espacio más grande y dinámico del Dashboard, donde se muestran los paneles de información clave ("Citas del Día", "Métricas Rápidas", "Pacientes Recientes") y donde se cargan las vistas de las secciones seleccionadas desde la barra lateral.
+• Variantes: N/A. Es el contenedor de contenido principal.
+• Estados visuales: N/A. Su contenido cambia dinámicamente.
+• Propiedades (props): children (para cargar el contenido de las diferentes secciones del Dashboard).
+• Alineación visual con Glassmorphism: Este área es donde los paneles flotantes de "vidrio esmerilado" (Glassmorphism) con esquinas redondeadas y un sutil borde luminoso cobran vida, mostrando la información clave de forma jerárquica y visualmente cómoda.
+e. Paneles/Tarjetas (Glassmorphism Panels/Cards)
+• Propósito y función: Son los contenedores visuales principales para la información estructurada dentro del Área de Contenido Principal (ej., "Citas del Día", "Métricas Rápidas", "Pacientes Recientes").
+• Variantes: Pueden variar en tamaño (ej., pequeños para métricas rápidas, grandes para listados de pacientes).
+• Estados visuales: N/A. Son contenedores de información.
+• Propiedades (props): title, content (el JSX/componente interno que muestra la información específica), onClick (si el panel es interactivo, como un acceso directo).
+• Alineación visual con Glassmorphism: Representan la esencia del diseño "Glassmorphism Oscuro". Son semi-transparentes y desenfocados (usando backdrop-filter: blur(24px)). Tienen esquinas suavemente redondeadas (border-radius: 16px) y un sutil borde luminoso de 1px de color blanco semitransparente que "atrapa" la luz del fondo, creando una sensación de profundidad y jerarquía.
+
+--------------------------------------------------------------------------------
+4.2. Componentes de Navegación
+Estos componentes permiten la interacción del usuario con la barra lateral.
+a. Elemento de Navegación (Sidebar Item)
+• Propósito y función: Representa cada una de las opciones en la barra de navegación lateral (ej., "Pacientes", "Agenda", "Reportes"). Permite la selección de la sección principal y, si aplica, la expansión para mostrar sub-opciones.
+• Variantes:
+    ◦ Con Sub-opciones: Se puede expandir y contraer para mostrar opciones anidadas (ej., "Pacientes" > "Nuevo Paciente", "Buscar Paciente").
+    ◦ Sin Sub-opciones: Un elemento de menú directo (ej., "Documentos").
+• Estados visuales:
+    ◦ Normal: Estado por defecto, icono y texto con el color secundario (#A8A8A8).
+    ◦ Hover: Un sutil cambio de color del texto y/o icono a blanco roto (#F5F5F5) o un ligero efecto de brillo/hundimiento al pasar el cursor.
+    ◦ Activo/Seleccionado: El elemento actualmente visible en el área de contenido principal. Texto y/o icono con el color primario (#F5F5F5) y posiblemente una barra lateral sutil (1px solid rgba(255, 255, 255, 0.18)) o un fondo sutilmente resaltado.
+• Propiedades (props): icon (para el icono de estilo de línea), label (texto de la opción), path (ruta de navegación), hasSubOptions (booleano), subOptions (array de sub-opciones), isActive (booleano para estado activo), onClick (función para manejar la navegación).
+• Alineación visual con Glassmorphism: Los iconos son de estilo de línea con un grosor de trazo consistente y terminaciones/esquinas suavemente redondeadas, utilizando el color principal de texto (#F5F5F5) para los estados activos. La tipografía "Inter" se usa para las etiquetas, asegurando legibilidad. La retroalimentación visual al interactuar (hover/activo) es sutil pero clara, manteniendo la estética pulcra y de alta calidad del Glassmorphism.
+4.3. Componentes Interactivos Básicos
+Estos son los bloques de construcción fundamentales para la interacción del usuario.
+a. Botones (Button)
+• Propósito y función: Permiten al usuario ejecutar acciones específicas o navegar a otras secciones. Son el elemento principal para la interacción directa.
+• Variantes:
+    ◦ Primario: Para acciones principales y destacadas (ej., "Iniciar Sesión", "Guardar Paciente", "+ Nuevo Registro"). Utiliza un relleno sólido de color de acento.
+    ◦ Secundario: Para acciones menos prominentes, acciones alternativas o botones de cancelación (ej., "Cancelar", "Reprogramar"). Podrían tener un fondo transparente o un borde sutil para menor impacto visual.
+    ◦ Terciario/Icono: Para acciones muy discretas o solo con un icono (ej., menú de acciones en tabla, iconos de acceso rápido).
+• Estados visuales:
+    ◦ Normal: Apariencia por defecto, con colores y sombreado definidos.
+    ◦ Hover: Un sutil aumento de brillo o un ligero hundimiento al pasar el cursor, ofreciendo retroalimentación clara.
+    ◦ Activo/Focus: Un borde o sombra más prominente, indicando que el botón está seleccionado o en uso.
+    ◦ Disabled: Reduce la opacidad y desactiva la interacción (no responde a clics), indicando que la acción no está disponible.
+    ◦ Loading: Muestra un spinner o indicador de carga dentro del botón o junto a él, indicando que la acción está en progreso.
+• Propiedades (props): onClick (función a ejecutar), label (texto del botón), variant (primario, secundario, etc.), disabled (booleano), loading (booleano), icon (opcional).
+• Alineación visual con Glassmorphism:
+    ◦ Relleno Primario: Utiliza accent-blue (#4A69FF) o button-primary-fill (#4A69FF).
+    ◦ Texto: text-primary (#F5F5F5) para alta legibilidad.
+    ◦ Sombra: Un box-shadow suave para un efecto de brillo que contribuye a la sensación de flotación del Glassmorphism.
+    ◦ Esquinas: Suavemente redondeadas (ej., border-radius: 8px).
+b. Campos de Entrada de Texto (Input / Textarea)
+• Propósito y función: Permiten al usuario introducir texto, números u otros datos en la interfaz (ej., "Nombre de Usuario", "Contraseña", campos de perfil de paciente).
+• Variantes:
+    ◦ Input (tipo text, password, number, email, date, etc.) para campos cortos y de una sola línea.
+    ◦ Textarea para campos multi-línea, como "Notas de Evolución".
+• Estados visuales:
+    ◦ Normal: Apariencia por defecto, con fondo sutilmente contrastante o translúcido.
+    ◦ Focus: Un borde o resplandor sutil que indica que el campo está activo para la entrada de texto.
+    ◦ Disabled: Desactiva la entrada y reduce la opacidad.
+    ◦ Error: Un borde o texto en color de error (ej., rojo) y un mensaje de validación debajo del campo (ej., "Campo 'Nombre' requerido", "Formato de email inválido").
+    ◦ Filled: Cuando el campo contiene datos.
+• Propiedades (props): value, onChange (función de manejo de entrada), label (etiqueta del campo), placeholder, type (para inputs), rows (para textarea), disabled (booleano), error (booleano), errorMessage (string).
+• Alineación visual con Glassmorphism:
+    ◦ Fondo: Apariencia limpia y minimalista, posiblemente un fondo sutilmente contrastante o translúcido que mantenga la estética de vidrio.
+    ◦ Texto: Las etiquetas y el texto introducido utilizan el color principal de texto (--color-text-primary: #F5F5F5) para una legibilidad óptima sobre el fondo oscuro.
+    ◦ Bordes: Posiblemente bordes suaves o inexistentes en estado normal, y un borde sutilmente luminoso en el estado focus para indicar la interacción.
+c. Checkboxes (Checkbox)
+• Propósito y función: Permiten seleccionar o deseleccionar opciones (ej., selección múltiple de filas en una tabla para acciones en lote).
+• Variantes: Individual, Maestro (para seleccionar/deseleccionar todos en una tabla).
+• Estados visuales:
+    ◦ Sin marcar: Estado por defecto.
+    ◦ Marcado: Cuando la opción ha sido seleccionada.
+    ◦ Disabled: No permite la interacción.
+• Propiedades (props): checked (booleano), onChange (función de manejo de cambio), disabled (booleano).
+• Alineación visual con Glassmorphism:
+    ◦ Marcado: El color de acento interactivo (--color-accent-interactive: #34D1F3) para el relleno, sin borde.
+    ◦ Sin marcar: Fondo transparente y un borde de 1px de color secundario (--color-text-secondary).
+    ◦ El contraste visual asegura que los estados sean fácilmente distinguibles en el entorno oscuro.
+d. Iconos (Icon)
+• Propósito y función: Representan visualmente acciones, categorías o información, mejorando la usabilidad y la comprensión rápida de la interfaz (ej., iconos de navegación, iconos de acciones).
+• Variantes: Diversos iconos según su propósito (casa para inicio, lupa para búsqueda, papelera para eliminar, gráfico de barras para reportes, etc.).
+• Estados visuales:
+    ◦ Normal: Utiliza el color secundario (#A8A8A8) o un tono más tenue.
+    ◦ Hover/Activo: Cambia al color principal de texto (#F5F5F5) o a un color de acento, indicando interactividad o selección.
+• Propiedades (props): name (nombre del icono), size (tamaño), color (color, que puede ser sobreescrito por el estado), onClick (si el icono es interactivo).
+• Alineación visual con Glassmorphism:
+    ◦ Estilo: Iconos de estilo de línea (line-style) con un grosor de trazo consistente (aproximadamente 1.5px) y terminaciones/esquinas suavemente redondeadas. Esto contribuye a la estética limpia y moderna.
+    ◦ Coloración: Principalmente de un solo color (monocromático), utilizando --color-text-primary o --color-text-secondary para mantener la coherencia y legibilidad sobre los fondos oscuros o semi-transparentes.
+    ◦ Biblioteca: Se recomienda el uso de bibliotecas de iconos consistentes como Iconify o Feather Icons para uniformidad y escalabilidad.
+e. Elementos de Tipografía (Text / Heading / Label)
+• Propósito y función: Estructuran y presentan todo el contenido textual de la interfaz, desde títulos y encabezados hasta párrafos y etiquetas de campos, asegurando legibilidad y jerarquía.
+• Variantes:
+    ◦ Heading (H1, H2, etc.) para títulos y secciones importantes.
+    ◦ Body para párrafos de texto y contenido principal.
+    ◦ Label para etiquetas de campos de entrada o elementos más pequeños.
+• Estados visuales: N/A para el componente en sí, pero su color y peso pueden cambiar contextualmente (ej., texto de error, texto deshabilitado).
+• Propiedades (props): children (el contenido de texto), variant (H1, body, label), color (ej., primary, secondary, error), weight (bold, regular, etc.).
+• Alineación visual con Glassmorphism:
+    ◦ Fuente: Inter, una fuente sans-serif geométrica optimizada para UI, seleccionada por su legibilidad en entornos digitales.
+    ◦ Colores:
+        ▪ --color-text-primary: #F5F5F5 (blanco roto) para títulos, texto principal y elementos clave. Proporciona alto contraste sobre el vidrio oscuro y el fondo principal, superior a 4.5:1 (WCAG).
+        ▪ --color-text-secondary: #A8A8A8 (gris claro) para texto secundario, descripciones o ayuda, manteniendo el confort visual.
+    ◦ Escala Tipográfica: Definida con rem (ej., H1: 1.5rem/24px Bold; Body: 0.875rem/14px Regular/Bold; Label: 0.75rem/12px Medium).
+4.4. Componentes de Visualización de Datos y Estructura Compleja
+Estos componentes muestran información estructurada y permiten la interacción avanzada.
+a. Tabla de Datos (DataTable)
+• Propósito y función: Presenta información en un formato tabular organizado, como "Pacientes Recientes", permitiendo visualizar y gestionar grandes volúmenes de datos de manera eficiente.
+• Variantes: Tabla estándar con columnas configurables.
+• Estados visuales:
+    ◦ Normal: Filas y celdas con estilos predeterminados.
+    ◦ Fila Hover: Un ligero cambio de fondo o un sutil resplandor en la fila al pasar el cursor para indicar interactividad.
+    ◦ Fila Seleccionada: Resaltado del fondo de la fila para indicar que ha sido seleccionada (ej., mediante un checkbox).
+    ◦ Estado Vacío: Un mensaje claro (ej., "No se encontraron pacientes") y posiblemente un icono ilustrativo, en lugar de una tabla vacía.
+    ◦ Cargando: Un spinner o una superposición de carga sobre la tabla.
+• Propiedades (props): data (array de objetos con los datos a mostrar), columns (definición de columnas: key, label, renderCell, sortable), onRowClick (para ver detalles), onSelectionChange (para checkboxes), isLoading (booleano), emptyMessage (string), pagination (objeto de paginación).
+• Alineación visual con Glassmorphism:
+    ◦ Contenida dentro de un Panel/Tarjeta Glassmorphism.
+    ◦ Encabezados de Columna: Utilizan el color text-primary (#F5F5F5) y la fuente Inter en el peso adecuado.
+    ◦ Contenido de Celdas: El texto de datos principal utiliza text-primary. Información secundaria puede usar text-secondary (#A8A8A8).
+    ◦ Columna de Identificación: "ID/Nombre del Paciente" en negrita y funciona como enlace para ver el detalle completo.
+    ◦ Estados: Las píldoras de estado (State Pills) como "Active" (Verde) y "Inactive" (Rojo/Gris) utilizan colores acentuados para una identificación rápida.
+    ◦ Checkbox de Selección: En cada fila y un maestro en el encabezado, siguiendo el estilo Glassmorphism del checkbox.
+    ◦ Menú de Acciones por Fila: Un icono de tres puntos vertical (Icon) que al hacer clic despliega un menú contextual flotante (posiblemente un Modal o Panel Lateral con opciones como "Ver Detalles", "Editar Registro", "Archivar", "Eliminar (Suave)").
+b. Paginación (Pagination)
+• Propósito y función: Permite al usuario navegar a través de grandes conjuntos de datos presentados en tablas o listas, cargando el contenido en bloques (páginas).
+• Variantes: Controles de navegación (anterior, siguiente, números de página, selector de tamaño de página).
+• Estados visuales:
+    ◦ Número de Página Activa: Resaltado con un color de acento o un efecto de brillo sutil para indicar la página actual.
+    ◦ Controles Deshabilitados: (ej., "Anterior" en la primera página, "Siguiente" en la última página) con menor opacidad.
+• Propiedades (props): currentPage, totalPages, onPageChange (función), pageSize (opcional), onPageSizeChange (opcional).
+• Alineación visual con Glassmorphism: Botones y texto siguen el estilo de los demás componentes interactivos, con una retroalimentación visual clara y sutil.
+c. Componente de Filtros (Filter Panel/Modal)
+• Propósito y función: Proporciona opciones para que el usuario refine la información mostrada en tablas o vistas (ej., filtrar pacientes por fecha de última consulta, tipo de cita).
+• Variantes:
+    ◦ Panel desplegable: Que se abre in-situ desde un icono de filtro en la barra de acciones de la tabla.
+    ◦ Modal: Una ventana emergente con opciones de filtro avanzadas.
+    ◦ Panel Lateral: Un panel que se desliza desde un lado de la pantalla (similar a la barra lateral de navegación).
+• Estados visuales:
+    ◦ Abierto/Cerrado: Transiciones suaves para abrir y cerrar el panel/modal.
+    ◦ Filtros Aplicados: Indicadores visuales (ej., un punto de color en el icono de filtro) que muestran que hay filtros activos.
+• Propiedades (props): isOpen (booleano), onClose (función), filterOptions (definición de campos de filtro: tipo, label), onApplyFilters (función), onClearFilters (función).
+• Alineación visual con Glassmorphism:
+    ◦ El Panel o Modal contenedor seguiría la estética de "vidrio esmerilado" del Glassmorphism (semi-transparente, desenfocado, esquinas redondeadas, borde luminoso).
+    ◦ Los campos de entrada (Input), checkboxes y botones dentro del componente de filtro seguirían sus respectivos estilos Glassmorphism.
+d. Modales (Modal)
+• Propósito y función: Presentan contenido importante o solicitan interacción del usuario en una ventana flotante sobre el contenido principal, sin que el usuario abandone la vista actual (ej., formularios de creación/edición de paciente, confirmaciones de eliminación).
+• Variantes:
+    ◦ Formulario: Para la creación o edición de registros.
+    ◦ Confirmación: Para acciones críticas (ej., "¿Desea archivar los X registros seleccionados?").
+    ◦ Alerta/Información: Para mensajes importantes o notificaciones.
+• Estados visuales:
+    ◦ Abierto: Visible sobre un fondo semi-oscurecido (backdrop).
+    ◦ Cerrado: Oculto.
+• Propiedades (props): isOpen (booleano), onClose (función), title (título del modal), children (contenido del modal), onConfirm (función), onCancel (función), confirmButtonLabel, cancelButtonLabel.
+• Alineación visual con Glassmorphism:
+    ◦ El modal en sí es un Panel/Tarjeta Glassmorphism: semi-transparente y desenfocado (backdrop-filter: blur(24px)), con esquinas suavemente redondeadas (border-radius: 16px) y un sutil borde luminoso de 1px.
+    ◦ El fondo del modal (el backdrop) se oscurecería sutilmente para enfocar la atención en la ventana emergente, manteniendo la sensación de profundidad.
+e. Paneles Laterales (Side Panel / Drawer)
+• Propósito y función: Ofrecen un espacio adicional para contenido o controles que no requieren una vista de página completa, como detalles adicionales de un elemento seleccionado, formularios de edición o filtros avanzados.
+• Variantes: Deslizante desde la izquierda o la derecha.
+• Estados visuales:
+    ◦ Abierto: Visible, con el contenido principal posiblemente encogido o superpuesto.
+    ◦ Cerrado: Oculto.
+• Propiedades (props): isOpen (booleano), onClose (función), title (título del panel), children (contenido).
+• Alineación visual con Glassmorphism:
+    ◦ Similar a un Panel/Tarjeta Glassmorphism, pero extendido verticalmente. Mantendrá la semi-transparencia, el desenfoque y los bordes luminosos.
+    ◦ La transición de apertura/cierre podría incluir una sutil animación de deslizamiento.
+4.5. Componentes Específicos de Módulos
+Estos componentes están diseñados para funcionalidades especializadas.
+a. Interfaz del Asistente Virtual (AI Assistant Interface)
+• Propósito y función: Permite al personal interactuar con el modelo de IA (Gemma 3) para realizar consultas rápidas, obtener resúmenes de texto o redactar informes. Es un chat interno que solo funciona con texto.
+• Variantes: N/A.
+• Estados visuales:
+    ◦ Normal: Área de visualización de mensajes y campo de entrada activos.
+    ◦ Escribiendo: Indicador de que el usuario está introduciendo texto.
+    ◦ Recibiendo Respuesta/Cargando: Un indicador visual (ej., puntos suspensivos o spinner) cuando la IA está procesando o generando una respuesta.
+    ◦ Errores: Mensajes que indican un problema con la consulta o la IA.
+• Propiedades (props): messages (array de objetos {sender, text}), onSendMessage (función), isLoading (booleano), suggestedActions (array de strings para botones de acción sugerida).
+• Alineación visual con Glassmorphism:
+    ◦ El área de visualización de mensajes y el campo de entrada podrían estar contenidos dentro de un Panel/Tarjeta Glassmorphism.
+    ◦ El campo de entrada seguiría el estilo de Input Glassmorphism.
+    ◦ Los botones de acción sugerida (ej., "te lo envío a tu correo o prefieres descargarlo?") seguirían el estilo de Button (quizás Secundario o con el color accent-interactive).
+b. Componentes del Visor de Archivos Visuales (Visual File Viewer)
+• Propósito y función: Permite visualizar y navegar por archivos visuales (imágenes y videos cortos) asociados a los expedientes de los pacientes, como RX o grabaciones de cirugías.
+• Variantes:
+    ◦ Carrusel Contenedor: Para mostrar miniaturas y navegar entre ellas.
+    ◦ Elementos de Miniatura Individual: Representación visual de cada archivo.
+    ◦ Vista Ampliada: El área principal donde se muestra la imagen o video seleccionado a tamaño completo.
+    ◦ Flechas de Navegación: Para avanzar o retroceder en el carrusel/galería.
+    ◦ Controles de Filtro de Origen/Tipo: Botones o checkboxes para filtrar por "Cloud Drives", "Photos", "Videos".
+• Estados visuales:
+    ◦ Normal: Archivos visibles y navegables.
+    ◦ Cargando: Indicador de carga al abrir un archivo grande.
+    ◦ Vacío: Mensaje si no hay archivos visuales asociados al paciente.
+• Propiedades (props): files (array de objetos de archivo), currentFileIndex (índice del archivo actual), onNavigate (función), onFilterChange (función), selectedFilter (string).
+• Alineación visual con Glassmorphism:
+    ◦ El Carrusel o Visor principal podría ser un Panel/Tarjeta Glassmorphism, aprovechando la transparencia y el desenfoque para integrarse con el fondo Aurora.
+    ◦ Las Miniaturas y la Vista Ampliada estarían contenidas dentro de este panel.
+    ◦ Las Flechas de Navegación utilizarían Iconos de estilo de línea.
+    ◦ Los Controles de Filtro (botones/checkboxes) seguirían el diseño Glassmorphism de sus respectivos componentes.
+c. Componentes para Widgets de Servicios Externos (External Service Widgets)
+• Propósito y función: Proporcionan acceso rápido a herramientas de uso común como Gmail, Google Drive, o aplicaciones de Office, integradas visualmente en la interfaz.
+• Variantes: Botones con iconos, o pequeños paneles con un icono y una etiqueta.
+• Estados visuales:
+    ◦ Normal: Icono y etiqueta visibles.
+    ◦ Hover: Un sutil brillo o cambio de color al pasar el cursor.
+• Propiedades (props): serviceName (nombre del servicio), icon (icono del servicio), onClick (función para abrir el servicio/aplicación), url (opcional, si es una integración web).
+• Alineación visual con Glassmorphism:
+    ◦ Podrían ser pequeños Paneles/Tarjetas Glassmorphism flotantes, cada uno representando un acceso directo, o simplemente Iconos estilizados con etiquetas de texto.
+    ◦ El uso de iconos de estilo de línea y el color text-primary asegurarían la consistencia.
+4.6. Componentes de Feedback y Contenedores Generales
+a. Componentes de Feedback Visual (Loading Spinner / Toast Notification)
+• Propósito y función: Informan al usuario sobre el estado del sistema, como operaciones en curso (carga) o resultados de acciones (notificaciones de éxito/error).
+• Variantes:
+    ◦ Spinner de Carga: Un indicador animado circular que aparece durante operaciones asíncronas.
+    ◦ Mensajes de Notificación/Toast: Pequeños banners que aparecen brevemente para confirmar una acción o mostrar un error (ej., "Guardado con éxito", "Error al subir el archivo").
+• Estados visuales:
+    ◦ Visible: El componente de feedback se muestra.
+    ◦ Oculto: El componente de feedback no es visible.
+• Propiedades (props):
+    ◦ Spinner: isVisible (booleano), size, color.
+    ◦ Toast: isVisible (booleano), message (string), type (success, error, info, warning), duration (tiempo en ms).
+• Alineación visual con Glassmorphism:
+    ◦ Spinners: Podrían ser círculos sutilmente luminosos o con el color accent-blue o accent-interactive.
+    ◦ Toast: Aparecerían como pequeños Paneles/Tarjetas Glassmorphism transitorios, con el desenfoque y los bordes luminosos. El texto dentro utilizaría text-primary y el color del fondo del toast podría variar ligeramente según el tipo (ej., un toque de verde para éxito, rojo para error), manteniendo la opacidad y el desenfoque Glassmorphism.
+b. Formularios (Form Container)
+• Propósito y función: Agrupan un conjunto de campos de entrada y botones de acción relacionados para la recolección estructurada de datos (ej., "Creación de Perfil de Paciente", "Agendar Nueva Cita").
+• Variantes: Formulario de creación, formulario de edición, formulario de búsqueda.
+• Estados visuales:
+    ◦ Normal: Todos los campos y botones son visibles y están listos para la interacción.
+    ◦ Validando/Enviando: Puede deshabilitar los campos o mostrar un spinner en el botón de submit.
+    ◦ Error de Validación: Muestra mensajes de error junto a los campos correspondientes.
+• Propiedades (props): onSubmit (función al enviar), children (los campos y botones internos), title (título del formulario).
+• Alineación visual con Glassmorphism:
+    ◦ El formulario en sí estaría contenido dentro de un Panel/Tarjeta Glassmorphism o un Modal (que es un panel Glassmorphism), dependiendo de su ubicación y flujo.
+    ◦ Los Campos de Entrada, Checkboxes y Botones dentro del formulario seguirían sus respectivos estilos Glassmorphism, asegurando una experiencia visual coherente y agradable.

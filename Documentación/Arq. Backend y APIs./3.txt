@@ -1,0 +1,87 @@
+Documento: Arq. Backend y APIs
+Diseño Completo de Endpoints de la API (RESTful) (Continuación)
+La definición de los endpoints RESTful es crucial para la interacción segura y eficiente entre el Dashboard de Escritorio (Núcleo Administrativo Central) y el backend en la nube (Google Cloud Platform). Estos endpoints facilitan la autenticación de usuarios, la gestión de permisos, el registro de actividades para auditoría y la integración de capacidades de Inteligencia Artificial para automatización y asistencia. Todas las comunicaciones se realizarán a través de HTTPS (TLS 1.3), garantizando el cifrado de datos en tránsito.
+Para Autenticación y Autorización
+La autenticación y la autorización son la base de la seguridad del "Ecosistema Digital Inteligente para Cirugía Especial", asegurando que solo el personal autorizado acceda a la información y funcionalidades.
+• 1. POST /login
+    ◦ Método HTTP: POST
+    ◦ Ruta exacta: /api/v1/auth/login
+    ◦ Descripción: Este endpoint es el punto de entrada para que un usuario inicie sesión en el sistema. Recibe las credenciales (nombre de usuario y contraseña), las valida contra la base de datos, y si son correctas, devuelve un token de autenticación que será utilizado para futuras solicitudes. Es fundamental para aplicar el control de acceso basado en roles. La comunicación se realiza cifrada vía HTTPS (TLS 1.3).
+• 2. Endpoints para Gestión de Usuarios
+    ◦ La gestión de usuarios es una funcionalidad clave del "Núcleo Administrativo Central", accesible para roles como "Administrador" y "Admin Principal".
+    ◦ GET /users
+        ▪ Método HTTP: GET
+        ▪ Ruta exacta: /api/v1/users
+        ▪ Descripción: Obtiene una lista de todos los usuarios registrados en el sistema. Este endpoint permite a los administradores visualizar el personal del consultorio y sus roles asociados.
+    ◦ GET /users/{id}
+        ▪ Método HTTP: GET
+        ▪ Ruta exacta: /api/v1/users/{id} (donde {id} es el identificador único del usuario)
+        ▪ Descripción: Recupera los detalles completos del perfil de un usuario específico, incluyendo su información de contacto y el rol asignado.
+    ◦ POST /users
+        ▪ Método HTTP: POST
+        ▪ Ruta exacta: /api/v1/users
+        ▪ Descripción: Permite crear una nueva cuenta de usuario en el sistema. Esta operación incluye la asignación de un rol inicial (ej., "Asistente", "Admin Secundario").
+    ◦ PUT /users/{id}
+        ▪ Método HTTP: PUT
+        ▪ Ruta exacta: /api/v1/users/{id}
+        ▪ Descripción: Actualiza los datos de un usuario existente, como su nombre, información de contacto o, fundamentalmente, su rol en el sistema.
+    ◦ DELETE /users/{id}
+        ▪ Método HTTP: DELETE
+        ▪ Ruta exacta: /api/v1/users/{id}
+        ▪ Descripción: Realiza un "borrado suave" de una cuenta de usuario por su ID. El registro del usuario se marca como inactivo en la base de datos, manteniendo la integridad histórica y facilitando posibles recuperaciones.
+• 3. Endpoints para Gestión de Roles
+    ◦ El sistema cuenta con un robusto "Sistema de Roles", con roles como "Admin Principal", "Admin Secundario", "Asistente", "Invitado (Solo Lectura)". La información de roles se almacena en la tabla ROLES.
+    ◦ GET /roles
+        ▪ Método HTTP: GET
+        ▪ Ruta exacta: /api/v1/roles
+        ▪ Descripción: Obtiene una lista de todos los roles de usuario definidos en el sistema, junto con sus nombres y las capacidades generales asociadas.
+    ◦ GET /roles/{id}
+        ▪ Método HTTP: GET
+        ▪ Ruta exacta: /api/v1/roles/{id} (donde {id} es el identificador único del rol)
+        ▪ Descripción: Recupera los detalles específicos y el conjunto de permisos detallados asociados a un rol particular por su ID.
+    ◦ POST /roles
+        ▪ Método HTTP: POST
+        ▪ Ruta exacta: /api/v1/roles
+        ▪ Descripción: Permite la creación de una nueva definición de rol en el sistema, especificando su nombre y los permisos que este tendrá sobre las diferentes funcionalidades y datos.
+    ◦ PUT /roles/{id}
+        ▪ Método HTTP: PUT
+        ▪ Ruta exacta: /api/v1/roles/{id}
+        ▪ Descripción: Actualiza el nombre o los permisos de un rol existente. Esta es una operación crítica que debe ser manejada con extrema precaución.
+    ◦ DELETE /roles/{id}
+        ▪ Método HTTP: DELETE
+        ▪ Ruta exacta: /api/v1/roles/{id}
+        ▪ Descripción: Realiza un "borrado suave" de un rol, marcándolo como inactivo. Los roles inactivos no pueden ser asignados a nuevos usuarios, pero su registro se mantiene para auditoría y referencias históricas.
+• 4. Verificación de Permisos por Rol
+    ◦ Descripción: La verificación de permisos basados en el rol del usuario es una lógica interna del backend que se ejecuta en el Servidor de Aplicación. Después de que un usuario es autenticado y su rol se consulta de la base de datos ROLES, el backend determina si el usuario tiene permiso para acceder a una funcionalidad o dato específico antes de procesar la solicitud. No se expone como un endpoint RESTful dedicado.
+Para Logs de Auditoría
+El "Servicio de Logs de Auditoría (Cloud Logging / Audit Logs)" es fundamental para la seguridad, registrando cronológicamente toda actividad y cambios en el sistema. Estos logs son inmutables (Write Once, Read Many - WORM).
+• 1. POST /logs
+    ◦ Método HTTP: POST
+    ◦ Ruta exacta: /api/v1/logs
+    ◦ Descripción: Este endpoint es utilizado internamente por el backend para registrar de forma automática y asíncrona todas las acciones clave realizadas en el sistema. Esto incluye intentos de login (exitosos o fallidos), modificaciones de datos de pacientes, creación/actualización de citas, subida de documentos, y cualquier otra operación crítica que requiera un rastro auditable.
+• 2. GET /logs
+    ◦ Método HTTP: GET
+    ◦ Ruta exacta: /api/v1/logs
+    ◦ Descripción: Obtiene un listado cronológico de los registros de auditoría del sistema. Este endpoint es accesible solo para roles con permisos elevados (como el "Admin Principal"), permitiéndoles revisar el historial de actividades, monitorear la seguridad y rastrear operaciones específicas.
+Para Integración con IA
+La "Inteligencia y Automatización Integrada" utiliza el modelo Gemma 3 (o similar a Gemini) para potenciar el flujo de trabajo del consultorio. La IA se integra directamente en el backend mediante APIs.
+• 1. POST /ai/generate-email
+    ◦ Método HTTP: POST
+    ◦ Ruta exacta: /api/v1/ai/generate-email
+    ◦ Descripción: Envía una solicitud al modelo de IA para generar un borrador de correo electrónico. Se proporcionarían parámetros como el propósito del correo, el destinatario y puntos clave a incluir, y la IA devolvería el texto del borrador.
+• 2. POST /ai/summarize
+    ◦ Método HTTP: POST
+    ◦ Ruta exacta: /api/v1/ai/summarize
+    ◦ Descripción: Recibe un bloque de texto (ej., notas de consulta, informes) y utiliza el modelo de IA para generar un resumen conciso de dicho contenido.
+• 3. POST /ai/chat
+    ◦ Método HTTP: POST
+    ◦ Ruta exacta: /api/v1/ai/chat
+    ◦ Descripción: Permite enviar mensajes de texto al chat interno del sistema, donde el modelo de IA procesa la entrada y devuelve una respuesta textual. Es utilizado para consultas rápidas o para asistir en la redacción de informes. Cabe destacar que este chat funciona únicamente con texto y no genera archivos.
+• 4. POST /ai/generate-template
+    ◦ Método HTTP: POST
+    ◦ Ruta exacta: /api/v1/ai/generate-template
+    ◦ Descripción: Envía una solicitud a la IA para generar diversas plantillas, como hojas membretadas, basándose en la información o el formato requerido.
+• 5. POST /ai/create-reminder
+    ◦ Método HTTP: POST
+    ◦ Ruta exacta: /api/v1/ai/create-reminder
+    ◦ Descripción: Utiliza la IA para interpretar una solicitud de usuario y generar un recordatorio dentro del sistema, posiblemente con detalles como fecha, hora y descripción.

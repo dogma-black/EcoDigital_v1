@@ -1,0 +1,45 @@
+2.3. Área de Contenido Principal
+El Área de Contenido Principal es el espacio de trabajo dinámico del Dashboard, compuesto por diversos módulos o "widgets" que proporcionan información clave y acceso a las funcionalidades operativas del consultorio. Su diseño sigue la estética "Glassmorphism Oscuro", presentando paneles flotantes de "vidrio esmerilado" que organizan y jerarquizan la información, con un fondo dinámico de "Auras" de colores azul y violeta que realza el efecto visual y reduce la fatiga visual.
+A. Módulo "Base de Datos"
+Este módulo es la funcionalidad central para la gestión de registros de pacientes.
+• Título: "Base de Datos".
+• Subtítulo: "Registro de pacientes Cirugía Ecensial 2024".
+• Barra de Acciones: Ubicada sobre la tabla de datos, proporciona herramientas para la gestión de registros en lote o individual.
+    ◦ Eliminar (Icono de papelera): Este botón se activa cuando se seleccionan una o más filas en la tabla. Su funcionalidad principal es realizar un borrado suave (soft delete) de los registros. Esto significa que el registro no se elimina permanentemente de la base de datos, sino que se marca internamente como inactivo o archivado (ej., is_deleted = true), lo que permite su recuperación futura y mantiene la integridad histórica de los datos.
+    ◦ Filtros (Icono de filtro): Al hacer clic en este icono, se despliega un panel o un modal que ofrece opciones avanzadas para filtrar los datos mostrados en la tabla. Los filtros pueden incluir criterios como "por fecha", "por estado", "por tipo de consulta", entre otros, permitiendo al usuario refinar rápidamente la visualización de los registros.
+    ◦ Exportar: Esta función permite al usuario exportar los datos seleccionados en la tabla o todos los datos filtrados a formatos comunes de hojas de cálculo, como CSV o Excel, facilitando el análisis externo o la generación de reportes.
+    ◦ + Nuevo Registro (Botón principal): Al interactuar con este botón, se abre un formulario o un modal dedicado a la creación de un nuevo registro de paciente, donde el usuario puede ingresar toda la información demográfica y de contacto inicial.
+• Tabla de Datos: Presenta la información de los pacientes de manera estructurada y de fácil acceso.
+    ◦ Checkbox de Selección: Ubicado en la primera columna de cada fila, permite la selección múltiple de registros para aplicar acciones en lote (como Eliminar o Exportar). El encabezado de la columna incluirá un checkbox maestro para seleccionar o deseleccionar todos los registros visibles.
+    ◦ ID/Nombre del Paciente (Texto en negrita y enlace): Esta es la columna principal de identificación. El texto en negrita (font-weight: 700) le otorga jerarquía visual, y cada entrada es un enlace directo que lleva a la vista de detalle completa del paciente, donde se puede acceder a su expediente y historial clínico.
+    ◦ Columnas de Datos Adicionales (Texto regular): Muestran información relevante y configurable del paciente, como "Fecha de Última Consulta", "Diagnóstico Principal", "Médico Tratante", etc., con texto regular (font-weight: 400) para diferenciarse del nombre principal.
+    ◦ Estado (Píldora de color): Una representación visual mediante una "píldora" de color que indica el estado actual del paciente o registro. Los estados definidos son:
+        ▪ Active (Verde): Indica que el paciente está en tratamiento o seguimiento activo.
+        ▪ Inactive (Rojo/Gris): Señala que el paciente ha sido dado de alta, o que el registro ha sido archivado o está inactivo por algún otro motivo.
+    ◦ Menú de Acciones (Icono de tres puntos): Al hacer clic en este icono, se despliega un menú contextual con acciones específicas para el registro de la fila correspondiente. Las opciones incluyen:
+        ▪ "Ver Detalles".
+        ▪ "Editar Registro".
+        ▪ "Ver Historial Clínico Completo".
+        ▪ "Archivar".
+        ▪ "Eliminar (Suave)".
+B. Módulo "Asistente virtual"
+Este módulo representa la integración de la inteligencia artificial en el flujo de trabajo del consultorio, potenciada por el modelo Gemma 3 (o similar a Gemini).
+• Título: "Asistente virtual".
+• Funcionalidad: Permite a los usuarios interactuar con el sistema utilizando lenguaje natural para diversas tareas, optimizando la eficiencia operativa.
+    ◦ Interacción Lenguaje Natural: El asistente está diseñado para comprender y procesar consultas formuladas en lenguaje coloquial, permitiendo una interacción intuitiva y conversacional.
+    ◦ Búsqueda Inteligente: Los usuarios pueden realizar consultas de búsqueda complejas, como "Hola, estoy buscando un archivo me urge", "Recuerdas el nombre del paciente?", o "Si!! es Laura Vargas", y el asistente utilizará la IA para interpretar la solicitud y localizar la información o los archivos pertinentes en el sistema.
+    ◦ Recuperación y Acciones Contextuales: Una vez que el asistente localiza el recurso solicitado (por ejemplo, "Lo encontré"), ofrecerá al usuario acciones contextuales relacionadas, como "te lo envío a tu correo o prefieres descargarlo?", facilitando la gestión de la información.
+    ◦ Automatización de Tareas: El asistente virtual está conectado a las APIs del sistema, lo que le permite ejecutar acciones automatizadas en respuesta a las solicitudes del usuario. Esto incluye el envío de correos electrónicos, la generación de borradores de documentos (como hojas membretadas), y la creación de proyectos o recordatorios, liberando tiempo del personal.
+C. Módulo "Notas"
+Un widget simple diseñado para la gestión de anotaciones rápidas.
+• Título: "Notas".
+• Funcionalidad: Permite al usuario tomar notas personales y registrar recordatorios rápidos directamente en el dashboard. Por lo general, esta información es privada para el usuario que la creó. Se menciona la posibilidad de una función adicional para "adjuntar nota a paciente", lo que vincularía estas anotaciones directamente al expediente clínico para una referencia más contextual.
+D. Módulo "Visor de Archivos Visuales"
+Este módulo está dedicado a la visualización de contenido multimedia asociado a los pacientes.
+• Funcionalidad: Permite a los usuarios visualizar imágenes y videos directamente relacionados con los expedientes de los pacientes. El contenido del visor se actualiza de forma contextual, mostrando los archivos visuales del paciente que está seleccionado en la tabla principal de la "Base de Datos" o que ha sido resultado de una búsqueda específica. Estos archivos se almacenan de forma segura en Cloud Storage y están cifrados en reposo.
+• Componentes:
+    ◦ Carrusel de Vistas Previas: Muestra miniaturas de los archivos visuales disponibles, organizados en un formato de carrusel. Las flechas a izquierda y derecha permiten al usuario navegar fácilmente por la galería de archivos.
+    ◦ Filtros de Origen/Tipo: Permiten al usuario refinar la visualización del contenido en el carrusel.
+        ▪ Cloud Drives: Filtra para mostrar únicamente archivos visuales que provienen de almacenamientos en la nube conectados, como Google Drive o OneDrive.
+        ▪ Photos: Muestra exclusivamente imágenes, incluyendo formatos comunes como JPG, PNG, y potencialmente formatos médicos como DICOM.
+        ▪ Videos: Muestra únicamente archivos de video, lo que podría incluir grabaciones de cirugías, estudios de endoscopias, o videos educativos asociados al paciente.

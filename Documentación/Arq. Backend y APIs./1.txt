@@ -1,0 +1,28 @@
+Diseño Completo de Endpoints de la API (RESTful)
+La API del backend será el puente entre la aplicación de escritorio y la infraestructura en la nube, permitiendo la gestión de toda la información del consultorio. Se diseñará siguiendo los principios de RESTfulness para garantizar la coherencia, la escalabilidad y la facilidad de uso.
+Para Gestión de Pacientes
+El módulo de Gestión Integral del Expediente del Paciente es crucial para centralizar toda la información crítica y permitir un acceso inmediato y un seguimiento eficiente. Los siguientes endpoints facilitarán estas operaciones:
+• 1. GET /patients
+    ◦ Método HTTP: GET
+    ◦ Ruta exacta: /api/v1/patients
+    ◦ Descripción: Permite obtener una lista de todos los pacientes registrados en el sistema. Soporta parámetros para búsqueda, filtrado, paginación y ordenamiento, facilitando la "Búsqueda Avanzada". Los filtros pueden incluir fecha, estado o tipo de consulta.
+• 2. GET /patients/{id}
+    ◦ Método HTTP: GET
+    ◦ Ruta exacta: /api/v1/patients/{id} (donde {id} es el identificador único del paciente)
+    ◦ Descripción: Recupera los detalles completos de un paciente específico, incluyendo su perfil y la información general de su historial. Esto es útil para la función "Ver Detalles" o para abrir la ficha completa del paciente.
+• 3. POST /patients
+    ◦ Método HTTP: POST
+    ◦ Ruta exacta: /api/v1/patients
+    ◦ Descripción: Crea un nuevo registro de paciente en el sistema con todos sus datos demográficos y de contacto.
+• 4. PUT /patients/{id}
+    ◦ Método HTTP: PUT
+    ◦ Ruta exacta: /api/v1/patients/{id}
+    ◦ Descripción: Actualiza los datos de un paciente existente identificado por su ID. Permite modificar cualquier campo del perfil del paciente.
+• 5. DELETE /patients/{id}
+    ◦ Método HTTP: DELETE
+    ◦ Ruta exacta: /api/v1/patients/{id}
+    ◦ Descripción: Realiza un "borrado suave" (soft delete) de un paciente. Esto significa que el registro no se elimina permanentemente de la base de datos, sino que se marca como inactivo o archivado (ej., is_deleted = true). El sistema está diseñado para que el registro se marque como inactivo, no se borre permanentemente.
+• 6. POST /patients/{id}/archive
+    ◦ Método HTTP: POST
+    ◦ Ruta exacta: /api/v1/patients/{id}/archive
+    ◦ Descripción: Archiva un paciente específico por su ID. Esta acción complementa el borrado suave, marcando el paciente como archivado o inactivo. Esta funcionalidad puede aplicarse a múltiples pacientes seleccionados para acciones en lote.

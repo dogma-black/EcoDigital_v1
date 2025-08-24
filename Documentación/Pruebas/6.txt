@@ -1,0 +1,56 @@
+Criterios de Entrada y Salida de las Pruebas para la Fase 1: El Núcleo Administrativo (Dashboard de Escritorio)
+La Fase 1 se enfoca en la construcción del "Núcleo Administrativo (Dashboard de Escritorio)", que es la columna vertebral y base de datos central del ecosistema. Su objetivo es asegurar la integridad y seguridad de la información desde el primer día. Las pruebas de esta fase son cruciales para validar las funcionalidades clave antes de la entrega.
+Criterios de Entrada (Qué debe estar listo antes de comenzar las pruebas)
+Para iniciar las pruebas de la Fase 1 del Dashboard de Escritorio, las siguientes condiciones deben cumplirse:
+1. Código Implementado para Todas las Funcionalidades de la Fase 1:
+    ◦ La interfaz de usuario (frontend) de la aplicación de escritorio debe estar completamente desarrollada utilizando React, Vue.js o un framework similar, y empaquetada con Electron.js para compatibilidad con Windows/macOS.
+    ◦ Toda la lógica de negocio y las APIs (backend) para las funcionalidades de la Fase 1 deben estar codificadas, utilizando Python (Flask/Django) o Node.js (Express).
+    ◦ Esto incluye el desarrollo completo de la Gestión Integral del Expediente del Paciente (creación, búsqueda, historial clínico detallado), la Gestión Documental Avanzada (subida, asociación y visualización de archivos), el Módulo de Agenda y Citas (programación y gestión de citas), la Seguridad, Roles y Accesos Rápidos (login, roles), y la Inteligencia y Automatización Integrada (chat interno, automatizaciones básicas de IA).
+2. Entorno de Pruebas Configurado y Desplegado:
+    ◦ La infraestructura en la nube en Google Cloud Platform (GCP) debe estar completamente configurada y desplegada. Esto incluye:
+        ▪ Virtual Private Cloud (VPC) lógicamente aislada y segura.
+        ▪ API Gateway / Load Balancer como puntos de entrada seguros y distribuidores de tráfico para el backend.
+        ▪ Servidor de Aplicación (Backend) desplegado en servicios como Compute Engine o Cloud Run.
+        ▪ Base de Datos Relacional (Cloud SQL - MySQL/PostgreSQL) para almacenar información estructurada.
+        ▪ Almacenamiento de Archivos (Cloud Storage) para documentos digitales.
+        ▪ Servicio de Logs de Auditoría (Cloud Logging / Audit Logs) configurado para registrar cronológicamente actividades.
+    ◦ La conectividad entre la aplicación de escritorio y la infraestructura en la nube debe estar establecida a través de HTTPS (TLS 1.3).
+    ◦ Se recomienda una conexión a internet estable de al menos 250 Mbps para un rendimiento óptimo del ecosistema.
+3. Datos de Prueba Disponibles y Seguros:
+    ◦ El esquema de la base de datos para USUARIOS, PACIENTES, HISTORIAL_CLINICO, CITAS, DOCUMENTOS, ROLES, y LOGS_AUDITORIA debe estar completamente definido e implementado.
+    ◦ Los datos sensibles, como contraseñas, deben estar cifrados en reposo en la base de datos (mediante hashing) y en Cloud Storage.
+    ◦ Se deben haber cargado datos de prueba representativos para cada módulo funcional de la Fase 1 (ej., perfiles de pacientes, historiales clínicos, documentos, citas programadas, usuarios con diferentes roles).
+4. Integración con IA Funcional:
+    ◦ El modelo de Inteligencia Artificial Gemma 3 (o similar a Gemini) debe estar integrado directamente en el backend mediante APIs, listo para potenciar las funcionalidades de automatización y el chat interno.
+5. Especificaciones de Diseño e Interfaz Listas:
+    ◦ Todos los elementos visuales del diseño "Glassmorphism Oscuro" (fondo gris carbón suave, auras de color azul oceánico y violeta, paneles flotantes de vidrio esmerilado, texto nítido y brillante con la fuente Inter) deben estar implementados según las especificaciones técnicas para la interfaz de usuario del Dashboard y el Login. Esto asegura una coherencia visual integral y comodidad para el usuario.
+Criterios de Salida (Qué condiciones deben cumplirse para considerar que las pruebas de la Fase 1 han finalizado con éxito)
+Para considerar que las pruebas de la Fase 1 han finalizado con éxito, la aplicación de escritorio debe cumplir con las siguientes condiciones:
+1. Funcionalidad Completa y Correcta:
+    ◦ Todas las funcionalidades de la Fase 1 deben operar como se espera y sin errores significativos, abarcando:
+        ▪ Gestión Integral del Expediente del Paciente: Creación, búsqueda avanzada, y registro detallado del historial clínico (consultas, diagnósticos, notas, procedimientos, tratamientos).
+        ▪ Gestión Documental Avanzada: Capacidad de subir, asociar y visualizar archivos digitales (PDF, imágenes, videos cortos) al expediente del paciente.
+        ▪ Módulo de Agenda y Citas: Programación, reprogramación y gestión de citas con estados personalizables, y visualización efectiva en el calendario.
+        ▪ Seguridad, Roles y Accesos Rápidos: El sistema de login debe autenticar correctamente a los usuarios, aplicar el control de acceso basado en roles (Admin Principal, Admin Secundario, Asistente, Invitado), y gestionar usuarios y roles de forma segura.
+        ▪ Inteligencia y Automatización Integrada: El chat interno con Gemma 3 debe responder a consultas rápidas, generar resúmenes de texto y permitir la redacción de correos, hojas membretadas y recordatorios.
+    ◦ Los widgets y accesos directos a servicios externos como Gmail y Google Drive deben funcionar correctamente.
+2. Rendimiento y Estabilidad:
+    ◦ El sistema debe demostrar un rendimiento óptimo en las operaciones críticas, como la búsqueda de pacientes o la carga de historiales clínicos, con tiempos de respuesta aceptables.
+    ◦ La aplicación debe ser estable y no presentar cierres inesperados, bloqueos o degradación de rendimiento durante el uso continuo.
+3. Seguridad y Privacidad de Datos:
+    ◦ La autenticación y autorización basada en roles debe funcionar sin fallos, impidiendo el acceso indebido a información o funcionalidades.
+    ◦ El cifrado de datos en tránsito (HTTPS/TLS 1.3) y en reposo (Cloud SQL, Cloud Storage) debe ser verificado como completamente funcional, protegiendo la información sensible del paciente.
+    ◦ El Servicio de Logs de Auditoría debe registrar de forma inmutable (WORM) todos los intentos de login (exitosos y fallidos), así como las acciones relevantes de los usuarios (ej., modificación de datos de paciente, creación de citas), y estos logs deben ser accesibles para revisión.
+4. Manejo Robusto de Errores y Mensajes:
+    ◦ Todos los escenarios de error previstos (ej., credenciales incorrectas, campos vacíos/formato inválido, problemas de conectividad) deben mostrar mensajes claros y concisos al usuario, permitiéndole entender el problema y tomar la acción adecuada.
+    ◦ Los "estados vacíos" (ej., "No se encontraron pacientes", "No hay citas programadas para hoy") deben ser manejados con mensajes informativos en lugar de espacios en blanco.
+5. Coherencia de la Interfaz de Usuario (UI/UX) y Accesibilidad:
+    ◦ El diseño "Glassmorphism Oscuro" debe aplicarse de manera consistente en toda la aplicación de escritorio, manteniendo la coherencia visual, la comodidad visual, y una jerarquía de información clara.
+    ◦ La legibilidad del texto y los iconos debe ser óptima (cumpliendo con una relación de contraste superior a 4.5:1 WCAG).
+    ◦ La retroalimentación interactiva (ej., aumento de brillo o hundimiento al pulsar botones) debe ser clara y consistente.
+6. Preparación para Capacitación y Migración de Datos:
+    ◦ La aplicación debe ser suficientemente estable para la sesión de capacitación inicial del Dr. Sánchez y su equipo.
+    ◦ Los manuales de funcionamiento deben estar preparados, posiblemente con la ayuda de la IA para generar FAQs.
+    ◦ La migración inicial de archivos digitales existentes del consultorio al nuevo sistema debe haberse completado con éxito.
+7. Resolución de Defectos:
+    ◦ Todos los defectos de prioridad "Crítica" y "Mayor" identificados durante las pruebas deben haber sido resueltos y verificados.

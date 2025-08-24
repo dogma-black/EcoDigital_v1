@@ -1,0 +1,73 @@
+
+
+1.  **Introducción y Propósito:**
+    *   Breve descripción del documento y su objetivo: detallar el plan para probar exhaustivamente todas las funcionalidades y aspectos técnicos del Dashboard de Administración.
+    *   Importancia de las pruebas para asegurar la calidad, fiabilidad, rendimiento y seguridad de la aplicación antes de su uso en un entorno real.
+
+2.  **Alcance de las Pruebas:**
+    *   Especificar con precisión qué componentes y funcionalidades del Dashboard se incluirán en este plan de pruebas de la Fase 1 (todos los módulos y flujos de usuario detallados en el Documento 1 de Requisitos Funcionales).
+    *   Especificar qué aspectos técnicos se probarán (integración frontend-backend, backend-base de datos, backend-Cloud Storage, backend-IA, seguridad de APIs, roles y permisos).
+    *   Especificar explícitamente qué no se incluirá en las pruebas de esta fase del Dashboard (ej. pruebas de los otros componentes del ecosistema - página web, aplicaciones móviles de equipo/paciente - a menos que haya una interacción directa relevante para el Dashboard que deba probarse aquí).
+
+3.  **Tipos de Pruebas:**
+    *   Descripción detallada de los diferentes tipos de pruebas que se ejecutarán:
+        *   **Pruebas Unitarias:**
+            *   Propósito: Verificar que unidades individuales de código (funciones, métodos, componentes pequeños) funcionan correctamente de forma aislada.
+            *   Aplicación: En módulos clave del backend (lógica de negocio, validación de datos, interacción básica con BD/APIs externas) y componentes reutilizables del frontend.
+        *   **Pruebas de Integración:**
+            *   Propósito: Verificar la correcta interacción y comunicación entre diferentes módulos o servicios (ej. Frontend consumiendo API del Backend, Backend interactuando con Cloud SQL, Backend subiendo/descargando a Cloud Storage, Backend llamando a la API de IA).
+            *   Enfoque: Asegurar que los datos se transfieren correctamente y que las interfaces entre los componentes funcionan según lo esperado.
+        *   **Pruebas Funcionales (End-to-End):**
+            *   Propósito: Verificar que cada funcionalidad completa del Dashboard, desde la interacción del usuario en el frontend hasta la acción en el backend y base de datos, funciona según los requisitos.
+            *   Enfoque: Probar cada flujo de usuario clave detallado en el Documento 1.
+        *   **Pruebas de UI/Usabilidad:**
+            *   Propósito: Verificar que la interfaz de usuario es intuitiva, fácil de navegar, visualmente consistente (según la guía de estilo Glassmorphism Oscuro) y que los elementos interactivos se comportan como se espera.
+            *   Enfoque: Probar la experiencia del usuario al interactuar con los componentes (botones, formularios, tablas, menús, etc.) y la navegación entre vistas.
+        *   **Pruebas de Seguridad:**
+            *   Propósito: Identificar vulnerabilidades y asegurar que la aplicación protege los datos sensibles y controla el acceso adecuadamente.
+            *   Enfoque: Probar la autenticación (login con credenciales válidas/inválidas), autorización (verificar que cada rol solo tiene acceso a las funcionalidades y datos permitidos), validación de entrada para prevenir ataques (ej. inyección SQL, XSS), seguridad en el manejo de archivos subidos, seguridad de las APIs.
+        *   **Pruebas de Rendimiento:**
+            *   Propósito: Medir la velocidad, capacidad de respuesta y estabilidad de la aplicación bajo diferentes cargas.
+            *   Enfoque: Probar el tiempo que tarda en cargar la tabla de datos con un volumen grande de registros, el tiempo de respuesta de las APIs críticas (ej. búsqueda de pacientes, obtención de historial), el rendimiento de la interfaz al navegar o interactuar con componentes complejos, y el impacto del uso del Visor de Archivos Visuales. Considerar el impacto del volumen proyectado de 2TB de datos (principalmente en Cloud Storage) en el rendimiento general.
+        *   **Pruebas de Regresión:**
+            *   Propósito: Asegurar que los cambios o nuevas funcionalidades no han introducido errores en partes existentes del sistema.
+            *   Cuándo se ejecutarán: Después de cada nueva implementación significativa o corrección de errores.
+
+4.  **Casos de Prueba Detallados:**
+    *   Creación de casos de prueba *específicos* y paso a paso para cada funcionalidad y flujo de usuario identificado en el Documento 1 (Requisitos Funcionales).
+    *   Para cada caso de prueba:
+        *   ID Único del Caso de Prueba.
+        *   Descripción Breve del Escenario que se Prueba.
+        *   Precondiciones (requisitos para ejecutar la prueba, ej. usuario logueado con rol X, base de datos con datos de prueba Y).
+        *   Pasos Específicos a Seguir para Ejecutar la Prueba (ej. "1. Navegar a la sección 'Base de Datos'", "2. Hacer clic en el botón '+ Nuevo Registro'", "3. Llenar el campo 'Nombre' con 'Juan Pérez'", etc.).
+        *   Datos de Entrada de Prueba (valores específicos a usar, ej. nombre de paciente, fecha de cita).
+        *   Resultado Esperado (cómo debe comportarse la aplicación, qué datos deben guardarse, qué se debe mostrar en la UI, qué respuesta de API se espera).
+        *   Criterios de Éxito/Fallo (cómo determinar si la prueba pasó o falló).
+
+5.  **Pruebas Específicas Importantes (Ejemplos de Enfoque):**
+    *   Enfoque en probar a fondo las funcionalidades críticas como:
+        *   Ciclo completo de gestión de Pacientes (Crear, Ver, Editar, Archivar, Eliminar Suave).
+        *   Funcionalidades de Búsqueda y Filtrado (probar diferentes criterios, casos borde, búsqueda vacía).
+        *   Gestión Documental (Subir diferentes tipos de archivos, ver archivos, eliminar suave).
+        *   Gestión de Citas (Crear, Editar, Eliminar, probar con fechas pasadas/futuras).
+        *   Todas las interacciones definidas con el Asistente Virtual (probar diferentes comandos/preguntas, verificar respuestas).
+        *   Pruebas de Seguridad: Intentar acceder a funcionalidades de Administrador con un usuario Asistente, intentar eliminar un registro con borrado fuerte si solo se permite borrado suave, probar inyecciones simples en campos de entrada.
+        *   Pruebas de Roles y Permisos: Crear matriz de permisos y probar que cada rol solo puede ejecutar las acciones permitidas.
+        *   Pruebas de Borrado Suave: Verificar en la base de datos que los registros se marcan como inactivos y no se eliminan físicamente.
+
+6.  **Criterios de Entrada y Salida de las Pruebas:**
+    *   Criterios de Entrada: Qué debe estar listo antes de comenzar las pruebas (ej. código implementado para las funcionalidades a probar, entorno de pruebas configurado, datos de prueba disponibles).
+    *   Criterios de Salida: Qué condiciones deben cumplirse para considerar que las pruebas de la Fase 1 han finalizado con éxito (ej. X% de casos de prueba funcionales pasados, todos los bugs críticos resueltos, criterios de rendimiento mínimos alcanzados).
+
+7.  **Recursos para las Pruebas:**
+    *   Personal de pruebas (si aplica).
+    *   Entorno de pruebas (especificar la configuración).
+    *   Herramientas de prueba (si se utilizan herramientas automatizadas).
+    *   Datos de prueba.
+
+8.  **Proceso de Gestión de Defectos (Bugs):**
+    *   Cómo se reportarán, priorizarán, asignarán y seguirán los bugs encontrados durante las pruebas.
+
+9.  **Plan de Ejecución de Pruebas:**
+    *   Descripción a alto nivel de cuándo y cómo se ejecutarán los diferentes tipos de pruebas (ej. unitarias y de integración durante el desarrollo, funcionales y de UI al finalizar funcionalidades, pruebas de seguridad y rendimiento antes del despliegue).
+

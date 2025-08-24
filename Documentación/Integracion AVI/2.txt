@@ -1,0 +1,38 @@
+Especificación de la Integración de Inteligencia Artificial en el Dashboard de Administración
+3. Casos de Uso de IA en el Dashboard (Funcionalidades Detalladas):
+La integración del modelo de Inteligencia Artificial Gemma 3 (o similar a Gemini) en el backend del Dashboard de Administración es un pilar fundamental para potenciar la "Inteligencia y Automatización Integrada", resolviendo el "dolor" de los "procesos manuales que consumen tiempo" y optimizando la "eficiencia operativa". Las funcionalidades que hacen uso de la IA se activarán de manera intuitiva desde módulos específicos de la aplicación o mediante el chat interno.
+A continuación, se describen en detalle los casos de uso específicos de la IA:
+3.1. Generación de Borradores de Correo Electrónico:
+• Propósito: Esta funcionalidad tiene como objetivo principal acelerar y estandarizar la comunicación escrita con los pacientes o terceros, permitiendo al personal del consultorio redactar correos electrónicos de manera rápida y eficiente. Al automatizar la generación de borradores, se reduce el tiempo dedicado a tareas repetitivas y se minimiza el riesgo de errores u omisiones en mensajes importantes.
+• Entrada para la IA: La IA recibirá información contextual directamente del sistema, así como datos específicos proporcionados por el usuario para generar un borrador relevante:
+    ◦ Datos Contextuales del Sistema: El usuario seleccionará un paciente o una cita desde el Dashboard. El sistema proporcionará automáticamente a la IA el ID del Paciente, el nombre completo del paciente, datos de contacto (ej., email), fechas y detalles de la última consulta o próxima cita y diagnósticos relevantes asociados al expediente.
+    ◦ Entrada de Usuario para la Personalización: El personal deberá especificar a la IA:
+        ▪ Motivo del Correo: (ej., recordatorio de cita, seguimiento post-operatorio, notificación de resultados de laboratorio, solicitud de información adicional, confirmación de cita).
+        ▪ Puntos Clave a Incluir: Información adicional específica que el usuario desea que se incorpore en el cuerpo del correo (ej., instrucciones pre/post-operatorias, medicamentos, fechas de próxima revisión, requisitos de preparación para estudios).
+        ▪ Tono Deseado: (ej., formal, empático, conciso).
+• Salida Esperada de la IA: La IA generará un borrador de texto para un correo electrónico, estructurado y coherente, que contendrá:
+    ◦ Un asunto sugerido para el correo.
+    ◦ Un saludo personalizado dirigido al paciente (o destinatario si no es un paciente).
+    ◦ El cuerpo del mensaje que integre el motivo, los puntos clave proporcionados y la información contextual del paciente.
+    ◦ Un cierre profesional con la información del consultorio y del Dr. Sánchez.
+    ◦ Es importante recalcar que la IA generará únicamente el texto del borrador y no producirá un archivo de correo electrónico final ni lo enviará directamente. El borrador de texto será presentado en la interfaz del Dashboard para que el usuario pueda revisarlo, editarlo y luego copiarlo o integrarlo en su cliente de correo electrónico (ej., Gmail, accesible vía widget).
+• Cómo se Iniciará esta Función en la Interfaz:
+    ◦ Desde un Módulo Específico: Se habilitará un botón o una opción de "Generar Borrador de Correo" en la vista de detalle de cada expediente del paciente, en el módulo de Agenda y Citas (al seleccionar una cita) o en una sección dedicada a "Automatizaciones".
+    ◦ Vía Chat Interno Básico: El personal podrá iniciar la solicitud escribiendo directamente en el chat interno del Dashboard comandos o preguntas en lenguaje natural, como: "Genera un correo de recordatorio para Laura Vargas para su cita de mañana" o "Redacta un correo de seguimiento post-cirugía para Juan Pérez, incluyendo instrucciones de medicación". El asistente virtual integrado con Gemma 3 será capaz de procesar estas solicitudes y generar el borrador.
+3.2. Generación de Plantillas para Hojas Membretadas:
+• Propósito: Esta funcionalidad está diseñada para simplificar la creación de documentos oficiales del consultorio, como certificados médicos, cartas de referencia o plantillas de prescripción, asegurando que mantengan un formato coherente con la identidad de la marca (Dr. Sánchez García) y la información clave necesaria, reduciendo el esfuerzo manual y los tiempos de redacción.
+• Entrada para la IA: Para generar el contenido de la plantilla, la IA requerirá:
+    ◦ Datos Contextuales del Sistema: Similar a la generación de correos, el sistema podrá proveer información del paciente (ID, nombre, apellido, diagnósticos), así como datos del médico (nombre del Dr. Sánchez García) y datos del consultorio (dirección, teléfono, logo, información de contacto) que ya estén configurados en el sistema.
+    ◦ Entrada de Usuario para la Personalización: El usuario definirá:
+        ▪ Tipo de Documento: (ej., Certificado Médico, Carta de Referencia, Prescripción, Informe Médico).
+        ▪ Contenido Principal: Breve descripción o puntos clave que deben incluirse en el cuerpo del documento.
+        ▪ Instrucciones Específicas: Cualquier requisito adicional o formato particular (ej., "Incluir el diagnóstico exacto de [Diagnóstico]", "Especificar la fecha de la última consulta", "Añadir detalles sobre el procedimiento X").
+        ▪ Tono y Estilo: Si el usuario desea un lenguaje más formal, técnico o explicativo para el documento.
+• Salida Esperada de la IA: La IA producirá el texto formateado del contenido principal de la hoja membretada. Este texto incluirá:
+    ◦ Los campos dinámicos (ej., nombre del paciente, fecha, diagnóstico) que el sistema podrá rellenar automáticamente.
+    ◦ El cuerpo principal del documento basado en el tipo y el contenido especificado por el usuario.
+    ◦ Un espacio para la firma y los datos del médico.
+    ◦ Al igual que con los correos, la IA generará únicamente el contenido de texto y no un archivo de hoja membretada con el diseño gráfico (membrete, logo, etc.). El texto generado se presentará en la interfaz para que el usuario pueda copiarlo y pegarlo en una plantilla de documento predefinida (ej., en Word, accesible vía widget de Office).
+• Cómo se Iniciará esta Función en la Interfaz:
+    ◦ Desde un Módulo Específico: Se dispondrá de un botón o una opción de "Generar Documento / Plantilla" dentro de la vista de detalle del expediente del paciente, el Historial Clínico Detallado o en la sección general de "Documentos" / "Automatizaciones" en el Dashboard.
+    ◦ Vía Chat Interno Básico: El personal podrá solicitar la generación de plantillas a través del chat interno, por ejemplo: "Genera una plantilla de certificado médico para María López con diagnóstico de amigdalitis" o "Prepara un borrador de carta de referencia para el especialista en traumatología para el paciente Roberto Salas". El asistente virtual integrado con Gemma 3 facilitará la delegación de esta tarea.

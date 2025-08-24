@@ -1,0 +1,67 @@
+Por favor, genera el contenido completo y detallado para un documento de "Especificación de la Integración de Inteligencia Artificial" para el Dashboard de Administración del proyecto "Ecosistema Digital para Cirugía Especial".
+
+El documento debe estar estructurado en las siguientes secciones, detallando cada punto basándose en la información proporcionada previamente (requisitos funcionales, menciones de IA) y principios estándar de integración de modelos de IA.
+
+1.  **Introducción y Propósito:**
+    *   Breve descripción del documento y su objetivo: detallar la integración técnica del modelo de IA (Gemma 3 o similar, como Gemini) en el Dashboard.
+    *   Propósito general de la integración de IA: potenciar funcionalidades de automatización, asistencia y mejorar la experiencia del usuario y del personal.
+
+2.  **Modelo de Inteligencia Artificial:**
+    *   Especificar el modelo de IA a utilizar (Gemma 3 o similar como Gemini, basándose en tus menciones previas).
+    *   Breve descripción de las capacidades relevantes del modelo para este proyecto (ej. generación de texto, resumen, comprensión de lenguaje natural).
+
+3.  **Casos de Uso de IA en el Dashboard (Funcionalidades Detalladas):**
+    *   Descripción detallada de cada funcionalidad del Dashboard que hará uso de la IA, basándose en los Requisitos Funcionales (Documento 1) y la lista proporcionada:
+        *   **Generación de borradores de correo electrónico:**
+            *   Propósito: Ayudar al personal a redactar correos electrónicos rápidamente.
+            *   Entrada para la IA: Especificar qué tipo de información se proporcionará a la IA (ej. datos del paciente, detalles de la cita, motivo del correo, puntos clave a incluir).
+            *   Salida esperada de la IA: Un borrador de texto para un correo electrónico.
+            *   Cómo se iniciará esta función en la interfaz (ej. botón en el expediente del paciente).
+        *   **Generación de plantillas para hojas membretadas:**
+            *   Propósito: Crear rápidamente documentos con formato de hoja membretada.
+            *   Entrada para la IA: Especificar la información necesaria (ej. datos del paciente, tipo de documento, contenido principal).
+            *   Salida esperada de la IA: Texto formateado listo para ser insertado en un documento.
+            *   Cómo se iniciará esta función.
+        *   **Generación de recordatorios automatizados:**
+            *   Propósito: Ayudar a crear recordatorios para el personal o pacientes.
+            *   Entrada para la IA: Datos de citas, eventos o tareas.
+            *   Posible rol de la IA: Interpretar datos para sugerir el contenido o momento del recordatorio.
+            *   Cómo se configurarán estos recordatorios.
+        *   **Chat interno con el modelo de IA:**
+            *   Propósito: Permitir al personal interactuar con la IA para consultas rápidas o tareas de texto.
+            *   Funcionalidades específicas del chat:
+                *   Resúmenes de texto (ej. resumir notas del historial clínico). Entrada: Texto a resumir. Salida: Resumen.
+                *   Redacción de informes cortos: Entrada: Puntos clave o datos. Salida: Texto de informe.
+                *   Respuestas a consultas rápidas: Cómo la IA accedería o utilizaría datos relevantes para responder preguntas.
+            *   Descripción de la interfaz de usuario del chat (ubicación, área de entrada, área de visualización).
+        *   Otros casos de uso de automatización básicos mencionados.
+    *   Definir claramente los límites de las capacidades de la IA en esta fase específica del proyecto (ej. se enfocará en texto, no generará imágenes, no tomará decisiones médicas).
+
+4.  **Interacción Técnica con el Modelo de IA:**
+    *   **Método de Integración:** Especificar cómo el backend se comunicará con el modelo de IA.
+        *   Si se accede a través de una API pública del modelo (ej. Google AI API para Gemini): Describir el uso de los endpoints API (URLs, métodos HTTP).
+        *   Si el modelo se despliega en Google Cloud (Vertex AI): Describir a alto nivel la interacción utilizando los SDKs o APIs de Vertex AI.
+    *   **Especificación de Entradas (Prompts):**
+        *   Definir el formato exacto y la estructura de los prompts de texto que se enviarán al modelo para cada caso de uso (ej. cómo formatear las instrucciones, cómo incluir datos de contexto del paciente si es necesario).
+        *   Manejo del contexto en conversaciones del chat.
+    *   **Especificación de Salidas (Respuestas):**
+        *   Definir el formato exacto y la estructura de las respuestas que se esperan del modelo de IA para cada caso de uso (ej. texto plano, texto formateado, posible JSON si la IA devuelve estructura).
+    *   **Manejo de Errores y Respuestas Inesperadas de la IA:** Cómo el backend detectará y gestionará errores o respuestas de la IA que no se ajusten al formato esperado.
+
+5.  **Manejo de Datos y Privacidad en la Integración con IA:**
+    *   Cómo se asegurará que los datos sensibles del paciente utilizados por la IA se manejen de forma segura y cumplan con las normativas de privacidad.
+    *   Especificar si los datos sensibles se anonimizan o pseudonimizan antes de enviarlos a la IA (si aplica y es necesario/posible con el modelo).
+    *   Consideraciones sobre dónde se procesan los datos (en la nube del proveedor de IA, en tu propia VPC en GCP).
+
+6.  **Rendimiento y Escalabilidad de la Integración con IA:**
+    *   Requisitos de rendimiento: Tiempo de respuesta esperado de la IA para cada caso de uso (ej. la respuesta del chat debe ser rápida).
+    *   Consideraciones sobre la latencia en las llamadas a la API de la IA.
+    *   Cómo la infraestructura soportará el volumen esperado de interacciones con la IA a medida que crezca el uso del Dashboard.
+    *   Consideraciones de costo basadas en el uso (por token, por llamada).
+
+7.  **Consideraciones Adicionales:**
+    *   Cualquier otro punto relevante para la integración de IA no cubierto en secciones anteriores (ej. monitoreo del uso de la IA, posibles futuras expansiones de funcionalidades de IA).
+
+Este prompt completo abarca los puntos clave para documentar la integración de la IA. Puedes copiarlo y dividirlo en las partes que consideres manejables para el límite de caracteres, y usar esas partes con el modelo para generar el contenido del Documento 5.
+
+Espero que este esquema te sea de utilidad.

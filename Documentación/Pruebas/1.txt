@@ -1,0 +1,13 @@
+Plan Detallado de Pruebas para el Dashboard del Ecosistema Digital para Cirugía Especial
+
+1. Introducción y Propósito
+
+Este documento detalla el plan de pruebas exhaustivas para el "Dashboard de Escritorio", el cual es el "Núcleo Administrativo Central" y el entregable principal de la Fase 1 del proyecto "Ecosistema Digital Inteligente para Cirugía Especial". El Dashboard de Escritorio es la columna vertebral y la base de datos central de todo el ecosistema, y su propósito es optimizar la gestión de pacientes, mejorar la eficiencia operativa, y centralizar la información crítica del consultorio en un lugar seguro y accesible.
+El objetivo de este plan es asegurar la calidad, fiabilidad, rendimiento y seguridad de la aplicación antes de su despliegue y uso en un entorno real. Las pruebas son de vital importancia para el "Ecosistema Digital Inteligente para Cirugía Especial", ya que el sistema busca ser "potente, seguro y excepcionalmente intuitivo". A través de un proceso de pruebas riguroso, se busca reducir los "procesos manuales que consumen tiempo" y el "riesgo de errores", liberando tiempo valioso para el personal.
+Un enfoque primordial de este ecosistema es la "seguridad de datos", ya que maneja información sensible del paciente. Las pruebas de seguridad son cruciales para validar las múltiples capas de protección implementadas, incluyendo:
+• El Control de Acceso Basado en Roles (RBAC), que garantiza que solo usuarios autorizados (Administradores, Admin Principal, Admin Secundario, Asistentes) accedan a funcionalidades e información según sus permisos.
+• El cifrado de datos en tránsito a través de HTTPS (TLS 1.3) entre la aplicación de escritorio y la infraestructura en la nube.
+• El almacenamiento seguro de credenciales mediante hashing y el cifrado de datos sensibles en reposo en la Base de Datos Relacional (Cloud SQL - MySQL/PostgreSQL) y el Almacenamiento de Archivos (Cloud Storage - S3/Blob).
+• El Servicio de Logs de Auditoría (Cloud Logging / Audit Logs), que registra inmutablemente (Write Once, Read Many - WORM) todos los intentos de login y las actividades del usuario, siendo vital para la detección de anomalías y la respuesta a incidentes.
+• La Virtual Private Cloud (VPC) y el API Gateway / Load Balancer, que actúan como la primera línea de defensa para la infraestructura en la nube.
+La necesidad de una conexión a internet estable de al menos 250 Mbps para un rendimiento óptimo del ecosistema también subraya la importancia de las pruebas de rendimiento y estrés. En resumen, este plan de pruebas es un pilar fundamental para garantizar que el Dashboard cumpla con su promesa de ser un centro de control digital potente, seguro y confiable para el consultorio del Dr. Sánchez García.

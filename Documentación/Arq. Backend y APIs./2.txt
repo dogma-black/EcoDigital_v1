@@ -1,0 +1,61 @@
+Documento: Arq. Backend y APIs
+Diseño Completo de Endpoints de la API (RESTful) (Continuación)
+La API del backend continúa su diseño siguiendo los principios de RESTfulness, garantizando la coherencia, la escalabilidad y la facilidad de uso para todas las operaciones del "Ecosistema Digital Inteligente para Cirugía Especial". Los datos estructurados se almacenan en la Base de Datos Relacional (Cloud SQL), mientras que los archivos digitales residen en Cloud Storage, ambos con cifrado en reposo para asegurar la confidencialidad de la información del paciente. Todas las interacciones con la API se realizarán de forma segura a través de HTTPS (TLS 1.3).
+Para Gestión de Historial Clínico
+El registro cronológico y detallado del historial clínico es una funcionalidad central para el seguimiento eficiente del paciente. Los siguientes endpoints permiten la interacción con esta información:
+• 1. GET /patients/{id}/history
+    ◦ Método HTTP: GET
+    ◦ Ruta exacta: /api/v1/patients/{id}/history (donde {id} es el identificador único del paciente)
+    ◦ Descripción: Permite obtener el historial clínico completo de un paciente específico, recuperando todas las entradas cronológicas de consultas, diagnósticos, notas de evolución, procedimientos y tratamientos asociados.
+• 2. POST /patients/{id}/history
+    ◦ Método HTTP: POST
+    ◦ Ruta exacta: /api/v1/patients/{id}/history
+    ◦ Descripción: Permite agregar una nueva entrada al historial clínico de un paciente específico. Esta acción es el equivalente digital a registrar una nueva consulta o procedimiento, incluyendo campos como fecha de consulta, diagnóstico y notas.
+• 3. PUT /history/{id}
+    ◦ Método HTTP: PUT
+    ◦ Ruta exacta: /api/v1/history/{id} (donde {id} es el identificador único de una entrada específica del historial)
+    ◦ Descripción: Actualiza los datos de una entrada existente en el historial clínico, permitiendo la corrección o modificación de detalles como diagnósticos o notas.
+• 4. DELETE /history/{id}
+    ◦ Método HTTP: DELETE
+    ◦ Ruta exacta: /api/v1/history/{id}
+    ◦ Descripción: Realiza un "borrado suave" de una entrada específica del historial clínico por su ID. Esto significa que el registro se marca como inactivo o archivado en la base de datos, en lugar de ser eliminado permanentemente, preservando la integridad histórica de los datos.
+Para Gestión de Citas
+El módulo de agenda y citas es fundamental para optimizar la programación y el control del flujo de pacientes, reduciendo los procesos manuales. Los endpoints asociados son:
+• 1. GET /appointments
+    ◦ Método HTTP: GET
+    ◦ Ruta exacta: /api/v1/appointments
+    ◦ Descripción: Obtiene la lista de todas las citas programadas en el consultorio. Soporta parámetros para filtrar por fecha (ej., "Citas del Día"), por paciente o por estado (ej., "Confirmada", "Cancelada", "Atendida"), así como paginación y ordenamiento.
+• 2. GET /appointments/{id}
+    ◦ Método HTTP: GET
+    ◦ Ruta exacta: /api/v1/appointments/{id} (donde {id} es el identificador único de la cita)
+    ◦ Descripción: Recupera los detalles completos de una cita específica por su ID, incluyendo el paciente asociado, fecha, hora, tipo y estado.
+• 3. POST /appointments
+    ◦ Método HTTP: POST
+    ◦ Ruta exacta: /api/v1/appointments
+    ◦ Descripción: Crea una nueva cita en el calendario del consultorio. Requiere la información necesaria como el paciente, la fecha, la hora y el tipo de cita.
+• 4. PUT /appointments/{id}
+    ◦ Método HTTP: PUT
+    ◦ Ruta exacta: /api/v1/appointments/{id}
+    ◦ Descripción: Actualiza los datos de una cita existente identificada por su ID. Permite modificar su fecha, hora, tipo, o cambiar su estado (ej., de "Programada" a "Confirmada" o "Cancelada").
+• 5. DELETE /appointments/{id}
+    ◦ Método HTTP: DELETE
+    ◦ Ruta exacta: /api/v1/appointments/{id}
+    ◦ Descripción: Realiza un "borrado suave" de una cita por su ID. El registro de la cita se marca como inactivo en la base de datos, lo que permite mantener un historial completo de las citas incluso si son canceladas o no se realizan.
+Para Gestión Documental
+La gestión documental avanzada centraliza y asegura el almacenamiento de todos los archivos digitales del paciente, eliminando la dispersión y mejorando la seguridad. Los archivos se almacenan en Cloud Storage con cifrado en reposo.
+• 1. POST /patients/{id}/documents
+    ◦ Método HTTP: POST
+    ◦ Ruta exacta: /api/v1/patients/{id}/documents
+    ◦ Descripción: Permite subir un nuevo archivo digital (PDF, imagen, video corto, etc.) y asociarlo directamente al expediente de un paciente específico. El archivo se cargará a Cloud Storage y sus metadatos se registrarán en la base de datos.
+• 2. GET /patients/{id}/documents
+    ◦ Método HTTP: GET
+    ◦ Ruta exacta: /api/v1/patients/{id}/documents
+    ◦ Descripción: Obtiene una lista de todos los documentos digitales (metadatos como nombre, tipo, URL) asociados a un paciente específico.
+• 3. GET /documents/{id}
+    ◦ Método HTTP: GET
+    ◦ Ruta exacta: /api/v1/documents/{id} (donde {id} es el identificador único del documento)
+    ◦ Descripción: Recupera un documento específico por su ID. Esta acción puede devolver una URL pre-firmada o un stream de datos que permita la descarga o visualización directa del archivo desde Cloud Storage.
+• 4. DELETE /documents/{id}
+    ◦ Método HTTP: DELETE
+    ◦ Ruta exacta: /api/v1/documents/{id}
+    ◦ Descripción: Realiza un "borrado suave" de un documento digital por su ID. Solo se marca el registro del documento como inactivo en la base de datos, sin eliminar el archivo físico de Cloud Storage de forma inmediata, manteniendo así un registro auditable.

@@ -1,0 +1,238 @@
+Documento de Requisitos Funcionales Detallados: Dashboard de Administración
+1. Propósito General del Dashboard de Administración
+El Dashboard de Administración es el Núcleo Administrativo Central del "Ecosistema Digital Inteligente para Cirugía Especial". Su propósito fundamental es transformar la gestión operativa del consultorio del Dr. Joel Sánchez García [88, 110-I]. Actúa como el centro de operaciones principal para el personal médico y administrativo, permitiendo la gestión centralizada de toda la información crítica de los pacientes [31-I, 45, 185-1].
+Este Dashboard está diseñado para optimizar la gestión de pacientes y mejorar significativamente la eficiencia operativa al reducir los procesos manuales y el riesgo de errores, lo que a su vez libera tiempo valioso para el personal [31-I, 46, 186-1]. Aborda directamente dolores operativos clave como la "saturación y dispersión de información" y la "dificultad en el seguimiento eficiente del paciente" [46, 94, 118-VI, 186-1]. Además, centraliza la inteligencia del sistema para asegurar que la lógica de negocio se ejecute de manera segura y escalable .
+2. Estructura de Componentes de la Pantalla
+La pantalla del Dashboard de Administración presenta una interfaz clara y funcional, profundamente anclada en el estilo visual "Glassmorphism Oscuro". Este diseño no es solo estético, sino funcional, concebido para ofrecer comodidad visual, una jerarquía de información clara y una experiencia de usuario fluida desde el primer punto de interacción. Se logra mediante elementos que parecen flotar, una luz sutil que emana desde el interior (efecto "Aurora"), y una textura de información nítida.
+La pantalla se organiza en tres áreas principales: la Barra de Navegación Lateral (izquierda), el Header Superior (barra superior) y el Área de Contenido Principal (que será detallada posteriormente).
+2.1. Barra de Navegación Lateral (Izquierda)
+La barra de navegación lateral, ubicada a la izquierda de la interfaz, es el panel principal para la navegación dentro del sistema [48, 53, 154-1.2, 189-4].
+• 2.1.1. Identidad de la Aplicación:
+    ◦ Logo (Icono circular): En la parte superior de la barra de navegación lateral, se mostrará un icono circular que representa la marca "Cirugía Especial" [275-2.1]. Este logo sirve como un ancla visual constante, reforzando la identidad de la aplicación en todo momento. Su diseño debe ser limpio y moderno, siguiendo la estética general del sistema.
+    ◦ Texto "CIRUGIA ESPECIAL": Acompañando al logo, se presentará el texto "CIRUGIA ESPECIAL" [275-2.1]. Este texto, junto con el logo, consolida la identidad visual y textual de la aplicación, siendo siempre visible para el usuario.
+• 2.1.2. Navegación Principal (Iconos y Secciones):
+    ◦ Las secciones principales del sistema se presentan mediante iconos claros y texto, utilizando un estilo de línea (line-style) con grosor de trazo consistente y terminaciones redondeadas, en el color text-primary (#F5F5F5) para una legibilidad óptima.
+    ◦ Inicio (Icono de casa): Al hacer clic, este icono redirige al usuario a la Pantalla: Dashboard Principal (Vista General) [154-1.2, 275-2.1, 189-4]. Funciona como el punto de regreso central para obtener una visión general del estado del consultorio y acceso rápido a las funcionalidades clave.
+    ◦ Registros (Icono de documento): Este icono proporciona acceso a la sección de Gestión Integral del Expediente del Paciente [90-1, 114, 155-2.A, 209-4, 252-4]. Permite la creación de nuevos perfiles de pacientes, la búsqueda avanzada de pacientes existentes, y el registro detallado y cronológico del historial clínico, centralizando toda la información crítica del paciente [33, 90-1, 114, 155-2.A, 209-4, 252-4].
+    ◦ Colaboradores/Equipo (Icono de usuarios): Este elemento de navegación dirige al usuario a la sección de Gestión de Usuarios dentro del módulo de Administración [37-4, 154-1.2, 158-2.D, 276-2.1]. Es el punto donde los usuarios con permisos adecuados (Administrador y Admin Principal) pueden gestionar cuentas de usuario, asignar y modificar roles, definiendo sus permisos de acceso a la información y funcionalidades [158-2.D, 181-7, 193-8].
+    ◦ Reportes (Icono de gráfico de barras): Proporciona acceso a la sección de analíticas y generación de reportes [154-1.2, 276-2.1]. Aquí, el usuario puede visualizar informes de visitas y procedimientos para obtener métricas clave sobre la operación del consultorio [49, 154-1.2, 188-3].
+    ◦ Integraciones/Módulos (Icono de cuadrícula): Este icono está destinado a ofrecer acceso a otros módulos o aplicaciones integradas dentro del ecosistema [276-2.1]. Aunque no se detallan módulos específicos adicionales más allá de los principales, este punto de acceso futuro permite la expansión y la integración de nuevas funcionalidades.
+• 2.1.3. Sección "Mis Archivos":
+    ◦ Esta sección se enfoca en la gestión de documentos digitales asociados a los expedientes de los pacientes [276-2.1].
+    ◦ Barra de Búsqueda: Un campo de texto con un icono de lupa incrustado que permite al usuario buscar archivos y carpetas por nombre o palabra clave dentro de esta sección de "Mis Archivos" [276-2.1]. La búsqueda debe ser ágil y ofrecer resultados relevantes a medida que el usuario escribe.
+    ◦ Estructura de Carpetas: Se implementará un sistema de árbol de directorios para organizar la información de los pacientes de forma lógica y estructurada [277-2.1]. Esto facilita la navegación y el acceso a los documentos.
+    ◦ Carpetas Visibles: Se listarán las siguientes carpetas predefinidas: "General", "Operaciones", "Consultas", "Laboratorio" [277-2.1]. Estas categorías permiten una clasificación inicial de los documentos para una mejor organización.
+    ◦ Funcionalidad de Filtrado por Carpeta: Al hacer clic en cualquiera de las carpetas visibles, el contenido del Área de Contenido Principal (específicamente, la sección de la "Base de Datos" o "Registro de Pacientes") debe filtrarse automáticamente para mostrar solo los registros y documentos pertenecientes a esa categoría específica [277-2.1]. Esto proporciona una vista contextual y optimiza la búsqueda de información.
+• 2.1.4. Sección "Automatizaciones":
+    ◦ Esta sección contiene "placeholders para futuras funcionalidades o para que el usuario configure flujos de trabajo personalizados" [277-2.1]. Es un área designada para la expansión de las capacidades de automatización del sistema.
+    ◦ Descripción: Se mostrará una descripción general de lo que se puede lograr con las automatizaciones, posiblemente con ejemplos como "Crear reporte mensual automáticamente" o "Notificar al paciente 24h antes de la consulta" [277-2.1].
+    ◦ Primera Manifestación (Asistente Virtual): El Asistente Virtual (modelo de IA Gemma 3) es la primera implementación de esta capacidad de automatización [277-2.1]. Permite la redacción de correos, generación de hojas membretadas, recordatorios, y un chat interno para consultas rápidas, resúmenes de texto o redacción de informes [23, 38, 115, 159-2.E, 210-4, 254-4]. Este chat funciona únicamente con texto y no tiene la capacidad de generar archivos de ningún formato.
+2.2. Header Superior (Barra Superior)
+El Header Superior, ubicado en la parte superior de la interfaz, proporciona información general y accesos rápidos [53, 154-1.2, 189-4].
+• 2.2.1. Accesos Rápidos a Servicios:
+    ◦ Se implementará una barra central con iconos que representen accesos rápidos a servicios en la nube integrados [278-2.2, 154-1.2]. Es crucial interpretar estos iconos como accesos directos dentro de la aplicación, no como el dock del sistema operativo del usuario [278-2.2].
+    ◦ Servicios Esperados: Esto incluye, pero no se limita a, accesos directos a carpetas específicas en Google Drive y a funcionalidades de Gmail, así como accesos directos para abrir aplicaciones de Office (como Docs/Sheets) [37-4, 154-1.2, 188-3, 210-4, 225-4, 254-4]. Estos widgets están siempre visibles en el dashboard, simplificando el acceso a herramientas esenciales y mejorando la eficiencia .
+• 2.2.2. Controles de Usuario (Derecha):
+    ◦ Ubicados en el extremo derecho del Header, estos controles proporcionan funcionalidades relacionadas con la interacción y el perfil del usuario [278-2.2].
+    ◦ Búsqueda Global (Icono de lupa): Un icono de lupa que, al activarse, permite realizar una búsqueda que abarca toda la aplicación [278-2.2]. Esta búsqueda global debe permitir encontrar información relevante en todos los módulos, incluyendo pacientes, archivos, notas, citas, etc.
+    ◦ Notificaciones (Icono de campana): Se incluirá un icono de campana que, al hacer clic, desplegará un centro para alertas y notificaciones del sistema [279-2.2]. Esto es crucial para mantener al personal informado sobre eventos importantes, como citas próximas, nuevos documentos subidos o cambios en el estado de los pacientes.
+    ◦ Fecha y Hora: Se mostrará de forma clara la fecha y hora actuales [279-2.2]. Este elemento proporciona un contexto temporal constante para el usuario.
+    ◦ Perfil de Usuario (Avatar): Se mostrará el avatar o imagen de perfil del usuario logueado [53, 154-1.2, 189-4, 279-2.2]. Al hacer clic en el avatar, se desplegará un menú contextual con las siguientes opciones:
+        ▪ "Mi Perfil": Para acceder y gestionar la información personal del usuario.
+        ▪ "Configuración": Para ajustar las preferencias de la aplicación específicas del usuario.
+        ▪ "Cerrar Sesión": Para que el usuario pueda finalizar su sesión de forma segura [51, 154-1.2, 188-3].
+
+2.3. Área de Contenido Principal
+El Área de Contenido Principal es el espacio de trabajo dinámico del Dashboard, compuesto por diversos módulos o "widgets" que proporcionan información clave y acceso a las funcionalidades operativas del consultorio. Su diseño sigue la estética "Glassmorphism Oscuro", presentando paneles flotantes de "vidrio esmerilado" que organizan y jerarquizan la información, con un fondo dinámico de "Auras" de colores azul y violeta que realza el efecto visual y reduce la fatiga visual.
+A. Módulo "Base de Datos"
+Este módulo es la funcionalidad central para la gestión de registros de pacientes.
+• Título: "Base de Datos".
+• Subtítulo: "Registro de pacientes Cirugía Ecensial 2024".
+• Barra de Acciones: Ubicada sobre la tabla de datos, proporciona herramientas para la gestión de registros en lote o individual.
+    ◦ Eliminar (Icono de papelera): Este botón se activa cuando se seleccionan una o más filas en la tabla. Su funcionalidad principal es realizar un borrado suave (soft delete) de los registros. Esto significa que el registro no se elimina permanentemente de la base de datos, sino que se marca internamente como inactivo o archivado (ej., is_deleted = true), lo que permite su recuperación futura y mantiene la integridad histórica de los datos.
+    ◦ Filtros (Icono de filtro): Al hacer clic en este icono, se despliega un panel o un modal que ofrece opciones avanzadas para filtrar los datos mostrados en la tabla. Los filtros pueden incluir criterios como "por fecha", "por estado", "por tipo de consulta", entre otros, permitiendo al usuario refinar rápidamente la visualización de los registros.
+    ◦ Exportar: Esta función permite al usuario exportar los datos seleccionados en la tabla o todos los datos filtrados a formatos comunes de hojas de cálculo, como CSV o Excel, facilitando el análisis externo o la generación de reportes.
+    ◦ + Nuevo Registro (Botón principal): Al interactuar con este botón, se abre un formulario o un modal dedicado a la creación de un nuevo registro de paciente, donde el usuario puede ingresar toda la información demográfica y de contacto inicial.
+• Tabla de Datos: Presenta la información de los pacientes de manera estructurada y de fácil acceso.
+    ◦ Checkbox de Selección: Ubicado en la primera columna de cada fila, permite la selección múltiple de registros para aplicar acciones en lote (como Eliminar o Exportar). El encabezado de la columna incluirá un checkbox maestro para seleccionar o deseleccionar todos los registros visibles.
+    ◦ ID/Nombre del Paciente (Texto en negrita y enlace): Esta es la columna principal de identificación. El texto en negrita (font-weight: 700) le otorga jerarquía visual, y cada entrada es un enlace directo que lleva a la vista de detalle completa del paciente, donde se puede acceder a su expediente y historial clínico.
+    ◦ Columnas de Datos Adicionales (Texto regular): Muestran información relevante y configurable del paciente, como "Fecha de Última Consulta", "Diagnóstico Principal", "Médico Tratante", etc., con texto regular (font-weight: 400) para diferenciarse del nombre principal.
+    ◦ Estado (Píldora de color): Una representación visual mediante una "píldora" de color que indica el estado actual del paciente o registro. Los estados definidos son:
+        ▪ Active (Verde): Indica que el paciente está en tratamiento o seguimiento activo.
+        ▪ Inactive (Rojo/Gris): Señala que el paciente ha sido dado de alta, o que el registro ha sido archivado o está inactivo por algún otro motivo.
+    ◦ Menú de Acciones (Icono de tres puntos): Al hacer clic en este icono, se despliega un menú contextual con acciones específicas para el registro de la fila correspondiente. Las opciones incluyen:
+        ▪ "Ver Detalles".
+        ▪ "Editar Registro".
+        ▪ "Ver Historial Clínico Completo".
+        ▪ "Archivar".
+        ▪ "Eliminar (Suave)".
+B. Módulo "Asistente virtual"
+Este módulo representa la integración de la inteligencia artificial en el flujo de trabajo del consultorio, potenciada por el modelo Gemma 3 (o similar a Gemini).
+• Título: "Asistente virtual".
+• Funcionalidad: Permite a los usuarios interactuar con el sistema utilizando lenguaje natural para diversas tareas, optimizando la eficiencia operativa.
+    ◦ Interacción Lenguaje Natural: El asistente está diseñado para comprender y procesar consultas formuladas en lenguaje coloquial, permitiendo una interacción intuitiva y conversacional.
+    ◦ Búsqueda Inteligente: Los usuarios pueden realizar consultas de búsqueda complejas, como "Hola, estoy buscando un archivo me urge", "Recuerdas el nombre del paciente?", o "Si!! es Laura Vargas", y el asistente utilizará la IA para interpretar la solicitud y localizar la información o los archivos pertinentes en el sistema.
+    ◦ Recuperación y Acciones Contextuales: Una vez que el asistente localiza el recurso solicitado (por ejemplo, "Lo encontré"), ofrecerá al usuario acciones contextuales relacionadas, como "te lo envío a tu correo o prefieres descargarlo?", facilitando la gestión de la información.
+    ◦ Automatización de Tareas: El asistente virtual está conectado a las APIs del sistema, lo que le permite ejecutar acciones automatizadas en respuesta a las solicitudes del usuario. Esto incluye el envío de correos electrónicos, la generación de borradores de documentos (como hojas membretadas), y la creación de proyectos o recordatorios, liberando tiempo del personal.
+C. Módulo "Notas"
+Un widget simple diseñado para la gestión de anotaciones rápidas.
+• Título: "Notas".
+• Funcionalidad: Permite al usuario tomar notas personales y registrar recordatorios rápidos directamente en el dashboard. Por lo general, esta información es privada para el usuario que la creó. Se menciona la posibilidad de una función adicional para "adjuntar nota a paciente", lo que vincularía estas anotaciones directamente al expediente clínico para una referencia más contextual.
+D. Módulo "Visor de Archivos Visuales"
+Este módulo está dedicado a la visualización de contenido multimedia asociado a los pacientes.
+• Funcionalidad: Permite a los usuarios visualizar imágenes y videos directamente relacionados con los expedientes de los pacientes. El contenido del visor se actualiza de forma contextual, mostrando los archivos visuales del paciente que está seleccionado en la tabla principal de la "Base de Datos" o que ha sido resultado de una búsqueda específica. Estos archivos se almacenan de forma segura en Cloud Storage y están cifrados en reposo.
+• Componentes:
+    ◦ Carrusel de Vistas Previas: Muestra miniaturas de los archivos visuales disponibles, organizados en un formato de carrusel. Las flechas a izquierda y derecha permiten al usuario navegar fácilmente por la galería de archivos.
+    ◦ Filtros de Origen/Tipo: Permiten al usuario refinar la visualización del contenido en el carrusel.
+        ▪ Cloud Drives: Filtra para mostrar únicamente archivos visuales que provienen de almacenamientos en la nube conectados, como Google Drive o OneDrive.
+        ▪ Photos: Muestra exclusivamente imágenes, incluyendo formatos comunes como JPG, PNG, y potencialmente formatos médicos como DICOM.
+        ▪ Videos: Muestra únicamente archivos de video, lo que podría incluir grabaciones de cirugías, estudios de endoscopias, o videos educativos asociados al paciente.
+
+2.4. Flujos de Usuario Clave
+Esta sección describe los flujos de usuario más importantes dentro del Área de Contenido Principal del Dashboard de Administración, el cual es el "Núcleo Administrativo Central" y el principal entregable de la Fase 1 del proyecto. El Dashboard está diseñado para optimizar la gestión de pacientes y mejorar la eficiencia operativa, abordando la dispersión de información y los procesos manuales.
+A. Añadir un Nuevo Paciente
+Este flujo permite al personal del consultorio registrar nuevos pacientes en el sistema.
+1. Acceso a la Función: El usuario navega a la "Barra de Navegación Lateral" y selecciona la opción "Pacientes", luego hace clic en "Nuevo Paciente". Alternativamente, puede hacer clic directamente en el botón principal "+ Nuevo Registro" ubicado en la "Barra de Acciones" del módulo "Base de Datos".
+2. Pantalla de Creación: Se abre un formulario o modal titulado "Creación de Perfil de Paciente".
+3. Ingreso de Datos: El usuario debe ingresar los datos demográficos y de contacto del nuevo paciente, como nombre, apellido, fecha de nacimiento, teléfono, correo electrónico y dirección.
+4. Validaciones: Si el usuario intenta guardar el registro sin completar campos obligatorios o con formatos incorrectos (ej., un email inválido), el sistema mostrará mensajes de error claros, como "Campo 'Nombre' requerido" o "Formato de email inválido".
+5. Guardado: Una vez que se ingresan los datos válidamente, el usuario hace clic en el botón "Guardar Paciente".
+6. Resultado Esperado: La tabla del módulo "Base de Datos" se actualiza automáticamente con el nuevo registro de paciente, el cual aparecerá en estado "Active".
+B. Buscar el Historial de un Paciente (Interacción con Asistente Virtual)
+Este flujo demuestra la capacidad de búsqueda inteligente del Asistente Virtual integrado con Gemma 3 para acceder rápidamente a la información del paciente.
+1. Acceso al Asistente: El usuario se dirige al módulo "Asistente virtual" en el Área de Contenido Principal. Se puede interactuar a través de un icono o una sección dedicada al chat.
+2. Interacción de Búsqueda: El usuario utiliza lenguaje natural para realizar una consulta de búsqueda, por ejemplo, "Hola, estoy buscando un archivo me urge", "Recuerdas el nombre del paciente?", o "Si!! es Laura Vargas". El Asistente Virtual está diseñado para comprender y procesar estas consultas complejas utilizando la IA.
+3. Recuperación Inteligente: El Asistente Virtual interpreta la solicitud y localiza la información o los archivos pertinentes en el sistema.
+4. Respuesta y Acciones Contextuales: El asistente responde al usuario, por ejemplo, diciendo "Lo encontré", y ofrece acciones contextuales relacionadas con el recurso encontrado, como "¿te lo envío a tu correo o prefieres descargarlo?". Para la búsqueda de historial, el asistente provee un enlace directo al historial clínico o a la galería de archivos visuales del paciente. Es importante señalar que este chat funciona únicamente con texto y no tiene la capacidad de generar archivos de ningún formato.
+C. Archivar Múltiples Pacientes
+Este flujo permite la gestión en lote de registros de pacientes, realizando un borrado suave.
+1. Selección de Registros: El usuario selecciona una o más filas en la "Tabla de Datos" del módulo "Base de Datos" utilizando los "Checkbox de Selección" ubicados en la primera columna de cada fila. Un "checkbox maestro" en el encabezado de la columna permite seleccionar o deseleccionar todos los registros visibles.
+2. Activación de la Acción: Una vez seleccionadas las filas, el botón "Eliminar" (icono de papelera) en la "Barra de Acciones" se activa.
+3. Confirmación: Al hacer clic en "Eliminar", aparece un modal de confirmación preguntando al usuario, por ejemplo, "¿Desea archivar los X registros seleccionados?".
+4. Ejecución del Borrado Suave: Tras la confirmación del usuario, el sistema ejecuta un borrado suave (soft delete) de los registros. Esto significa que los registros no se eliminan permanentemente de la base de datos, sino que se marcan internamente como inactivos o archivados (ej., is_deleted = true).
+5. Resultado Esperado: Las filas correspondientes desaparecen de la vista activa de la tabla, y su estado interno en la base de datos cambia a "Inactive".
+D. Ver Detalles de Paciente
+Este flujo permite acceder a una vista completa y detallada de la información de un paciente específico.
+1. Acceso a los Detalles: Desde la "Tabla de Datos" del módulo "Base de Datos", el usuario puede hacer clic en el "ID/Nombre del Paciente" (texto en negrita) en la fila correspondiente al paciente deseado. Este elemento actúa como un enlace directo.
+2. Pantalla de Detalles: Al hacer clic en el enlace, el sistema redirige al usuario a una vista de detalle completa del paciente, también conocida como la "ficha del paciente".
+3. Contenido Esperado: En esta pantalla, el usuario espera ver el perfil completo del paciente con todos sus datos demográficos y de contacto, así como resúmenes de consultas y progreso de tratamiento, y acceso a la gestión documental avanzada, incluyendo la visualización de imágenes y videos relacionados. Esta pantalla también es el punto de partida para acciones adicionales como "Añadir a Historial".
+E. Editar Registro de Paciente
+Este flujo permite modificar la información existente de un paciente.
+1. Acceso a la Edición: Desde la "Tabla de Datos" del módulo "Base de Datos", el usuario hace clic en el "Menú de Acciones" (icono de tres puntos) en la fila del paciente que desea editar.
+2. Selección de Acción: Del menú desplegable, el usuario selecciona la opción "Editar Registro".
+3. Proceso de Modificación: Se abre un formulario o modal, similar al de creación, pero pre-llenado con los datos actuales del paciente. El usuario realiza las modificaciones necesarias en los campos deseados [inferencia, similar a los formularios de creación o historial clínico que implican entrada de datos].
+4. Guardado de Cambios: Una vez realizadas las modificaciones, el usuario hace clic en el botón "Guardar" o "Actualizar" [inferencia]. Los cambios se envían de forma segura al Servidor de Aplicación (Backend) a través de APIs RESTful utilizando HTTPS (TLS 1.3).
+5. Registro de Auditoría: El backend procesa la solicitud, actualiza la "Base de Datos Relacional (Cloud SQL)" y registra cronológicamente esta acción de modificación de datos en el "Servicio de Logs de Auditoría (Cloud Logging / Audit Logs)", que son inmutables.
+6. Confirmación: El sistema muestra una confirmación visual al usuario, indicando que los cambios han sido guardados exitosamente.
+F. Ver Historial Clínico Completo
+Este flujo permite una visualización detallada y cronológica del historial médico de un paciente.
+1. Acceso al Historial: Desde la "Tabla de Datos" del módulo "Base de Datos", el usuario hace clic en el "Menú de Acciones" (icono de tres puntos) en la fila del paciente deseado. Alternativamente, desde la tabla "Pacientes Recientes" en el Área Central del Dashboard, puede hacer clic en la opción "Ver Historial".
+2. Selección de Acción: Del menú desplegable, el usuario selecciona la opción "Ver Historial Clínico Completo".
+3. Contenido Esperado: Se presenta una vista que contiene el registro cronológico y detallado de cada consulta, diagnóstico, notas de evolución, procedimientos y tratamientos del paciente. Este historial también permite la capacidad de adjuntar documentos relevantes, y se espera que se integre con el "Visor de Archivos Visuales" para mostrar imágenes y videos contextuales relacionados con el paciente.
+G. Archivar un Solo Paciente
+Este flujo permite archivar individualmente un registro de paciente mediante un borrado suave.
+1. Acceso a la Acción: Desde la "Tabla de Datos" del módulo "Base de Datos", el usuario hace clic en el "Menú de Acciones" (icono de tres puntos) en la fila del paciente que desea archivar.
+2. Selección de Acción: Del menú desplegable, el usuario selecciona la opción "Archivar". (Nota: La opción "Eliminar (Suave)" también está disponible y realiza la misma función de borrado lógico).
+3. Confirmación (Implícito): Aunque no se especifica explícitamente para el archivado individual, se esperaría un modal de confirmación similar al de múltiples pacientes para prevenir acciones accidentales.
+4. Ejecución del Borrado Suave: El registro del paciente se marca internamente como inactivo o archivado (is_deleted = true) en la base de datos.
+5. Resultado Esperado: El estado del paciente en la tabla puede cambiar visualmente a "Inactive" (una píldora de color rojo/gris) o el registro puede desaparecer de la vista activa, dependiendo de los filtros aplicados.
+
+2.4. Flujos de Usuario Clave (Continuación)
+H. Eliminar Suave un Solo Paciente
+Este flujo permite archivar individualmente un registro de paciente, realizando un borrado lógico o "suave" para mantener la integridad de los datos históricos.
+1. Acceso a la Acción: Desde la "Tabla de Datos" del módulo "Base de Datos", el usuario hace clic en el "Menú de Acciones" (icono de tres puntos) ubicado en la fila del paciente que desea archivar.
+2. Selección de Acción: Del menú desplegable que aparece, el usuario selecciona la opción "Archivar". Es importante notar que la opción "Eliminar (Suave)" también está disponible y realiza la misma función de borrado lógico.
+3. Confirmación (Implícito): Aunque no se especifica explícitamente para el archivado individual, por buena práctica de diseño de UI/UX y para prevenir acciones accidentales, se esperaría un modal de confirmación similar al de archivado múltiple, preguntando si desea proceder con el archivado del registro.
+4. Ejecución del Borrado Suave: El sistema marca el registro del paciente internamente como inactivo o archivado (ej., is_deleted = true) en la "Base de Datos Relacional (Cloud SQL)". Esto significa que los datos no se eliminan permanentemente.
+5. Resultado Esperado: La fila correspondiente al paciente desaparecerá de la vista activa de la tabla, o su estado visual en la columna "Estado" cambiará a "Inactive" (una píldora de color rojo/gris), dependiendo de los filtros aplicados.
+I. Filtrar Tabla de Datos
+Este flujo permite al usuario refinar la información visible en la "Tabla de Datos" para encontrar rápidamente registros específicos.
+1. Acceso a la Función: El usuario localiza el "Icono de filtro" en la "Barra de Acciones" del módulo "Base de Datos" y hace clic sobre él.
+2. Opciones de Filtro: Al hacer clic, se despliega un panel o modal que presenta "opciones avanzadas" para filtrar la tabla.
+3. Aplicación de Filtros: El usuario puede aplicar uno o más filtros basándose en diversas categorías, como "por fecha", "por estado" (ej., Activo, Inactivo), o "por tipo de consulta".
+4. Resultado Esperado: La "Tabla de Datos" se actualiza dinámicamente, mostrando solo los registros que cumplen con los criterios de filtro seleccionados, lo que permite una visualización más enfocada y eficiente.
+J. Exportar Datos de la Tabla
+Este flujo proporciona la capacidad de extraer los datos de la "Tabla de Datos" para su uso externo o para fines de análisis.
+1. Acceso a la Función: El usuario localiza el botón "Exportar" en la "Barra de Acciones" del módulo "Base de Datos" y hace clic sobre él.
+2. Selección de Datos: El sistema permite al usuario exportar los "datos seleccionados" (si se han marcado filas específicas con los "Checkbox de Selección") o "todos los datos filtrados" (si se ha aplicado algún filtro).
+3. Selección de Formato: El usuario puede elegir el formato de exportación deseado, como "CSV" o "Excel".
+4. Resultado Esperado: Se inicia la descarga de un archivo que contiene los datos de la tabla en el formato seleccionado, facilitando su manipulación y análisis fuera del sistema.
+K. Interactuar con Asistente Virtual para Tareas Específicas
+Este flujo resalta la capacidad de la IA (Gemma 3) para automatizar tareas y proporcionar asistencia contextualizada, mejorando la eficiencia operativa.
+1. Acceso a la Interacción: El usuario se dirige al módulo "Asistente virtual" en el Área de Contenido Principal del Dashboard. Esto se logra a través de un "icono o sección dedicada al chat".
+2. Ejemplos de Interacciones y Resultados Esperados:
+    ◦ Búsqueda Inteligente: El usuario puede preguntar por archivos o información específica usando lenguaje natural (ej., "Hola, estoy buscando un archivo me urge", "Recuerdas el nombre del paciente?", "Si!! es Laura Vargas"). El asistente responde localizando el recurso ("Lo encontré") y ofreciendo acciones contextuales (ej., "¿te lo envío a tu correo o prefieres descargarlo?").
+    ◦ Redacción de Contenido: El usuario puede solicitar la redacción automatizada de "correos electrónicos", la "generación de hojas membretadas" o la creación de "recordatorios". La IA puede también generar "resúmenes de texto" o facilitar la "redacción de informes" a través del chat interno.
+    ◦ Asistencia para Desarrollo/Capacitación: La IA puede generar "texto de ejemplo" (lorem ipsum más inteligente) para prototipos de UI, sugerir "copys" para botones y etiquetas si se entrena con el tono deseado, o generar "scripts SQL básicos" a partir de descripciones en lenguaje natural. Adicionalmente, puede colaborar en la generación de "preguntas frecuentes (FAQs)" a partir de la documentación técnica para el manual de usuario, e incluso crear un "chatbot de ayuda inicial" para la capacitación del personal.
+3. Limitación: Es crucial señalar que este chat funciona "únicamente con texto" y "no tiene la capacidad de generar archivos de ningún formato".
+L. Tomar y Guardar Notas en el Widget "Notas"
+Este flujo permite al personal registrar información personal y recordatorios rápidos directamente en el Dashboard.
+1. Acceso al Widget: El usuario localiza el widget titulado "Notas" en el Área de Contenido Principal del Dashboard.
+2. Ingreso de Notas: El usuario interactúa con el área de texto del widget para escribir sus notas o recordatorios.
+3. Guardado: Aunque no se especifica un botón explícito de "Guardar" para este widget, se esperaría que las notas se guarden automáticamente o al perder el foco del campo de texto, manteniendo la simplicidad de un "widget simple".
+4. Resultado Esperado: Las notas ingresadas se almacenan y son visibles para el usuario en futuras sesiones. Esta información es, por lo general, "privada para el usuario y no está directamente ligada a un paciente", a menos que se implemente una función específica para adjuntar una nota a un paciente.
+M. Navegar y Filtrar Archivos en el "Visor de Archivos Visuales"
+Este flujo proporciona una forma eficiente de visualizar y organizar los documentos multimedia asociados a los pacientes.
+1. Acceso al Visor: El usuario se dirige al módulo "Visor de archivos visuales" en el Área de Contenido Principal del Dashboard.
+2. Navegación por Carrusel: Se presenta un "Carrusel de Vistas Previas" que muestra miniaturas de los archivos. El usuario puede navegar a través de la galería utilizando las "flechas a izquierda y derecha".
+3. Filtros de Contenido: El usuario puede aplicar filtros para organizar los archivos según su origen o tipo:
+    ◦ Cloud Drives: Muestra solo archivos provenientes de almacenamientos en la nube conectados (ej., Google Drive, OneDrive).
+    ◦ Photos: Muestra únicamente imágenes (ej., JPG, PNG, DICOM).
+    ◦ Videos: Muestra únicamente archivos de video (ej., grabaciones de cirugías, endoscopias).
+4. Actualización Contextual: El contenido del visor se actualiza contextualmente según el paciente seleccionado en la tabla principal "Base de Datos" o la búsqueda realizada, asegurando que se muestren los archivos relevantes para el caso en cuestión.
+5. Resultado Esperado: El usuario puede visualizar de forma organizada y eficiente todas las imágenes y videos relacionados con los expedientes de los pacientes.
+N. Log In de Usuario
+Este flujo es el punto de entrada fundamental al "Ecosistema Digital Inteligente para Cirugía Especial", específicamente al "Núcleo Administrativo Central" o Dashboard de Escritorio. Su propósito principal es autenticar al usuario y aplicar el control de acceso basado en roles.
+1. Acceso a la Aplicación: El usuario inicia la aplicación de escritorio del "Núcleo Administrativo Central".
+2. Pantalla de Login: Se presenta la "Pantalla: Login de Usuario", mostrando campos para "Nombre de Usuario" y "Contraseña".
+3. Ingreso de Credenciales: El usuario ingresa su "Nombre de Usuario" y "Contraseña" en los campos designados.
+4. Intento de Inicio de Sesión: El usuario hace clic en el botón "Iniciar Sesión".
+5. Comunicación con el Backend: Las credenciales se envían de forma segura al Servidor de Aplicación (Backend) alojado en Google Cloud Platform (GCP). Esta comunicación utiliza HTTPS (TLS 1.3) para cifrar los datos en tránsito, protegiendo las credenciales de usuario de ser interceptadas.
+6. Autenticación y Autorización en Backend:
+    ◦ El backend (construido con Python/Flask/Django o Node.js/Express) recibe las credenciales.
+    ◦ Verifica las credenciales contra la "Base de Datos Relacional (Cloud SQL - MySQL/PostgreSQL)". Los datos sensibles como contraseñas se almacenan cifrados en reposo en la base de datos (con un campo hash_password que sugiere el uso de funciones de hash).
+    ◦ Una vez autenticado, el backend consulta el "Sistema de Roles" (ROLES en el modelo de datos) para determinar los permisos del usuario (ej., "Admin Principal", "Admin Secundario", "Asistente", "Invitado (Solo Lectura)").
+7. Registro de Auditoría: El "Servicio de Logs de Auditoría (Cloud Logging / Audit Logs)" registra cronológicamente el intento de login (exitoso o fallido), la actividad del usuario y los cambios realizados en el sistema. Estos logs son inmutables (Write Once, Read Many - WORM), asegurando su integridad.
+8. Redirección al Dashboard o Manejo de Errores:
+    ◦ Login Exitoso: El usuario es redireccionado sin problemas a la "Pantalla: Dashboard Principal (Vista General)". La cabecera del dashboard mostrará el usuario logueado y su rol, y la barra de navegación lateral presentará las secciones a las que tiene acceso según sus permisos.
+    ◦ Credenciales Incorrectas: La aplicación permanece en la pantalla de Login y mostrará un mensaje de error claro y conciso, por ejemplo: "Usuario o contraseña incorrectos".
+    ◦ Campos Vacíos/Formato Inválido: Se esperaría una validación similar a otros formularios con mensajes de "Campo 'Nombre de Usuario' requerido" o "Campo 'Contraseña' requerido".
+    ◦ Problemas de Conectividad: Un mensaje de error general sobre problemas de conexión o indisponibilidad del servicio. Se recomienda una conexión a internet estable de al menos 250 Mbps para un rendimiento óptimo.
+O. Log Out de Usuario
+Este flujo permite al usuario finalizar su sesión de forma segura en el Dashboard de Escritorio.
+1. Acceso a la Acción: El usuario se dirige a la "Cabecera" (Header Superior) del Dashboard Principal.
+2. Selección de "Cerrar Sesión": En la cabecera, el usuario localiza y hace clic en la opción "Cerrar Sesión".
+3. Proceso de Cierre de Sesión: El sistema procede a finalizar la sesión del usuario. (Implícitamente, esto implicaría la invalidación de cualquier token de sesión en el backend y la limpieza de datos de sesión en el frontend).
+4. Resultado Esperado: El usuario es automáticamente redirigido a la "Pantalla: Login de Usuario".
+P. Acceder a Mi Perfil
+Este flujo permite al usuario acceder a su información de perfil dentro del sistema.
+1. Acceso a la Función: Desde la "Cabecera" del Dashboard Principal, el usuario hace clic en el "Perfil de Usuario (Avatar)".
+2. Selección de Opción: Al hacer clic en el avatar, se despliega un menú contextual con varias opciones. El usuario selecciona la opción "Mi Perfil".
+3. Resultado Esperado: El sistema redirige al usuario a una pantalla o modal donde puede visualizar su información de perfil.
+Q. Acceder a Configuración
+Este flujo permite al usuario acceder a las configuraciones del sistema o personales disponibles.
+1. Acceso a la Función: Desde la "Cabecera" del Dashboard Principal, el usuario hace clic en el "Perfil de Usuario (Avatar)".
+2. Selección de Opción: Del menú desplegable que aparece, el usuario selecciona la opción "Configuración".
+3. Resultado Esperado: El sistema redirige al usuario a una pantalla o modal donde puede acceder y modificar las configuraciones pertinentes.
+
+--------------------------------------------------------------------------------
+3.0. Requisitos No Funcionales
+Los requisitos no funcionales definen las cualidades y características del sistema que no están directamente relacionadas con la funcionalidad específica, sino con el rendimiento, la usabilidad, la seguridad, la fiabilidad y la escalabilidad. Son cruciales para garantizar que el sistema cumpla con las expectativas de calidad y eficiencia operativa del consultorio del Dr. Sánchez García.
+3.1. Rendimiento
+El sistema debe operar de manera fluida y eficiente, incluso bajo cargas de datos significativas.
+• Requisito: El Dashboard y los servicios de backend deben mantener tiempos de respuesta óptimos (inferiores a 2 segundos para la mayoría de las operaciones críticas y menos de 5 segundos para operaciones complejas como búsquedas o exportaciones de grandes volúmenes de datos) con un volumen de datos de hasta 2 Terabytes (TB). Gran parte de este volumen estará compuesta por archivos visuales y documentos (imágenes, videos, PDF) almacenados en Cloud Storage, mientras que los metadatos y la información estructurada se gestionarán en la Base de Datos Relacional (Cloud SQL). Se recomienda una conexión a internet estable de al menos 250 Mbps para un rendimiento óptimo del ecosistema, dada su dependencia de la infraestructura en la nube.
+3.2. Usabilidad
+El sistema debe ser intuitivo y fácil de usar, minimizando la curva de aprendizaje para el personal.
+• Requisito: El Dashboard debe ofrecer una experiencia de usuario "excepcionalmente intuitiva", reflejando la calidad y el prestigio de la práctica médica. Esto implica una coherencia visual integral a través del estilo "Glassmorphism Oscuro", diseñado para ofrecer "comodidad visual y una jerarquía de información clara". La interfaz debe proporcionar retroalimentación clara a las interacciones del usuario (ej., aumento de brillo o ligero hundimiento al pulsar un botón), y el diseño debe asegurar una "legibilidad óptima" con texto e iconos nítidos y brillantes. El diseño busca mitigar la "resistencia o dificultad con la tecnología" por parte del personal.
+3.3. Seguridad
+La protección de la información sensible del paciente y el acceso controlado son requisitos primordiales.
+• Requisito: El sistema debe garantizar la confidencialidad, integridad y disponibilidad de todos los datos sensibles del paciente, abordando directamente las "preocupaciones de seguridad de datos". Esto se logra mediante:
+    ◦ Control de Acceso Basado en Roles (RBAC): Cada usuario, al iniciar sesión, es asociado a un rol específico ("Admin Principal", "Admin Secundario", "Asistente", "Invitado") que define sus permisos sobre la información y las funcionalidades del Dashboard.
+    ◦ Cifrado de Datos: Toda la comunicación entre la aplicación de escritorio y la infraestructura en la nube debe cifrarse mediante HTTPS (TLS 1.3) para proteger los datos en tránsito. Además, todos los datos sensibles del paciente y las contraseñas (como hash) deben almacenarse cifrados en reposo tanto en la "Base de Datos Relacional (Cloud SQL)" como en el "Almacenamiento de Archivos (Cloud Storage)".
+    ◦ Auditoría Integral: Cada acción relevante y cada intento de inicio de sesión (exitoso o fallido) debe registrarse cronológicamente en un "Servicio de Logs de Auditoría (Cloud Logging / Audit Logs)". Estos logs deben ser inmutables (Write Once, Read Many - WORM) para asegurar su integridad y facilitar la detección de anomalías.
+3.4. Fiabilidad
+El sistema debe ser robusto y capaz de funcionar de manera consistente y sin interrupciones.
+• Requisito: El Dashboard y su infraestructura subyacente en la nube deben operar de forma estable y continua, minimizando el tiempo de inactividad. La arquitectura de nube está diseñada para alta disponibilidad. El plan de mantenimiento y soporte mensual, que incluye "mantenimiento proactivo" y "soporte técnico 24/7", garantiza el "óptimo funcionamiento" y la "evolución continua" de la aplicación, reforzando la fiabilidad del ecosistema.
+3.5. Escalabilidad
+El sistema debe ser capaz de crecer y adaptarse a futuras demandas de volumen de datos y usuarios sin comprometer el rendimiento.
+• Requisito: El sistema debe poder manejar un crecimiento futuro en el volumen de pacientes, el número de usuarios y la cantidad de datos almacenados (incluyendo archivos multimedia) sin degradación del rendimiento. La elección de Google Cloud Platform (GCP) como proveedor de nube principal proporciona una "escalabilidad inherente" que permite al sistema expandirse para manejar una mayor demanda. El diseño del backend, potencialmente utilizando arquitecturas de microservicios, y la capacidad de adquirir "almacenamiento adicional" más allá del terabyte inicial, aseguran que la plataforma pueda adaptarse a las necesidades futuras del consultorio.

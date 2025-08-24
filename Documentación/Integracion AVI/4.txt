@@ -1,0 +1,51 @@
+Interacción Técnica con el Modelo de IA (Gemma 3)
+La integración del modelo de Inteligencia Artificial Gemma 3 (o similar a Gemini) es un componente fundamental del "Ecosistema Digital Inteligente para Cirugía Especial". Esta inteligencia artificial potencia funcionalidades clave como la automatización de tareas repetitivas y la asistencia rápida al personal del consultorio.
+Método de Integración
+El modelo Gemma 3 se integra directamente en el Servidor de Aplicación (Backend) del ecosistema mediante el uso de APIs (Interfaces de Programación de Aplicaciones). Esto significa que el backend actúa como el intermediario entre la interfaz de usuario (el Dashboard de Escritorio o las aplicaciones móviles/web) y el modelo de IA.
+El backend se construirá utilizando lenguajes y frameworks robustos como Python (Flask/Django) o Node.js (Express). El despliegue de este backend se realiza en Google Cloud Platform (GCP), utilizando servicios como Compute Engine o Cloud Run.
+En cuanto a la forma específica de acceso al modelo Gemma 3, las fuentes indican que puede ser a través de dos métodos principales:
+• Acceso mediante API pública (ej. Google AI API para Gemini): Si Gemma 3 se ofrece como un servicio gestionado a través de una API pública, el backend se comunicará con ella utilizando endpoints HTTP específicos. Esto implicaría el envío de solicitudes (probablemente POST) a URLs definidas por el proveedor de la IA, con los prompts y datos necesarios en el cuerpo de la solicitud. La comunicación se realizará siempre a través de HTTPS (TLS 1.3) para cifrar los datos en tránsito, protegiendo tanto las credenciales del sistema como cualquier información sensible que pudiera acompañar a los prompts.
+• Despliegue del Modelo en Google Cloud (Vertex AI): Otra opción, sugerida en las fuentes, es que el modelo Gemma 3 se despliegue de forma autónoma en Vertex AI, el servicio de aprendizaje automático de GCP. En este caso, la interacción del backend con el modelo se realizaría utilizando los SDKs o APIs de Vertex AI, lo que podría ofrecer una integración más profunda y optimizada dentro del ecosistema de GCP, manteniendo la comunicación dentro de la Virtual Private Cloud (VPC) para mayor seguridad.
+Especificación de Entradas (Prompts)
+Las entradas al modelo de IA (prompts) serán principalmente de texto, ya que el chat interno básico de la IA funciona únicamente con texto y no genera archivos de ningún formato. La especificación y estructura de estos prompts variará según el caso de uso:
+1. Automatizaciones Básicas (Redacción de Correos, Hojas Membretadas, Recordatorios):
+    ◦ Formato del Prompt: Se espera que el prompt incluya instrucciones claras y concisas sobre el tipo de documento o mensaje a generar, el tono deseado, y los datos específicos que deben insertarse. Por ejemplo, para un recordatorio de cita, el prompt podría incluir el nombre del paciente, la fecha y hora de la cita, el tipo de consulta y cualquier instrucción especial.
+    ◦ Contexto: Los datos de contexto (ej., nombre del paciente, detalles de la cita) serían extraídos de la Base de Datos Relacional (Cloud SQL) por el backend antes de ser formateados en el prompt para la IA.
+2. Chat Interno Básico (Consultas Rápidas, Resúmenes de Texto, Redacción de Informes):
+    ◦ Formato del Prompt: Para consultas rápidas o solicitudes de resumen, el prompt sería el texto directo de la consulta o el texto a resumir. Para la redacción de informes, el prompt incluiría las directrices para el informe y los datos relevantes del paciente o la consulta.
+    ◦ Manejo del Contexto en Conversaciones: Aunque no se detalla explícitamente el mecanismo, un chat interno requiere que el backend mantenga y envíe el contexto de la conversación previa al modelo de IA. Esto podría implicar el envío de las últimas 'N' interacciones (pares pregunta-respuesta) o un resumen condensado del diálogo anterior junto con la nueva consulta del usuario, permitiendo que la IA mantenga la coherencia y relevancia en sus respuestas.
+3. Asistencia para el Desarrollo y Capacitación (Generación de Texto de Ejemplo, "Copys", Scripts SQL, FAQs):
+    ◦ Formato del Prompt:
+        ▪ Para texto de ejemplo o "copys" de UI: El prompt incluiría el propósito del texto, la interfaz o elemento donde se usará, y el tono deseado.
+        ▪ Para scripts SQL básicos: El prompt sería una descripción en lenguaje natural de la operación de base de datos deseada (ej., "crea una tabla para pacientes con nombre, apellido y fecha de nacimiento").
+        ▪ Para FAQs: El prompt podría consistir en segmentos de la documentación técnica o consultas comunes de usuarios, pidiéndole a la IA que genere preguntas y respuestas concisas.
+Especificación de Salidas (Respuestas)
+Las respuestas del modelo de IA, como se mencionó, serán principalmente de texto. El formato exacto y la estructura esperada del modelo de IA para cada caso de uso son:
+1. Automatizaciones Básicas:
+    ◦ Formato: Texto plano o texto formateado (ej., con saltos de línea, listas) que representa el borrador completo del correo electrónico, la hoja membretada o el recordatorio.
+    ◦ Ejemplo: Un borrador de correo con campos como Asunto, Cuerpo del mensaje, Saludo y Firma ya rellenos por la IA.
+2. Chat Interno Básico:
+    ◦ Formato: Texto plano que constituye la respuesta directa a la consulta del usuario, el resumen solicitado, o el borrador del informe.
+    ◦ Restricción: Es crucial que la IA no genere archivos de ningún formato como salida de este chat.
+3. Asistencia para el Desarrollo y Capacitación:
+    ◦ Formato:
+        ▪ Texto de ejemplo o "copys": Texto plano o frases cortas para usar en la interfaz.
+        ▪ Scripts SQL: Texto que contiene las sentencias SQL generadas.
+        ▪ FAQs: Pares de preguntas y respuestas en formato de texto estructurado (posiblemente un JSON si la IA se entrena para ello, aunque no especificado directamente, sería una buena práctica para facilitar su consumo por el backend).
+Manejo de Errores y Respuestas Inesperadas de la IA
+La robustez del sistema depende de cómo el backend detecta y gestiona los errores o respuestas de la IA que no se ajusten al formato esperado o sean irrelevantes. La integración de la IA debe realizarse de forma segura, garantizando la privacidad de los datos sensibles de los pacientes.
+1. Detección de Errores y Anomalías:
+    ◦ Errores de Conectividad/Red: Fallos al establecer comunicación con la API de la IA (ej., timeouts, errores de DNS).
+    ◦ Respuestas Malformadas: La IA podría devolver una respuesta que no sigue el formato de texto esperado, o si se esperara JSON, un JSON inválido o incompleto.
+    ◦ Respuestas Incoherentes/Irrelevantes (Alucinaciones): La IA podría generar texto que, aunque gramaticalmente correcto, es ilógico o no responde a la solicitud del prompt, especialmente si el contexto es ambiguo o los datos de entrada son insuficientes.
+    ◦ Limitaciones de Tasa (Rate Limiting): Si se utiliza una API pública, se podrían alcanzar los límites de llamadas por minuto/segundo, resultando en errores HTTP 429.
+    ◦ Errores del Modelo Interno: Problemas en el lado del proveedor de la IA o del despliegue en Vertex AI que impidan una respuesta exitosa (errores 5xx del servicio de la IA).
+    ◦ Fallos de Validación de Contenido: Aunque la IA genere texto, el backend podría aplicar validaciones post-generación (ej., longitud mínima/máxima, presencia de palabras clave, ausencia de información prohibida).
+2. Estrategias de Manejo de Errores:
+    ◦ Mensajes de Error al Usuario: En caso de fallo de la IA o respuesta inesperada, el frontend mostrará un mensaje de error claro y conciso al usuario (ej., "Lo sentimos, no pudimos procesar su solicitud en este momento. Por favor, intente de nuevo más tarde." o "Hubo un problema al conectar con la IA.").
+    ◦ Registro de Logs de Auditoría: Cada interacción con la IA, incluyendo los intentos, las respuestas y, crucialmente, los errores, debe registrarse cronológicamente en el Servicio de Logs de Auditoría (Cloud Logging / Audit Logs). Estos logs son inmutables (Write Once, Read Many - WORM), lo que permite rastrear, depurar y analizar cualquier anomalía, siendo vitales para la seguridad y el cumplimiento normativo.
+    ◦ Mecanismos de Reintento (Retry Mechanisms): Para errores transitorios (ej., problemas de red, límites de tasa), el backend podría implementar reintentos con retraso exponencial antes de reportar un fallo definitivo.
+    ◦ Fallback a Respuestas por Defecto/Manuales: Para funciones críticas donde la IA falla, se podría tener un mecanismo de fallback que proporcione una respuesta predefinida o dirija al usuario a una opción manual.
+    ◦ Monitoreo y Alertas: Configuración de alertas en Cloud Logging o Cloud Monitoring para notificar a los administradores sobre patrones de errores de la IA o sobre respuestas que requieran revisión humana.
+    ◦ Control de Seguridad de Datos: El backend es el guardián de la información. Antes de enviar datos sensibles (ej., historial clínico del paciente) a la IA, el backend debe asegurarse de que la información se anonimice o se envíe solo la parte estrictamente necesaria. Las respuestas de la IA deben ser cuidadosamente validadas para evitar que devuelva inadvertidamente información sensible o incorrecta. El control de acceso basado en roles (RBAC) es crucial para asegurar que solo usuarios autorizados puedan interactuar con funcionalidades que impliquen la IA y datos sensibles.
+Esta integración asegura que la IA se utilice de manera efectiva para optimizar el flujo de trabajo, manteniendo siempre la seguridad y la integridad de la información del paciente.

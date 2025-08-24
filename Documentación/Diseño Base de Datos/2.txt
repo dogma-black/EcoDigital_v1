@@ -1,0 +1,74 @@
+2. Especificación Completa de Tablas (Parte 2)
+Se presenta la estructura detallada de las tablas USUARIOS, ROLES y LOGS_AUDITORIA, cruciales para la seguridad del sistema y el control de acceso basado en roles.
+Tabla: USUARIOS
+Esta tabla almacena la información de los usuarios que acceden al sistema, incluyendo sus credenciales seguras y el rol asignado, lo cual es fundamental para el control de acceso.
+Columna
+Tipo de Dato
+Restricciones
+Descripción
+id_usuario
+INT
+PK
+Identificador único para cada usuario del sistema.
+nombre
+VARCHAR
+Nombre de usuario, utilizado para el inicio de sesión.
+hash_password
+VARCHAR
+Contraseña del usuario almacenada de forma segura mediante una función de hash.
+id_role
+INT
+FK a ROLES.id_role
+Clave foránea que vincula al usuario con un rol específico, definiendo sus permisos.
+activo
+BOOLEAN
+Indica si la cuenta del usuario está activa (TRUE) o bloqueada/inactiva (FALSE).
+Tabla: ROLES
+Esta tabla define los diferentes tipos de roles dentro del sistema y los permisos asociados a cada uno, implementando el control de acceso basado en roles.
+Columna
+Tipo de Dato
+Restricciones
+Descripción
+id_role
+INT
+PK
+Identificador único para cada rol.
+nombre_rol
+VARCHAR
+Nombre descriptivo del rol (ej., "Admin Principal", "Asistente", "Invitado (Solo Lectura)").
+permisos
+JSON
+Estructura JSON que detalla las capacidades y permisos asociados a este rol.
+Tabla: LOGS_AUDITORIA
+Esta tabla es esencial para la seguridad y el monitoreo, registrando cronológicamente todas las actividades y cambios realizados en el sistema. Los logs son inmutables (Write Once, Read Many - WORM).
+Columna
+Tipo de Dato
+Restricciones
+Descripción
+id_log
+INT
+PK
+Identificador único y autoincremental para cada entrada del log de auditoría.
+tabla_afectada
+VARCHAR
+Nombre de la tabla de la base de datos que fue afectada por la operación.
+id_registro_afectado
+INT
+ID del registro específico dentro de la tabla_afectada que fue modificado o accedido.
+tipo_operacion
+VARCHAR
+Tipo de operación realizada (ej., 'login_exitoso', 'login_fallido', 'crear', 'actualizar', 'eliminar').
+datos_anteriores
+JSON
+Almacena el estado de los datos del registro afectado antes de la operación (útil para actualizaciones).
+datos_nuevos
+JSON
+Almacena el estado de los datos del registro afectado después de la operación.
+fecha_hora
+DATETIME
+Marca de tiempo de cuándo ocurrió la operación.
+id_usuario_autor
+INT
+FK a USUARIOS.id_usuario
+Clave foránea que identifica al usuario que realizó la operación registrada.
+Nota sobre restricciones adicionales: La información proporcionada para estas tablas en las fuentes no especifica explícitamente si las columnas deben ser NOT NULL, si son AUTO_INCREMENT (además de la clave primaria), o si tienen valores por defecto. Si esta granularidad es requerida, sería necesario definirla en una etapa posterior del diseño de la base de datos.
